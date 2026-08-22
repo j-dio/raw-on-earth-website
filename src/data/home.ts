@@ -37,6 +37,10 @@ export const offerings: Offering[] = [
 export type Stat = { value: string; label: string };
 
 /* From her credentials in the brief. */
+/* Not rendered on Home any more (2026-08-23). The design brief files these
+   figures under About -> Journey, and the 27 July notes put testimonials under
+   "Tab 2 - Second Page: About". Kept here, typed and ready, for when that page
+   is built - deleting them would only mean retyping them from the PDFs. */
 export const stats: Stat[] = [
   { value: "13+", label: "Years of practice" },
   { value: "5,000+", label: "Participants taught" },

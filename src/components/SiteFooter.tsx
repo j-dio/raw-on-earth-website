@@ -28,10 +28,10 @@ export default function SiteFooter() {
 
           <nav aria-label="Footer">
             <p className="eyebrow !text-sage">Pages</p>
-            <ul className="mt-5 space-y-2.5">
+            <ul className="mt-5 space-y-3.5 md:space-y-2.5">
               {PAGES.map((p) => (
                 <li key={p}>
-                  <a href={`/${p.toLowerCase()}`} className="text-sm text-linen/75 transition-colors hover:text-linen">
+                  <a href={`/${p.toLowerCase()}`} className="tap text-sm text-linen/75 transition-colors hover:text-linen">
                     {p}
                   </a>
                 </li>
@@ -41,14 +41,14 @@ export default function SiteFooter() {
 
           <div>
             <p className="eyebrow !text-sage">Reach her</p>
-            <ul className="mt-5 space-y-2.5 text-sm text-linen/75">
+            <ul className="mt-5 space-y-3.5 text-sm text-linen/75 md:space-y-2.5">
               <li>
-                <a href="tel:+917892862634" className="transition-colors hover:text-linen">
+                <a href="tel:+917892862634" className="tap transition-colors hover:text-linen">
                   +91 78928 62634
                 </a>
               </li>
               <li>
-                <a href="mailto:rawonearth@gmail.com" className="transition-colors hover:text-linen">
+                <a href="mailto:rawonearth@gmail.com" className="tap transition-colors hover:text-linen">
                   rawonearth@gmail.com
                 </a>
               </li>
@@ -58,7 +58,7 @@ export default function SiteFooter() {
                     href={l.href}
                     target="_blank"
                     rel="noreferrer noopener"
-                    className="transition-colors hover:text-linen"
+                    className="tap transition-colors hover:text-linen"
                   >
                     {l.label}
                   </a>
