@@ -1,0 +1,18 @@
+node_modules
+.next
+out
+next-env.d.ts
+.env*.local
+.DS_Store
+*.tsbuildinfo
+.gstack/
+
+# Client brief and internal notes - not published
+docs/
+CLAUDE.md
+
+# Local Claude Code settings (skills in .claude/skills/ stay tracked)
+.claude/settings.local.json
+
+# Raw client source asset; the cropped export lives in public/hero/
+/Rectangle (2).svg
