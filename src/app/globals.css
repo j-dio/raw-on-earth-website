@@ -66,24 +66,37 @@ body {
    site was answering that by setting 11px kickers in it while every button and
    nav item ran in Lato. One face per role, no arbitrary split.
    --------------------------------------------------------------------------- */
-.eyebrow,
-.label {
-  font-family: var(--font-label);
-  font-weight: 500;
-  text-transform: uppercase;
-}
+/* In `@layer components`, deliberately. Unlayered rules beat every Tailwind
+   utility, so an unlayered `font-size` here would silently override any caller
+   that sets its own size - and several do (the header overlay numbers at
+   0.6rem, the hero pillar row at 0.5rem). Inside the components layer the
+   utility wins, which is the way round anyone reading the JSX would expect. */
+@layer components {
+  .eyebrow,
+  .label {
+    font-family: var(--font-label);
+    font-weight: 500;
+    text-transform: uppercase;
+  }
 
-.eyebrow {
-  font-size: 0.78rem;
-  letter-spacing: 0.2em;
-  color: var(--color-moss);
+  .eyebrow {
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    color: var(--color-moss);
+  }
 }
 
 /* Interactive small caps - nav, buttons, pillar list. Tighter than .eyebrow
    because these sit in rows that have to fit a width, not float above a
    heading. Size is set by the caller; only the face and tracking are fixed. */
-.label {
-  letter-spacing: 0.14em;
+@layer components {
+  .label {
+    letter-spacing: 0.14em;
+    /* A default, because `.label` set no size at all and a caller that forgot
+       one rendered 16px tracked capitals. Every current caller sets its own,
+       and the components layer means theirs still wins. */
+    font-size: 0.78rem;
+  }
 }
 
 /* Brand marks. The supplied files are white artwork on transparency, which
@@ -594,5 +607,252 @@ body {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   SHARED PRIMITIVES - added 2026-08-23 when the other eight pages were built.
+   Everything below is used by more than one page. Anything used by exactly one
+   page belongs in that page, not here.
+   --------------------------------------------------------------------------- */
+
+/* Larger hit area than the ink, without changing the layout. Footer and any
+   other list of small links use it: a 14px link in a 10px-gapped column is a
+   44px target only if something says so. */
+.tap {
+  position: relative;
+}
+
+.tap::after {
+  content: "";
+  position: absolute;
+  inset: -0.55rem -0.5rem;
+}
+
+/* Inline link inside running prose. Underlined from the start - a link that
+   only announces itself on hover is invisible to anyone not using a mouse -
+   with the underline sitting off the baseline so descenders stay readable. */
+.link {
+  color: var(--color-moss);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--color-moss) 40%, transparent);
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 250ms ease;
+}
+
+.link:hover {
+  text-decoration-color: var(--color-gold);
+}
+
+/* Hairline grid. `gap-px` over a dark parent draws the rules, so no cell
+   carries a border and adjacent cells cannot double up. */
+.hairline {
+  display: grid;
+  gap: 1px;
+  background: color-mix(in srgb, var(--color-ink) 15%, transparent);
+}
+
+/* ---------------------------------------------------------------------------
+   TEXTURES
+   Four client-generated surfaces (Figma, 2026-08-23), replacing the inline SVG
+   turbulence that stood in for them. That noise read as JPEG compression up
+   close; these are photographs of real linen, travertine and cast leaf shadow.
+
+   Two decisions worth not undoing:
+
+   1. THEY ARE GREYSCALE, and they are composited with `mix-blend-mode:
+      soft-light`. The files carry no colour of their own, so one texture works
+      on linen, sand, moss or ink and the palette always comes from the token
+      underneath. Tinting them per-ground would have meant four files each.
+
+   2. EACH IS NORMALISED TO A MEAN LUMINANCE OF 128, measured off the decoded
+      pixels, not eyeballed. Soft-light is only neutral around mid-grey: the raw
+      exports came in at 226, 49, 196 and 191, so the paper would have lightened
+      every linen section it touched and the weave would have darkened the moss.
+      Measured after normalising: 130.6, 130.3, 128.8, 124.2. If a texture is
+      ever re-exported, re-measure and re-offset before shipping it.
+
+   `isolation: isolate` keeps the blend inside its own section - without it
+   soft-light reaches through to whatever is painted behind the section.
+   --------------------------------------------------------------------------- */
+.tex {
+  position: relative;
+  isolation: isolate;
+}
+
+.tex::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* -1, NOT 0, and this is the whole reason `.tex > *` no longer exists.
+
+     The old pair (`::before` at z-index 0, plus `.tex > * { position: relative;
+     z-index: 1 }`) worked only until a section put an absolutely-positioned
+     direct child inside a textured parent. This file is UNLAYERED, and every
+     Tailwind utility lives in `@layer utilities`, so an unlayered `position:
+     relative` beats `.absolute` no matter how specific the utility is. It broke
+     two things silently: the brief's vertical rule in CtaBand collapsed to 0px
+     (`h-full` against a now-auto-height parent), and the Shop plate's scrims and
+     photograph were pushed into normal flow, rendering a 2275px unscrimmed
+     image above the type.
+
+     `isolation: isolate` on `.tex` makes it a stacking context, so a z-index of
+     -1 here lands ABOVE the section's own background and BELOW every child,
+     positioned or not, with no rule touching the children at all. */
+  z-index: -1;
+  pointer-events: none;
+  background-image: var(--tex);
+  background-repeat: repeat;
+  background-size: var(--tex-size, 420px);
+  mix-blend-mode: soft-light;
+  opacity: var(--tex-a, 0.55);
+}
+
+/* Fine woven linen. The tightest of the four (range 114-146 of 255), which is
+   why it can run at full strength: it is the difference between flat colour and
+   printed paper, and nothing more. */
+.tex-paper {
+  --tex: url("/textures/paper.webp");
+  --tex-size: 380px;
+  --tex-a: 0.9;
+}
+
+/* Coarser weave, for the dark grounds. Held at 0.4: at full strength the
+   texture starts to read as a fabric swatch rather than as a surface. */
+.tex-weave {
+  --tex: url("/textures/weave.webp");
+  --tex-size: 300px;
+  --tex-a: 0.4;
+}
+
+/* Travertine, for the sand bands. Its pits go to pure black, so the opacity
+   does more work here than the other two.
+
+   Held at 0.25, and that number is measured, not taste. `text-ink/70` is used
+   on these bands all over the site, and at 0.35 the texture widened the ground
+   to rgb(201,194,182)..rgb(218,212,201), which put that text at 4.55:1 - a pass
+   with 0.05 to spare. Raise this and re-measure before assuming it still
+   clears 4.5:1. */
+.tex-stone {
+  --tex: url("/textures/stone.webp");
+  --tex-size: 620px;
+  --tex-a: 0.25;
+}
+
+/* Cast leaf shadow. NOT a tile - it is one composition, anchored to the top
+   right and bled off the corner, the same motif the home wellness section
+   uses. Its own ::after, so a section can carry both a ground texture and this.
+   Hidden below `md`: at phone width the leaves cover the whole panel rather
+   than one corner of it, and the type ends up sitting under them. */
+.tex-leaf::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* Same reasoning as .tex::before above. */
+  z-index: -1;
+  pointer-events: none;
+  background: url("/textures/leaf-wide.webp") right top / cover no-repeat;
+  mix-blend-mode: soft-light;
+  opacity: 0.6;
+  /* `cover`, not `auto 100%`, and that is the whole fix for a seam that was
+     visible in the first pass. The artwork is 1.5:1 and this panel is 2.85:1 at
+     1280px, so sizing it to the panel HEIGHT left it 673px wide against a
+     1280px panel - a hard vertical step at x=607 where the image stopped. A
+     left-fading mask did not hide it either, because the edge landed inside the
+     fade at about 50% alpha rather than at 0. Covering the panel means there is
+     no left edge to hide; the mask below now only softens the open side. */
+  -webkit-mask-image: linear-gradient(to left, #000 30%, transparent 75%);
+  mask-image: linear-gradient(to left, #000 30%, transparent 75%);
+}
+
+@media (max-width: 767px) {
+  .tex-leaf::after {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   MOTION START STATES
+   Base is always the VISIBLE state. `js-reveal` is added by Motion.tsx and only
+   when the visitor has not asked for reduced motion, so a hidden state can
+   never be left on screen by a script that failed to run.
+   --------------------------------------------------------------------------- */
+.js-reveal [data-reveal],
+.js-reveal [data-reveal-stagger] > *,
+.js-reveal .offer-grid > li {
+  opacity: 0;
+  transform: translateY(1.75rem);
+}
+
+/* A stagger container is only a wrapper - its children are what move, so the
+   wrapper itself must not also be tweened. */
+.js-reveal [data-reveal-stagger],
+.js-reveal .wellness-copy {
+  opacity: 1;
+  transform: none;
+}
+
+.js-reveal .wellness-copy > * {
+  opacity: 0;
+}
+
+/* Split headings are hidden until the lines have been measured and wrapped,
+   which stops a flash of the un-split text on a slow frame. */
+.js-reveal [data-lines] {
+  opacity: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   INNER PAGE MASTHEAD
+   Ungated by `is-loaded`, unlike the home hero: the preloader only runs on
+   Home, so there is no overlay for these to play behind.
+   --------------------------------------------------------------------------- */
+.page-hero-in {
+  animation: hero-rise 1000ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+
+.page-hero-title {
+  animation: hero-title 1200ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+
+/* A faint enso, bled off the top right corner of every inner masthead. It is
+   the brand mark used as paper, not as a logo - which is why it is 0.05 and
+   why it is aria-hidden by being a pseudo-element in the first place. */
+.page-hero::after {
+  content: "";
+  position: absolute;
+  top: -18%;
+  right: -10%;
+  width: min(46vw, 620px);
+  aspect-ratio: 1;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  background-color: var(--color-moss);
+  -webkit-mask: url("/brand/enso-ring.png") center / contain no-repeat;
+  mask: url("/brand/enso-ring.png") center / contain no-repeat;
+}
+
+.page-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-hero-in,
+  .page-hero-title {
+    animation: none;
+  }
+
+  .js-reveal [data-reveal],
+  .js-reveal [data-reveal-stagger] > *,
+  .js-reveal [data-lines],
+  .js-reveal .offer-grid > li,
+  .js-reveal .wellness-copy > * {
+    opacity: 1;
+    transform: none;
   }
 }

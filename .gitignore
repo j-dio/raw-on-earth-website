@@ -22,6 +22,7 @@ CLAUDE.md
 
 # Raw client source assets - PNG-in-SVG wrappers straight from the client.
 # The extracted, trimmed exports live in public/brand/ and public/hero/.
-/Rectangle (2).svg
-/Rectangle (3).svg
-/Rectangle (5).svg
+Photos/
+# Scratch: image conversion scripts, the vision-pass catalogue and the page
+# spec the parallel build agents worked from. Regenerable, not part of the site.
+.work/

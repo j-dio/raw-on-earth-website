@@ -1,7 +1,19 @@
-import Motion from "@/components/Motion";
+import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import { offerings, pillars } from "@/data/home";
+import { Section, SectionHead, LeafRule, CtaBand } from "@/components/ui";
+import { offerings, pillars, stats } from "@/data/home";
+import { gallery } from "@/data/gallery";
+import { getPosts } from "@/lib/substack";
+import { site } from "@/data/site";
+
+/* Five frames for the glimpse strip, chosen so no other page opens on them and
+   none of them shows an identifiable child (that consent question is still open
+   with the client). They are looked up in the gallery data rather than retyped,
+   so the alt text stays single-sourced with the gallery itself. */
+const GLIMPSE = ["teaching-06", "raji-19", "kids-02", "teaching-01", "kids-34"]
+  .map((id) => gallery.find((item) => item.id === id))
+  .filter((item): item is NonNullable<typeof item> => Boolean(item));
 
 /* Home. Four blocks, and the order is the client's, not a template's:
 
@@ -14,27 +26,43 @@ import { offerings, pillars } from "@/data/home";
      4. Offerings         content PDF "Page 1 Template 4", six small tabs,
                           heading marked CINZEL in the PDF
 
-   Both client documents describe the same four, in this order, and describe
-   nothing else on this page. Cut on 2026-08-23: a practices marquee, a
-   "one practice, taught five ways" grid, an intro paragraph, a stats band, a
-   testimonials row and a closing CTA. None appeared in either document, all
-   six carried copy nobody at Raw On Earth wrote, and three of them restated the
-   five practices the hero already lists.
+   Those four are the client's own templates and their order and copy are hers.
+   Four more were added on 2026-08-24, and the test each had to pass was: does
+   it carry something the brief asks for, a fact she actually gave us, or a way
+   into a page that already exists? Anything that would have meant writing new
+   claims in her voice was left out.
 
-   Two of those blocks were not wrong, just on the wrong page: the 13+/5,000+/35+
-   figures are filed under About -> Journey in the design brief, and the 27 July
-   notes put testimonials under "Tab 2 - Second Page: About". Their data is still
-   in src/data/home.ts, ready for that page.
+     5. The five         the design brief's Home section asks the page to name
+        practices        Yoga, Mindfulness, Corporate Well-being, Conscious
+                         Living and Chanting for Kids. The hero's row is
+                         desktop-only, so a phone visitor never saw them.
+     6. Proof            her own Journey figures from the brief: 13+ years,
+                         5,000+ participants, 35+ workshops, two lineages
+     7. A glimpse        five gallery photographs, linking into /gallery
+     8. From the journal the newest Substack post, which the brief calls the
+                         site's "strongest long-term asset"
+     9. Closing CTA      the client's own line, 27 July: "Begin your journey
+                         Inward - Book your session/ immersion"
 
-   The one image slot on this page now holds a real client photograph. The
-   .ph / .ph-dark placeholder system that stood in for it has been deleted from
-   globals.css along with it - other pages can bring it back from git history if
-   they need it before their photography arrives. */
+   An earlier pass on 2026-08-23 cut six invented blocks from this page - a
+   marquee, a "taught five ways" grid, an intro paragraph, a stats band, a
+   testimonials row and a CTA - because they carried copy nobody at Raw On Earth
+   wrote. That reasoning still stands and is why sections 5 to 9 are built from
+   the brief, from src/data/home.ts and from the live feed rather than from new
+   prose. Testimonials are still absent: the quotes are placeholders, and a
+   landing page is the worst place to show scaffolding.
 
-export default function Home() {
+   The image slots on this page hold real client photographs. The .ph / .ph-dark
+   placeholder system that stood in for them was deleted from globals.css; other
+   pages can bring it back from git history if they need it. */
+
+export default async function Home() {
+  /* Resolved at build time (force-cache in getPosts), so the built site never
+     makes a runtime request and a slow Substack cannot slow the home page. */
+  const latest = (await getPosts()).find((post) => !post.placeholder) ?? null;
+
   return (
     <>
-      <Motion />
       <SiteHeader />
 
       <main id="main">
@@ -126,18 +154,18 @@ export default function Home() {
                 className="hero-in mx-auto mt-auto flex w-full max-w-[17rem] flex-col items-stretch gap-3 lg:mx-0 lg:mt-11 lg:max-w-none lg:flex-row lg:items-center lg:justify-start"
                 style={{ "--d": "880ms" } as React.CSSProperties}
               >
-                <a
+                <Link
                   href="/contact"
                   className="label rounded-full bg-moss px-8 py-[0.95rem] text-center text-[0.72rem] text-linen transition-colors duration-300 hover:bg-moss-deep"
                 >
                   Book a Session
-                </a>
-                <a
+                </Link>
+                <Link
                   href="/workshops"
                   className="label rounded-full border border-ink/30 px-8 py-[0.95rem] text-center text-[0.72rem] text-ink transition-colors duration-300 hover:border-moss hover:bg-moss/10"
                 >
                   Explore Workshops
-                </a>
+                </Link>
               </div>
 
               {/* Divider, then the five pillars on ONE line - never two.
@@ -181,9 +209,20 @@ export default function Home() {
                     Cinzel is the wider face and fitting five labels in it drove
                     the computed size to 7.4px, where an inscriptional capital
                     greys out completely. Lato holds the same row at 8-9.6px and
-                    stays legible. */}
-                {pillars.map((p) => (
-                    <li key={p.slug} className="text-[clamp(0.5rem,0.62vw,0.6rem)] uppercase tracking-[0.12em] text-moss">
+                    stays legible.
+
+                    The ramp is 0.75vw, not 0.62vw. Floor and cap are unchanged;
+                    only the slope between them is steeper, because 0.62vw never
+                    reached the cap at a width a laptop actually uses - 1280 and
+                    1440 both resolved to the 8px floor, and the five labels
+                    measure 403px of ink at 8px inside a 544px rule, so a
+                    quarter of the row was empty. At the 9.6px cap they measure
+                    ~484px and still clear the four 8px gaps. 1024 is the pinch
+                    point and is untouched: 0.75vw is 7.7px there, so the floor
+                    still wins, which is all the 440px rule at that width can
+                    hold. */}
+                  {pillars.map((p) => (
+                    <li key={p.slug} className="text-[clamp(0.5rem,0.75vw,0.6rem)] uppercase tracking-[0.12em] text-moss">
                       {p.name}
                     </li>
                   ))}
@@ -195,7 +234,15 @@ export default function Home() {
 
         {/* YOUR HOME OF WELLNESS - image on the right, per the brief */}
         <section className="wellness bg-sand/45">
-          <div className="mx-auto grid max-w-[1400px] items-start gap-14 px-6 py-24 md:px-10 md:py-32 lg:grid-cols-2 lg:pb-0">
+          {/* `lg:items-center`, not top-aligned. The photograph is 2:3 and the
+              copy is not: at 1280 the column is 572px wide, so the frame is
+              858px tall against ~490px of copy. Top-aligned, all 250-odd px of
+              the difference pooled under "Move. Breathe. Become." as one blank
+              corner of sand, which reads as copy that ran out rather than as
+              composition. Centred, the same air splits either side of the copy
+              block. The overhang below is unaffected: the image still sets the
+              row height and still hangs -mb-28 past it. */}
+          <div className="mx-auto grid max-w-[1400px] items-start gap-14 px-6 py-24 md:px-10 md:py-32 lg:grid-cols-2 lg:items-center lg:pb-0">
             <div className="wellness-copy" data-reveal>
               {/* VERBATIM client copy, content PDF "Page 1 - Template 2". Every
                   word below is hers, including the British "well-being" and
@@ -294,8 +341,94 @@ export default function Home() {
           </div>
         </section>
 
+        {/* THE FIVE PRACTICES
+            The design brief's Home section asks the page to "Include Yoga,
+            Mindfulness, Corporate Well-being, Conscious Living, Chanting for
+            Kids". The hero names them in a single tracked row, but that row is
+            desktop-only - it is pinned to one line inside a fixed measure and
+            there is no room for it on a phone - so until now a phone visitor
+            never saw the five named at all. This section is where the brief's
+            requirement is actually met, at every width.
+
+            Set as a numbered list rather than a card grid on purpose: five
+            equal cards would repeat the Offerings grid further down the page,
+            and these are five aspects of one practice, not six doors. */}
+        <Section className="py-24 md:py-32">
+          <div className="lg:grid lg:grid-cols-12 lg:gap-16">
+            {/* Sticky from lg, because the list beside it is 900px tall and
+                without it the left column is empty for most of the scroll. */}
+            <div className="lg:sticky lg:top-28 lg:col-span-4">
+              <SectionHead
+                eyebrow="The practice"
+                title="Five ways in, one direction"
+                standfirst="Whichever door you come through, the work is the same: pay attention, breathe, and keep showing up."
+              />
+            </div>
+
+            <ul className="mt-14 lg:col-span-8 lg:mt-0" data-reveal-stagger>
+              {pillars.map((pillar, i) => (
+                <li
+                  key={pillar.slug}
+                  className="grid grid-cols-[2.5rem_1fr] gap-x-5 border-t border-ink/12 py-7 first:border-t-0 first:pt-0 md:grid-cols-[3.5rem_1fr] md:gap-x-8 md:py-9"
+                >
+                  <span className="font-display text-[1.6rem] font-light leading-none text-gold md:text-[2.1rem]">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <h3 className="font-display text-[1.6rem] font-light leading-tight text-moss md:text-[2rem]">
+                      {pillar.name}
+                    </h3>
+                    {/* PLACEHOLDER copy - see the header of src/data/home.ts.
+                        Her own words replace these lines before launch. */}
+                    <p className="mt-2 max-w-[52ch] leading-relaxed text-ink/75">{pillar.line}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Section>
+
+        {/* PROOF
+            Four figures, all of them hers and all of them from the design
+            brief's "Journey" list. They are on About as well, which is where
+            the brief files them - but a landing page that never says how long
+            she has been doing this is asking a stranger to take it on trust.
+
+            A hairline band rather than a tinted one: the section above and the
+            quote panel below are already doing the colour work, and a third
+            ground between them would break the page's rhythm. */}
+        <Section className="pb-24 md:pb-32">
+          <LeafRule className="mb-14 md:mb-20" />
+          <dl className="grid grid-cols-2 gap-x-8 gap-y-12 lg:grid-cols-4" data-reveal-stagger>
+            {stats.map((stat) => {
+              /* Only the plain counts animate. "2" is a count of lineages and
+                 counting to two is not a flourish, it is a twitch. */
+              const numeric = /^[\d,]+\+?$/.test(stat.value) && stat.value !== "2";
+              const target = Number(stat.value.replace(/[^\d]/g, ""));
+              return (
+                <div key={stat.label}>
+                  <dt className="sr-only">{stat.label}</dt>
+                  <dd>
+                    <span
+                      className="block font-display text-[clamp(2.6rem,6vw,4rem)] font-light leading-none text-moss"
+                      {...(numeric
+                        ? { "data-count": String(target), "data-count-suffix": "+" }
+                        : {})}
+                    >
+                      {stat.value}
+                    </span>
+                    <span className="mt-4 block text-[0.9rem] leading-relaxed text-ink/75">
+                      {stat.label}
+                    </span>
+                  </dd>
+                </div>
+              );
+            })}
+          </dl>
+        </Section>
+
         {/* QUOTE PANEL - vertical line motif from the brief */}
-        <section className="relative overflow-hidden bg-moss py-28 text-linen md:py-40">
+        <section className="tex tex-weave relative overflow-hidden bg-moss py-28 text-linen md:py-40">
           <div aria-hidden className="quote-rule absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-linen/20" />
           <figure className="quote-figure relative mx-auto max-w-3xl px-8 text-center" data-reveal>
             <blockquote className="font-display text-[1.7rem] font-light italic leading-[1.35] sm:text-4xl md:text-[2.9rem]">
@@ -329,7 +462,7 @@ export default function Home() {
           <ul className="offer-grid mt-16 grid gap-px bg-ink/15 sm:grid-cols-2 lg:grid-cols-3">
             {offerings.map((o) => (
               <li key={o.n}>
-                <a
+                <Link
                   href={o.href}
                   className="group flex h-full flex-col justify-between gap-10 bg-linen p-8 transition-colors duration-500 hover:bg-moss hover:text-linen md:p-10"
                 >
@@ -338,11 +471,124 @@ export default function Home() {
                     <span className="block font-display text-[1.75rem] leading-tight md:text-3xl">{o.title}</span>
                     <span className="mt-3 block text-[0.92rem] leading-relaxed opacity-75">{o.body}</span>
                   </span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
         </section>
+
+        {/* A GLIMPSE
+            The gallery is nine categories deep and a landing page cannot carry
+            that, but it can carry the feeling of it. A horizontal strip rather
+            than a grid: it reads as one continuous scene on a phone, it costs
+            one row of vertical space instead of four, and swiping it is a
+            gentler invitation than a wall of thumbnails.
+
+            `snap-x` with `scroll-pl` so the first tile keeps the page gutter -
+            without it the browser aligns tile one to the scrollport edge and
+            the strip looks clipped before you have touched it. */}
+        <Section wide className="tex tex-stone bg-sand/45 py-24 md:py-32">
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <SectionHead
+              eyebrow="A glimpse"
+              title="Where the practice happens"
+              standfirst="Parks at dawn, studio floors, school courtyards and the quiet of a hall between sessions."
+            />
+            <Link
+              href="/gallery"
+              className="label -my-2 flex min-h-11 items-center border-b border-gold/60 py-2 text-[0.7rem] text-moss transition-colors hover:border-moss"
+            >
+              See the gallery
+            </Link>
+          </div>
+
+          <ul
+            className="mt-14 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-pl-6 pb-4 md:gap-6 md:scroll-pl-10"
+            data-reveal
+          >
+            {GLIMPSE.map((item) => (
+              <li key={item.id} className="w-[76vw] shrink-0 snap-start sm:w-[46vw] lg:w-[28vw]">
+                <img
+                  src={item.thumb}
+                  alt={item.alt}
+                  width={item.w}
+                  height={item.h}
+                  loading="lazy"
+                  decoding="async"
+                  className="aspect-[3/4] w-full object-cover"
+                />
+                <p className="mt-4 text-[0.85rem] leading-relaxed text-ink/75">{item.caption}</p>
+              </li>
+            ))}
+          </ul>
+        </Section>
+
+        {/* FROM THE JOURNAL
+            The design brief calls the Journal "the strongest long-term asset of
+            the website", and an asset nobody can find from the front door is
+            not one. One post, given room, rather than a list of three.
+
+            Rendered only when the Substack feed actually returned something. If
+            the feed is unreachable at build time getPosts falls back to topic
+            cards, and a topic card is not an article - putting one here under
+            "From the journal" would be a small lie. */}
+        {latest ? (
+          <Section className="py-24 md:py-32">
+            <div className="grid gap-12 lg:grid-cols-12 lg:items-start lg:gap-16">
+              <div className="lg:col-span-4">
+                <SectionHead eyebrow="From the journal" title="She writes it down" />
+                <p className="mt-6 max-w-[40ch] leading-relaxed text-ink/75">
+                  Mindfulness, human behaviour, conscious living, and what pressure
+                  does to a body. New pieces land on Substack.
+                </p>
+                <Link
+                  href="/journal"
+                  className="label mt-8 -mb-2 flex min-h-11 w-fit items-center border-b border-gold/60 py-2 text-[0.7rem] text-moss transition-colors hover:border-moss"
+                >
+                  All writing
+                </Link>
+              </div>
+
+              <article className="border-t border-ink/12 pt-8 lg:col-span-8 lg:border-l lg:border-t-0 lg:pl-16 lg:pt-0" data-reveal>
+                {latest.date ? (
+                  <time
+                    dateTime={latest.date}
+                    className="label block text-[0.68rem] text-ink/70"
+                  >
+                    {new Intl.DateTimeFormat("en-GB", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    }).format(new Date(latest.date))}
+                  </time>
+                ) : null}
+                <h3 className="mt-5 font-display text-[clamp(1.9rem,3.6vw,2.9rem)] font-light leading-[1.08] text-balance text-moss">
+                  {latest.title}
+                </h3>
+                <p className="mt-6 max-w-[60ch] leading-relaxed text-ink/80">{latest.excerpt}</p>
+                <a
+                  href={latest.url}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label={`${latest.title} - read on Substack, opens in a new tab`}
+                  className="label mt-8 -mb-2 flex min-h-11 w-fit items-center gap-2 border-b border-gold/60 py-2 text-[0.7rem] text-moss transition-colors hover:border-moss"
+                >
+                  Read on Substack
+                  <span aria-hidden>&#8599;</span>
+                </a>
+              </article>
+            </div>
+          </Section>
+        ) : null}
+
+        {/* The client's own closing line, 27 July: "Last line - Begin your
+            journey Inward - Book your session/ immersion". Home was the only
+            page without it. */}
+        <CtaBand
+          body={`Classes run online and in person from ${site.locality}. Tell her where you are starting from and she will suggest where to begin.`}
+          secondary={{ href: "/services", label: "See what she teaches" }}
+        />
+
       </main>
 
       <SiteFooter />

@@ -24,14 +24,20 @@ export type Offering = {
   href: string;
 };
 
-/* The six Offerings tabs named in the content PDF. */
+/* The six Offerings tabs named in the content PDF.
+
+   Each href now carries the Services page's own section anchor. Four of the six
+   used to point at a bare `/services`, so two thirds of the grid dropped a
+   visitor at the top of the same long page and left them to find the part they
+   had just clicked. The anchors match the `slug` values in src/data/services.ts,
+   which is what that page renders its section `id`s from. */
 export const offerings: Offering[] = [
-  { n: "01", title: "Holistic Health", body: "Whole-person practice: movement, breath, rest and the habits that carry them.", href: "/services" },
-  { n: "02", title: "Private & Group Class", body: "One-to-one attention, or a small group that keeps its own rhythm. Online and in person.", href: "/services" },
+  { n: "01", title: "Holistic Health", body: "Whole-person practice: movement, breath, rest and the habits that carry them.", href: "/services#individual" },
+  { n: "02", title: "Private & Group Class", body: "One-to-one attention, or a small group that keeps its own rhythm. Online and in person.", href: "/services#individual" },
   { n: "03", title: "Events & Workshops", body: "Immersions, retreats and day workshops. 35+ run so far, in India and online.", href: "/workshops" },
-  { n: "04", title: "Mindfulness & Breathwork", body: "Pranayama and meditation taught as tools, not theory. Something you can use on a Tuesday.", href: "/services" },
-  { n: "05", title: "Corporate Well-being", body: "Programmes for teams under load. Desk yoga, resilience, leadership mindfulness.", href: "/services" },
-  { n: "06", title: "Counselling", body: "A held conversation, where the practice needs support that a class cannot give.", href: "/contact" },
+  { n: "04", title: "Mindfulness & Breathwork", body: "Pranayama and meditation taught as tools, not theory. Something you can use on a Tuesday.", href: "/services#individual" },
+  { n: "05", title: "Corporate Well-being", body: "Programmes for teams under load. Desk yoga, resilience, leadership mindfulness.", href: "/services#corporate" },
+  { n: "06", title: "Counselling", body: "A held conversation, where the practice needs support that a class cannot give.", href: "/services#corporate" },
 ];
 
 export type Stat = { value: string; label: string };
