@@ -34,6 +34,11 @@ export type Strand = {
   image?: StrandImage;
 };
 
+/* Order is load-bearing: the mosaic on /community tiles a six-column grid from
+   this array in sequence, and it pairs the photographed strands with each other
+   so no text-only panel is stretched to the height of an image beside it. If
+   you reorder or add a strand, update SPAN in src/app/community/page.tsx or the
+   grid leaves an empty track, which draws as a grey rectangle. */
 export const strands: Strand[] = [
   {
     slug: "nature-walks",
@@ -49,6 +54,19 @@ export const strands: Strand[] = [
     },
   },
   {
+    slug: "volunteer-work",
+    name: "Volunteer work",
+    cadence: "Ongoing. Each drive is announced when it is confirmed",
+    summary:
+      "Yoga taken to schools, clubs and community centres that would not otherwise pay for it. This is where most of the practice actually happens.",
+    image: {
+      src: "/media/thumb/kids-37.webp",
+      alt: "An instructor stands with palms together in a gesture of thanks alongside a group of children doing the same outside a building.",
+      width: 760,
+      height: 506,
+    },
+  },
+  {
     slug: "running-club",
     name: "Running club",
     cadence: "Meeting points shared on WhatsApp",
@@ -61,19 +79,6 @@ export const strands: Strand[] = [
     cadence: "One book at a time. The next title is announced on Instagram",
     summary:
       "One book, read slowly, discussed in a room where nobody has to have finished it. Philosophy, psychology, and the occasional novel that earns its place.",
-  },
-  {
-    slug: "volunteer-work",
-    name: "Volunteer work",
-    cadence: "Ongoing. Each drive is announced when it is confirmed",
-    summary:
-      "Yoga taken to schools, clubs and community centres that would not otherwise pay for it. This is where most of the practice actually happens.",
-    image: {
-      src: "/media/thumb/kids-37.webp",
-      alt: "An instructor stands with palms together in a gesture of thanks alongside a group of children doing the same outside a building.",
-      width: 760,
-      height: 506,
-    },
   },
   {
     slug: "donations",

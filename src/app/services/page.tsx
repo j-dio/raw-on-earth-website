@@ -17,8 +17,8 @@ import { serviceGroups, type Service } from "@/data/services";
    Five groups is a lot to scan, so the block SHAPE changes between them
    instead of five identical grids: portrait-left editorial (Individual),
    numbered list on a moss ground (Corporate), full-bleed plate over a wide
-   stacked list (Retreats), hairline grid on sand (Schools), hanging-label rows
-   (Online). The "three ways in" strip above them carries the five anchors, so
+   stacked list (Retreats), hairline grid on sand (Schools), three divided
+   columns (Online). The "three ways in" strip above them carries the five anchors, so
    the page stays navigable without a sticky sidebar.
 
    Grounds alternate: linen - linen(quiet) - MOSS - linen - sand/45 - linen -
@@ -38,16 +38,26 @@ export const metadata: Metadata = pageMeta({
   path: "/services",
 });
 
-/* Format / who-it-suits, set as one small tracked line under a service. Only
-   fields the client has actually stated ever reach it (see services.ts), so
-   this renders nothing rather than inventing a duration. */
+/* Format / who-it-suits, set under a service. Only fields the client has
+   actually stated ever reach it (see services.ts), so this renders nothing
+   rather than inventing a duration.
+
+   Two type roles, not one: the delivery format is a tracked label because it
+   is the same handful of words on every card, but "who it suits" is a real
+   sentence and was unreadable set as tracked caps at 10px - on a phone it
+   wrapped to two lines of shouting. */
 function Meta({ service, tone = "ink" }: { service: Service; tone?: "ink" | "linen" }) {
-  const bits = [service.format, service.duration, service.for].filter(Boolean);
-  if (bits.length === 0) return null;
+  const format = [service.format, service.duration].filter(Boolean).join("  ·  ");
+  if (!format && !service.for) return null;
 
   return (
-    <p className={`label mt-4 text-[0.62rem] ${tone === "linen" ? "text-linen/75" : "text-ink/70"}`}>
-      {bits.join("  ·  ")}
+    <p
+      className={`mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 ${
+        tone === "linen" ? "text-linen/75" : "text-ink/70"
+      }`}
+    >
+      {format ? <span className="label text-[0.62rem]">{format}</span> : null}
+      {service.for ? <span className="text-[0.85rem] leading-snug">{service.for}</span> : null}
     </p>
   );
 }
@@ -158,9 +168,16 @@ export default function ServicesPage() {
                   {way.title}
                 </h2>
                 <p className="mt-4 leading-relaxed text-ink/80">{way.body}</p>
-                <p className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
+                {/* The page index, so these are real targets: inline-flex with
+                    a 44px minimum height rather than a 10px line of caps with
+                    a hit area you have to aim at. */}
+                <p className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
                   {way.links.map((group) => (
-                    <a key={group.slug} href={`#${group.slug}`} className="link tap label text-[0.62rem]">
+                    <a
+                      key={group.slug}
+                      href={`#${group.slug}`}
+                      className="link label inline-flex min-h-11 items-center text-[0.68rem]"
+                    >
                       {group.title}
                     </a>
                   ))}
@@ -182,7 +199,10 @@ export default function ServicesPage() {
                 loading="lazy"
                 decoding="async"
                 data-scrub-scale
-                className="aspect-[3/4] w-full object-cover lg:sticky lg:top-28"
+                /* max-h: the sticky column is taller than a 720px laptop
+                   viewport, so without it the foot of the picture is never
+                   seen. */
+                className="aspect-[3/4] w-full object-cover lg:sticky lg:top-28 lg:max-h-[calc(100svh-9rem)]"
               />
             </div>
 
@@ -204,13 +224,13 @@ export default function ServicesPage() {
         </Section>
 
         {/* CORPORATE - the highest-value group, so it gets the one dark ground
-            on the page and a numbered editorial list rather than a grid. */}
-        <section id={corporate.slug} className="relative overflow-hidden bg-moss text-linen">
-          <div
-            aria-hidden
-            data-scrub-line
-            className="absolute left-6 top-0 hidden h-full w-px bg-linen/15 md:left-10 lg:block"
-          />
+            on the page and a numbered editorial list rather than a grid.
+
+            The decorative vertical rule that used to sit here was removed: at
+            1024-1480px the container's own gutter equals the rule's offset, so
+            it landed exactly on the first letter of every line and read as a
+            stray border. The motif still closes the page in the CtaBand. */}
+        <section id={corporate.slug} className="bg-moss text-linen">
           <Section className="py-24 md:py-32">
             <SectionHead
               eyebrow={corporate.eyebrow}
@@ -221,7 +241,18 @@ export default function ServicesPage() {
 
             <ol className="mt-16 grid gap-x-16 gap-y-12 md:grid-cols-2" data-reveal-stagger>
               {corporate.services.map((service, i) => (
-                <li key={service.slug} className="border-t border-linen/20 pt-6">
+                /* An odd number of services in a two-column grid leaves the
+                   last cell's neighbour empty, which reads as a broken layout
+                   rather than as space. The odd one out runs full width, so
+                   its rule crosses the panel and the row looks deliberate. */
+                <li
+                  key={service.slug}
+                  className={`border-t border-linen/20 pt-6 ${
+                    corporate.services.length % 2 === 1 && i === corporate.services.length - 1
+                      ? "md:col-span-2"
+                      : ""
+                  }`}
+                >
                   <p className="label text-[0.62rem] text-sand">{String(i + 1).padStart(2, "0")}</p>
                   <h3 className="mt-4 font-display text-[1.6rem] font-light leading-tight text-linen md:text-[2rem]">
                     {service.name}
@@ -317,27 +348,32 @@ export default function ServicesPage() {
           </ul>
         </Section>
 
-        {/* ONLINE - hanging labels. Widest, quietest shape on the page. */}
+        {/* ONLINE - three open columns divided by hairlines. It used to be a
+            12-column heading-left / body-right list, which is the shape
+            Retreats already uses: side by side the two groups read as the same
+            block. Columns on bare linen also stay distinct from Schools, whose
+            cards are filled panels on sand. */}
         <Section id={online.slug} className="bg-linen py-24 md:py-32">
           <SectionHead eyebrow={online.eyebrow} title={online.title} standfirst={online.intro} />
-          <dl className="mt-14 border-t border-ink/15" data-reveal-stagger>
+          <ul className="mt-14 grid border-y border-ink/15 md:grid-cols-3" data-reveal-stagger>
             {online.services.map((service) => (
-              <div key={service.slug} className="grid gap-3 border-b border-ink/15 py-8 md:grid-cols-12 md:gap-10">
-                <dt className="font-display text-[1.6rem] font-light leading-tight text-moss md:col-span-5 md:text-[2rem]">
+              <li
+                key={service.slug}
+                className="border-b border-ink/15 py-8 last:border-b-0 md:border-b-0 md:border-l md:px-8 md:py-10 md:first:border-l-0 md:first:pl-0 md:last:pr-0"
+              >
+                <h3 className="font-display text-[1.6rem] font-light leading-tight text-moss md:text-[1.85rem]">
                   {service.name}
-                </dt>
-                <dd className="md:col-span-7">
-                  <p className="max-w-[56ch] leading-relaxed text-ink/80">{service.summary}</p>
-                  <Meta service={service} />
-                </dd>
-              </div>
+                </h3>
+                <p className="mt-4 leading-relaxed text-ink/80">{service.summary}</p>
+                <Meta service={service} />
+              </li>
             ))}
-          </dl>
+          </ul>
         </Section>
 
         {/* HOW IT WORKS - four steps, no booking widget, because there is no
             booking system on this site. */}
-        <Section className="bg-linen pb-24 md:pb-32">
+        <Section className="bg-linen py-24 md:py-32">
           <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-7">
               <SectionHead

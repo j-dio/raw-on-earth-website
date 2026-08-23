@@ -18,9 +18,12 @@ import { site } from "@/data/site";
 
 const INITIAL: State = { status: "idle" };
 
+/* border-ink/50 is a measured floor, not taste: WCAG 1.4.11 wants 3:1 between a
+   control's boundary and its ground, and ink/50 on linen is 3.14:1 where the
+   old ink/20 was 1.5:1. py-3.5 puts the control at 48px, over the 44px target. */
 const CONTROL =
-  "mt-3 w-full border border-ink/20 bg-transparent px-4 py-3 text-ink placeholder:text-ink/35 " +
-  "transition-colors duration-300 hover:border-ink/35 focus:border-moss aria-[invalid=true]:border-moss";
+  "mt-3 w-full border border-ink/50 bg-transparent px-4 py-3.5 text-ink placeholder:text-ink/45 " +
+  "transition-colors duration-300 hover:border-ink/70 focus:border-moss aria-[invalid=true]:border-moss";
 
 const LABEL_TEXT: Record<FieldName, string> = {
   name: "Your name",
@@ -74,13 +77,13 @@ function Field({
     <div>
       <label htmlFor={name} className="label block text-[0.72rem] text-moss">
         {LABEL_TEXT[name]}
-        {required ? null : <span className="ml-2 normal-case tracking-normal text-ink/50">optional</span>}
+        {required ? null : <span className="ml-2 normal-case tracking-normal text-ink/70">optional</span>}
       </label>
 
       {rows ? <textarea {...shared} rows={rows} /> : <input {...shared} type={type} />}
 
       {hint ? (
-        <p id={`${name}-hint`} className="mt-2 text-[0.85rem] leading-relaxed text-ink/60">
+        <p id={`${name}-hint`} className="mt-2 text-[0.85rem] leading-relaxed text-ink/70">
           {hint}
         </p>
       ) : null}
@@ -280,7 +283,7 @@ export default function ContactForm() {
 
         <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between">
           <Submit />
-          <p className="max-w-[34ch] text-[0.85rem] leading-relaxed text-ink/60">
+          <p className="max-w-[34ch] text-[0.85rem] leading-relaxed text-ink/70">
             Your details are used to answer your enquiry and nothing else.
           </p>
         </div>

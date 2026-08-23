@@ -71,7 +71,17 @@ export default function ShopPage() {
             a spot check, so no crop of the image can fail it. At 0.72 the body
             copy drops to 4.00:1 and fails, so do not lighten the scrim without
             re-running the numbers. */}
-        <section className="tex tex-weave relative overflow-hidden bg-moss-deep text-linen">
+        {/* NO `.tex` ON THIS SECTION, and it must stay off.
+            globals.css sets `.tex > * { position: relative; z-index: 1 }`, and
+            that rule is unlayered, so it beats every Tailwind utility including
+            `absolute` and `-z-10`. With `.tex` here the photograph and both
+            scrims were forced back into the flow: the picture rendered as a
+            2276px-tall unscrimmed band above the type, the scrims collapsed to
+            zero height, and the enso became a 273px hole in the panel. The
+            weave is no loss - a photograph under a 0.82 scrim already is the
+            texture. `isolate` is what makes `-z-10` paint above the section's
+            own bg-moss-deep instead of behind it. */}
+        <section className="relative isolate overflow-hidden bg-moss-deep text-linen">
           <img
             src="/media/gallery/raji-29.webp"
             alt="A practitioner performs a headstand on grass beneath the spreading bare branches of a large park tree."
@@ -100,10 +110,12 @@ export default function ShopPage() {
             aria-hidden
             data-scroll-p
             style={{ transform: "translateY(-50%) rotate(calc(var(--p, 0) * 22deg))" }}
-            className="brand-mark mark-enso-ring pointer-events-none absolute -right-24 top-1/2 -z-10 h-[min(70vw,620px)] w-[min(70vw,620px)] text-linen/10 lg:right-[4%]"
+            /* z-0, not -z-10: the scrims are -z-10, and a watermark painted
+               under them is a watermark nobody sees. */
+            className="brand-mark mark-enso-ring pointer-events-none absolute -right-20 top-1/2 z-0 h-[min(78vw,620px)] w-[min(78vw,620px)] text-linen/10 sm:-right-24 lg:right-[4%]"
           />
 
-          <div className="relative mx-auto grid max-w-[1400px] items-center gap-16 px-6 py-28 md:px-10 md:py-40 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:gap-24">
+          <div className="relative z-10 mx-auto grid max-w-[1400px] items-center gap-16 px-6 py-28 md:px-10 md:py-40 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:gap-24">
             <div data-reveal>
               {/* verbatim client copy - the eyebrow named in the 27 July notes
                   and set in the brief's reference image. Sand, not the .eyebrow

@@ -114,7 +114,9 @@ export async function submitEnquiry(_prevState: State, formData: FormData): Prom
         to: [process.env.CONTACT_TO || site.email],
         // So she can hit reply and be writing to the enquirer, not to noreply@.
         reply_to: email,
-        subject: `Website enquiry from ${name}`,
+        // Flattened: a name is length-checked but not newline-checked, and a
+        // subject line is a mail header wherever it ends up.
+        subject: `Website enquiry from ${name.replace(/\s+/g, " ")}`,
         text: body,
       }),
       // ponytail: plain text only. Add an HTML part when someone asks for one.

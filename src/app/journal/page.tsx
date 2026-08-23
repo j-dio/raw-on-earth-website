@@ -37,19 +37,29 @@ const dateFormat = new Intl.DateTimeFormat("en-GB", {
 });
 
 function PostDate({ iso, className = "" }: { iso: string; className?: string }) {
+  /* .label sets the face and the tracking but deliberately not the size, so a
+     size has to be given here or the date renders at full body size and
+     competes with the headline it sits under. */
   return (
-    <time dateTime={iso} className={`label ${className}`}>
+    <time dateTime={iso} className={`label text-[0.8rem] ${className}`}>
       {dateFormat.format(new Date(iso))}
     </time>
   );
 }
 
-/* The one link pattern on this page. The accessible name is the post title
-   plus "Read on Substack", so the destination is clear from the link alone
-   and from the visible text. */
+/* The one link pattern on this page. The whole block is the link, so without
+   an aria-label a screen reader announces the title, the date and the whole
+   excerpt as the link name. The label states the destination and the new tab;
+   the visible "Read on Substack ↗" says the same thing to everyone else. */
 function PostLink({ post, children }: { post: Post; children: React.ReactNode }) {
   return (
-    <a href={post.url} target="_blank" rel="noreferrer noopener" className="group block">
+    <a
+      href={post.url}
+      target="_blank"
+      rel="noreferrer noopener"
+      aria-label={`${post.title} - read on Substack, opens in a new tab`}
+      className="group block"
+    >
       {children}
       <span className="label mt-5 inline-flex items-center gap-2 text-moss transition-colors group-hover:text-gold">
         Read on Substack
@@ -86,7 +96,11 @@ export default async function JournalPage() {
         {lead ? (
           /* THE LEAD - the newest piece, and the page's one big move. */
           <Section className="bg-linen py-24 md:py-32">
-            <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+            {/* items-start, not items-center: the picture is taller than the
+                copy, and centring it opens a band of empty linen beside the
+                headline at desktop widths. Top-aligned, the title and the
+                picture start on the same line and read as one spread. */}
+            <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
               <div className="lg:col-span-7" data-reveal>
                 <p className="eyebrow">Latest</p>
                 <PostLink post={lead}>
@@ -98,6 +112,23 @@ export default async function JournalPage() {
                     {lead.excerpt}
                   </span>
                 </PostLink>
+
+                {/* THE ONE-POST STATE. The feed currently carries a single
+                    piece, so "Earlier pieces" below renders nothing and the
+                    page would otherwise stop dead after one headline and look
+                    half-built. Saying plainly that this is the newest piece,
+                    and that the list fills in as she publishes, is honest and
+                    reads as a deliberate note rather than a missing section.
+                    It disappears on its own the day a second post lands. */}
+                {rest.length === 0 ? (
+                  <>
+                    <LeafRule className="mt-12" />
+                    <p className="mt-8 max-w-[46ch] leading-relaxed text-ink/70">
+                      This is the newest piece. Earlier ones will be listed here as she
+                      publishes them, and the whole journal is always on Substack.
+                    </p>
+                  </>
+                ) : null}
               </div>
 
               <figure className="lg:col-span-5" data-reveal>
@@ -148,7 +179,7 @@ export default async function JournalPage() {
 
         {rest.length > 0 ? (
           /* THE REST - one hairline row per piece. Date, title, one line. */
-          <Section className="tex tex-stone bg-sand/45 py-24 md:py-32">
+          <Section className="bg-linen py-24 md:py-32">
             <SectionHead eyebrow="More writing" title="Earlier pieces" />
             <ul className="mt-14 border-t border-ink/15" data-reveal-stagger>
               {rest.map((post) => (
@@ -174,8 +205,10 @@ export default async function JournalPage() {
           </Section>
         ) : null}
 
-        {/* BROWSE BY SUBJECT - the seven subjects the brief names. */}
-        <Section className="bg-linen py-24 md:py-32">
+        {/* BROWSE BY SUBJECT - the seven subjects the brief names. Tinted, so
+            the page still has a pulse on the day the feed holds one post and
+            everything above this is linen. */}
+        <Section className="tex tex-stone bg-sand/45 py-24 md:py-32">
           <SectionHead
             eyebrow="Browse by subject"
             title="What she writes about"
@@ -196,22 +229,29 @@ export default async function JournalPage() {
 
         {/* WHERE IT LIVES - said plainly, once. No email capture form: nothing
             on this site is wired up to send email, and a box that silently
-            does nothing is worse than no box. */}
-        <Section className="bg-moss py-20 text-linen md:py-24">
+            does nothing is worse than no box.
+
+            A quiet linen interstitial, not a moss panel. It sits immediately
+            above the moss CtaBand, and two dark slabs back to back merged into
+            one long green block with dead space in the middle of it - visible
+            on both the phone and the desktop captures. Linen here gives the
+            closing panel its weight back. */}
+        <Section className="bg-linen py-16 md:py-20">
+          <LeafRule className="mb-14 md:mb-16" />
           <div className="grid gap-10 lg:grid-cols-12 lg:items-end" data-reveal>
             <div className="lg:col-span-7">
-              <p className="eyebrow !text-sand">Where it lives</p>
-              <h2 className="mt-5 font-display text-[clamp(2.1rem,4.4vw,3.4rem)] font-light leading-[1.06] text-balance">
+              <p className="eyebrow">Where it lives</p>
+              <h2 className="mt-5 font-display text-[clamp(2.1rem,4.4vw,3.4rem)] font-light leading-[1.06] text-balance text-moss">
                 Published on Substack
               </h2>
-              <p className="mt-6 max-w-[52ch] leading-relaxed text-linen/75">
+              <p className="mt-6 max-w-[52ch] leading-relaxed text-ink/75">
                 Every piece opens on Substack in a new tab, where you can read it in full and
                 subscribe if you would like the next one by email. Subscriptions are handled
                 there, not here.
               </p>
             </div>
             <div className="lg:col-span-5 lg:justify-self-end">
-              <Button href={site.social.substack} variant="linen" external>
+              <Button href={site.social.substack} external>
                 Subscribe on Substack
               </Button>
             </div>
@@ -222,8 +262,11 @@ export default async function JournalPage() {
           eyebrow="Keep reading"
           title="Words are one half of it"
           body="The other half happens on the mat. If something here landed, come and practise."
-          primary={{ href: site.social.substack, label: "Read on Substack", external: true }}
-          secondary={{ href: "/contact", label: "Get in touch" }}
+          /* The band's own words ask the reader to come and practise, and the
+             shared rule is that the primary CTA points at /contact. Substack
+             already has the filled button in the section above this one. */
+          primary={{ href: "/contact", label: "Get in touch" }}
+          secondary={{ href: site.social.substack, label: "Read on Substack", external: true }}
         />
       </main>
 

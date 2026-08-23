@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { GalleryCategoryName, GalleryItem } from "@/data/gallery";
 
 /* The gallery's one interactive part: a category filter, a masonry grid and a
@@ -43,7 +43,29 @@ export default function GalleryGrid({
      on dialog.close() by itself, but not in every engine, so it is done here. */
   const triggerRef = useRef<HTMLButtonElement | null>(null);
 
-  const shown = filter === "All" ? items : items.filter((item) => item.category === filter);
+  /* The data file is grouped by category, so rendering it in source order gave
+     the "All" view eight solid blocks: a column of nothing but children's
+     classes, a column of nothing but video posters, and near-identical frames
+     from the same burst stacked one on top of the other. This spreads each
+     category evenly across the whole grid by giving every item a fractional
+     position within its own category and sorting on that. It is deterministic -
+     no shuffle - so the server and the client render the same order, and the
+     per-category views are untouched. */
+  const mixed = useMemo(() => {
+    const total = new Map<string, number>();
+    for (const item of items) total.set(item.category, (total.get(item.category) ?? 0) + 1);
+    const seen = new Map<string, number>();
+    return items
+      .map((item) => {
+        const n = seen.get(item.category) ?? 0;
+        seen.set(item.category, n + 1);
+        return { item, at: (n + 0.5) / total.get(item.category)! };
+      })
+      .sort((a, b) => a.at - b.at)
+      .map((entry) => entry.item);
+  }, [items]);
+
+  const shown = filter === "All" ? mixed : items.filter((item) => item.category === filter);
   const current = index === null ? null : shown[index];
 
   useEffect(() => {
@@ -55,6 +77,10 @@ export default function GalleryGrid({
       document.body.style.overflow = "hidden";
     }
   }, [index]);
+
+  // Navigating away with the lightbox open would otherwise leave the next page
+  // unscrollable.
+  useEffect(() => () => void (document.body.style.overflow = ""), []);
 
   function close() {
     dialogRef.current?.close();
@@ -80,7 +106,9 @@ export default function GalleryGrid({
               type="button"
               aria-pressed={on}
               onClick={() => setFilter(name)}
-              className={`label rounded-full border px-5 py-2 text-[0.68rem] transition-colors duration-300 ${
+              /* min-h-11 is 44px: the buttons were 31px tall, under the tap
+                 target minimum, and this row is the page's only control. */
+              className={`label inline-flex min-h-11 items-center rounded-full border px-5 text-[0.68rem] transition-colors duration-300 ${
                 on
                   ? "border-moss bg-moss text-linen"
                   : "border-ink/25 text-ink hover:border-moss hover:bg-moss/10"
@@ -154,6 +182,9 @@ export default function GalleryGrid({
           if (event.target === dialogRef.current) close();
         }}
         onKeyDown={(event) => {
+          // Inside the video player the arrow keys are the scrub control, so
+          // stepping the gallery there would take away seeking.
+          if (event.target instanceof HTMLVideoElement) return;
           if (event.key === "ArrowLeft") {
             event.preventDefault();
             step(-1);
@@ -168,14 +199,16 @@ export default function GalleryGrid({
         {current ? (
           <>
             <div className="flex shrink-0 items-center justify-between gap-4 px-5 py-4 md:px-8">
-              <p className="label text-[0.68rem] text-sand">
+              {/* Announced, because stepping with the arrow keys changes the
+                  picture and nothing else tells a screen reader that it did. */}
+              <p aria-live="polite" className="label text-[0.68rem] text-sand">
                 {(index ?? 0) + 1} of {shown.length}
               </p>
               <button
                 type="button"
                 onClick={close}
                 aria-label="Close gallery viewer"
-                className="label rounded-full border border-linen/50 px-5 py-2 text-[0.66rem] text-linen transition-colors duration-300 hover:bg-linen/10"
+                className="label inline-flex min-h-11 items-center rounded-full border border-linen/50 px-5 text-[0.66rem] text-linen transition-colors duration-300 hover:bg-linen/10"
               >
                 Close
               </button>
@@ -217,7 +250,7 @@ export default function GalleryGrid({
                   type="button"
                   onClick={() => step(-1)}
                   aria-label="Previous item"
-                  className="label rounded-full border border-linen/50 px-5 py-2 text-[0.66rem] text-linen transition-colors duration-300 hover:bg-linen/10"
+                  className="label inline-flex min-h-11 items-center rounded-full border border-linen/50 px-5 text-[0.66rem] text-linen transition-colors duration-300 hover:bg-linen/10"
                 >
                   Previous
                 </button>
@@ -225,7 +258,7 @@ export default function GalleryGrid({
                   type="button"
                   onClick={() => step(1)}
                   aria-label="Next item"
-                  className="label rounded-full border border-linen/50 px-5 py-2 text-[0.66rem] text-linen transition-colors duration-300 hover:bg-linen/10"
+                  className="label inline-flex min-h-11 items-center rounded-full border border-linen/50 px-5 text-[0.66rem] text-linen transition-colors duration-300 hover:bg-linen/10"
                 >
                   Next
                 </button>

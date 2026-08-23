@@ -85,7 +85,12 @@ export default function ContactPage() {
             Form first in the DOM, so on a phone the details fall below it
             rather than standing between the heading and the first input. The
             grid only splits them from lg up. */}
-        <Section className="py-24 md:py-32">
+        {/* Short top padding on purpose. This is the page every CTA points at, so
+            the form has to be visible without a scroll: the hero rule sits at
+            about y=516 on a 1280x720 laptop, and the standard py-32 put "Send an
+            enquiry" on the fold line at y=644. pt-10/pt-14 lands the heading at
+            about y=570 and the first field in view. */}
+        <Section className="pb-24 pt-10 md:pb-32 md:pt-14">
           <div className="grid gap-16 lg:grid-cols-12 lg:gap-20">
             <div className="lg:col-span-7" data-reveal>
               <h2 className="font-display text-[1.6rem] font-light leading-tight text-moss md:text-[2rem]">
@@ -127,6 +132,10 @@ export default function ContactPage() {
                 ))}
               </dl>
 
+              {/* Portrait on a phone, where it stacks under the details and has
+                  the room. Landscape from lg up, and cropped from the top so the
+                  face survives: at 4/5 this column ran about 560px past the
+                  bottom of the form and left a hole beside it. */}
               <img
                 src="/media/thumb/raji-24.webp"
                 width={760}
@@ -134,7 +143,7 @@ export default function ContactPage() {
                 loading="lazy"
                 decoding="async"
                 alt="The founder sits in meditation with palms joined at her chest, eyes closed, on a mat in soft evening park light."
-                className="mt-12 aspect-[4/5] w-full object-cover"
+                className="mt-12 aspect-[4/5] w-full object-cover lg:aspect-[3/2] lg:object-top"
               />
             </aside>
           </div>
@@ -167,11 +176,11 @@ export default function ContactPage() {
                 <div className="mt-12 border-t border-ink/15">
                   {faqs.map((f) => (
                     <details key={f.q} className="group border-b border-ink/15">
-                      <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-6 font-display text-[1.3rem] leading-snug text-moss md:text-[1.5rem]">
+                      <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-6 font-display text-[1.3rem] leading-snug text-moss md:text-[1.5rem] [&::-webkit-details-marker]:hidden">
                         {f.q}
                         <span
                           aria-hidden
-                          className="mt-2 shrink-0 text-ink/45 transition-transform duration-300 group-open:rotate-45"
+                          className="mt-2 shrink-0 text-ink/70 transition-transform duration-300 group-open:rotate-45"
                         >
                           +
                         </span>

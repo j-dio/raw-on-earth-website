@@ -180,9 +180,20 @@ export default function Home() {
                     Cinzel is the wider face and fitting five labels in it drove
                     the computed size to 7.4px, where an inscriptional capital
                     greys out completely. Lato holds the same row at 8-9.6px and
-                    stays legible. */}
-                {pillars.map((p) => (
-                    <li key={p.slug} className="text-[clamp(0.5rem,0.62vw,0.6rem)] uppercase tracking-[0.12em] text-moss">
+                    stays legible.
+
+                    The ramp is 0.75vw, not 0.62vw. Floor and cap are unchanged;
+                    only the slope between them is steeper, because 0.62vw never
+                    reached the cap at a width a laptop actually uses - 1280 and
+                    1440 both resolved to the 8px floor, and the five labels
+                    measure 403px of ink at 8px inside a 544px rule, so a
+                    quarter of the row was empty. At the 9.6px cap they measure
+                    ~484px and still clear the four 8px gaps. 1024 is the pinch
+                    point and is untouched: 0.75vw is 7.7px there, so the floor
+                    still wins, which is all the 440px rule at that width can
+                    hold. */}
+                  {pillars.map((p) => (
+                    <li key={p.slug} className="text-[clamp(0.5rem,0.75vw,0.6rem)] uppercase tracking-[0.12em] text-moss">
                       {p.name}
                     </li>
                   ))}
@@ -194,7 +205,15 @@ export default function Home() {
 
         {/* YOUR HOME OF WELLNESS - image on the right, per the brief */}
         <section className="wellness bg-sand/45">
-          <div className="mx-auto grid max-w-[1400px] items-start gap-14 px-6 py-24 md:px-10 md:py-32 lg:grid-cols-2 lg:pb-0">
+          {/* `lg:items-center`, not top-aligned. The photograph is 2:3 and the
+              copy is not: at 1280 the column is 572px wide, so the frame is
+              858px tall against ~490px of copy. Top-aligned, all 250-odd px of
+              the difference pooled under "Move. Breathe. Become." as one blank
+              corner of sand, which reads as copy that ran out rather than as
+              composition. Centred, the same air splits either side of the copy
+              block. The overhang below is unaffected: the image still sets the
+              row height and still hangs -mb-28 past it. */}
+          <div className="mx-auto grid max-w-[1400px] items-start gap-14 px-6 py-24 md:px-10 md:py-32 lg:grid-cols-2 lg:items-center lg:pb-0">
             <div className="wellness-copy" data-reveal>
               {/* VERBATIM client copy, content PDF "Page 1 - Template 2". Every
                   word below is hers, including the British "well-being" and

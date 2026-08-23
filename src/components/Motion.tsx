@@ -231,9 +231,13 @@ export default function Motion() {
           if (!Number.isFinite(to)) return;
           const suffix = el.dataset.countSuffix ?? "";
           const n = { v: 0 };
+          /* 1.2s, not 2s. At two seconds the figure is still visibly wrong a
+             full second after its section has settled, so a screenshot, a
+             print, or anyone scrolling briskly past catches "4,699+" instead of
+             "5,000+". */
           gsap.to(n, {
             v: to,
-            duration: 2,
+            duration: 1.2,
             ease: "power2.out",
             scrollTrigger: { trigger: el, start: "top 88%" },
             onUpdate: () => {

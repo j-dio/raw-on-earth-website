@@ -44,18 +44,29 @@ export const metadata: Metadata = pageMeta({
   path: "/community",
 });
 
-/* Layout, not content, so it lives here rather than in the data file. The
-   mosaic is three rows of a six-column grid: a portrait, two text-only panels,
-   a wide photograph, a text-only panel, then a pair. Move a strand in
-   src/data/community.ts and move its span here to match. */
+/* Layout, not content, so it lives here rather than in the data file.
+
+   The spans MUST tile the grid exactly, on both the two-column and the
+   six-column arrangement. The `<ul>` is `bg-ink/15` showing through a 1px gap,
+   so any track the items fail to fill does not read as white space - it reads
+   as a grey rectangle. An earlier set of spans summed to 3.5 rows and printed
+   two of them.
+
+   Six-column rows: 2+4, 2+2+2, 3+3. Two-column rows: three pairs, then the
+   last strand across both. Photographed strands sit with photographed
+   neighbours (src/data/community.ts is ordered to match) so a text-only panel
+   is never stretched to the height of an image beside it.
+
+   Move a strand in the data file and the spans here have to move with it. */
 const SPAN: Record<string, string> = {
-  "nature-walks": "lg:col-span-2 lg:row-span-2",
+  "nature-walks": "lg:col-span-2",
+  "volunteer-work": "lg:col-span-4",
   "running-club": "lg:col-span-2",
   "book-club": "lg:col-span-2",
-  "volunteer-work": "lg:col-span-4",
   donations: "lg:col-span-2",
   retreats: "lg:col-span-3",
-  "community-events": "lg:col-span-3",
+  /* Seventh of seven: full width at two columns, or the row is half empty. */
+  "community-events": "sm:col-span-2 lg:col-span-3",
 };
 
 /* PLACEHOLDER - the `testimonials` array in src/data/home.ts is three stub
@@ -94,11 +105,11 @@ export default function CommunityPage() {
 
           {/* gap-px over a dark parent draws the hairline grid - the same
               construction the Offerings block on Home uses, so the two pages
-              share a mark rather than inventing two. auto-rows-fr keeps the
-              text-only panels the height of their photographed neighbours
-              instead of collapsing to their copy. */}
+              share a mark rather than inventing two. Rows size to their own
+              content: forcing them equal (auto-rows-fr) left a text-only panel
+              carrying ~280px of nothing above its cadence line. */}
           <ul
-            className="mt-16 grid gap-px bg-ink/15 sm:grid-cols-2 lg:auto-rows-fr lg:grid-cols-6"
+            className="mt-16 grid gap-px bg-ink/15 sm:grid-cols-2 lg:grid-cols-6"
             data-reveal-stagger
           >
             {strands.map((s) => (
@@ -200,17 +211,27 @@ export default function CommunityPage() {
                   Group photographs, mostly unposed
                 </h2>
               </div>
-              <Link href="/gallery" className="link label text-[0.72rem] whitespace-nowrap">
+              {/* py-3/-mb-3: a 14px label is a 19px tap target. The padding
+                  takes it to ~43px and the negative margin cancels the visual
+                  shift, so it still sits on the heading's bottom edge. */}
+              <Link
+                href="/gallery"
+                className="link label -mb-3 py-3 text-[0.72rem] whitespace-nowrap"
+              >
                 See the full gallery
               </Link>
             </div>
           </div>
 
+          {/* scroll-pl matches the horizontal padding. Without it a mandatory
+              snap aligns the first tile to the scrollport edge, not to the
+              padding edge, so the browser scrolls the gutter away on load and
+              the strip lands flush against the viewport, looking clipped. */}
           <div
             tabIndex={0}
             role="group"
             aria-label="Community photographs, scroll sideways"
-            className="mt-14 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-6 md:gap-6 md:px-10"
+            className="mt-14 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-pl-6 px-6 pb-6 md:gap-6 md:scroll-pl-10 md:px-10"
           >
             {snaps.map((s, i) => (
               <figure
@@ -320,7 +341,7 @@ export default function CommunityPage() {
                 href={site.whatsapp}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="link mt-5 inline-block text-[0.92rem]"
+                className="link mt-2 inline-block py-3 text-[0.92rem]"
               >
                 Message on WhatsApp
               </a>
@@ -334,7 +355,7 @@ export default function CommunityPage() {
                 href={site.social.instagram}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="link mt-5 inline-block text-[0.92rem]"
+                className="link mt-2 inline-block py-3 text-[0.92rem]"
               >
                 Follow on Instagram
               </a>
@@ -344,7 +365,7 @@ export default function CommunityPage() {
               <p className="mt-4 text-[0.92rem] leading-relaxed text-ink/75">
                 For volunteering, donations, or bringing a session to your group.
               </p>
-              <Link href="/contact" className="link mt-5 inline-block text-[0.92rem]">
+              <Link href="/contact" className="link mt-2 inline-block py-3 text-[0.92rem]">
                 Use the contact form
               </Link>
             </li>

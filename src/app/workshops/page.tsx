@@ -43,10 +43,15 @@ const counts = stats.slice(0, 3);
 const digits = (v: string) => Number(v.replace(/[^\d]/g, ""));
 const suffix = (v: string) => v.replace(/[\d,]/g, "");
 
-/* The finder is fed everything currently on offer, not only the classes, so a
-   visitor who wants a retreat can filter straight to it. The sections below
-   then give the workshops and the organisational work their own treatment. */
+/* Each offering appears in exactly ONE section. The finder used to be fed all
+   eleven, which meant a visitor scrolled past the same seven rows three times
+   in three near-identical list shapes. It now carries the recurring commitments
+   only - which is what its own heading promises - and the longer formats and
+   the organisational work keep their own treatment further down. */
 const current = workshops.filter((w) => w.status !== "past");
+const classes = workshops.filter(
+  (w) => w.kind === "regular-class" || w.kind === "one-to-one",
+);
 const immersions = workshops.filter((w) => w.kind === "workshop" || w.kind === "retreat");
 const forOrganisations = workshops.filter((w) => w.kind === "corporate" || w.kind === "schools");
 
@@ -129,10 +134,10 @@ export default function WorkshopsPage() {
           <SectionHead
             eyebrow="Regular classes and one-to-one"
             title="Find a class"
-            standfirst="Weekly group classes and private sessions, taught online and in JP Nagar. Filter by how you want to attend and what you are looking for."
+            standfirst="Weekly group classes and private sessions, taught online and in JP Nagar. Filter by how you want to attend. The longer formats, and the work run inside organisations, are further down the page."
           />
           <div className="mt-14" data-reveal>
-            <ClassFinder items={current} />
+            <ClassFinder items={classes} />
           </div>
         </Section>
 
@@ -169,7 +174,11 @@ export default function WorkshopsPage() {
                     {w.title}
                   </h3>
                   <p className="mt-4 max-w-[54ch] leading-relaxed text-ink/80">{w.description}</p>
-                  <dl className="mt-6 flex flex-wrap gap-x-10 gap-y-3 text-sm text-ink/70">
+                  {/* A fixed grid, not flex-wrap: with wrapping, "Two days"
+                      and "Bangalore and nearby" fitted one row on a phone while
+                      the next card's longer values did not, so the three cards
+                      lost their shared rhythm. */}
+                  <dl className="mt-6 grid grid-cols-2 gap-x-8 gap-y-4 text-sm text-ink/70 sm:grid-cols-3 sm:gap-x-10">
                     <div>
                       <dt className="label text-[0.6rem] text-ink/70">Duration</dt>
                       <dd className="mt-1">{w.duration}</dd>
@@ -184,11 +193,19 @@ export default function WorkshopsPage() {
                       <dd className="mt-1">Announced soon</dd>
                     </div>
                   </dl>
+                  {/* The workshop title stays in the accessible name - eleven
+                      links reading "Register interest" would be useless out of
+                      context - but it is not printed, because set in tracked
+                      caps it ran to two shouting lines on a phone. The 44px box
+                      is the tap target; the rule stays tight to the text. */}
                   <Link
                     href={`/contact?about=${w.slug}`}
-                    className="label mt-7 inline-block border-b border-moss/40 pb-1 text-[0.7rem] text-moss transition-colors duration-300 hover:border-moss"
+                    className="mt-5 inline-flex min-h-11 items-center text-moss"
                   >
-                    Register interest in {w.title}
+                    <span className="label border-b border-moss/40 pb-1 text-[0.7rem] transition-colors duration-300 hover:border-moss">
+                      Register interest
+                    </span>
+                    <span className="sr-only"> in {w.title}</span>
                   </Link>
                 </li>
               ))}
@@ -259,11 +276,14 @@ export default function WorkshopsPage() {
                 venues are not listed here.
               </p>
             </div>
+            {/* Stacked on a phone. Justified rows only wrapped when a title and
+                its note happened to fit together, so one row in seven sat side
+                by side and the other six did not. */}
             <ul className="lg:col-span-8">
               {pastFormats.map((p) => (
                 <li
                   key={p.title}
-                  className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1 border-t border-ink/15 py-4"
+                  className="flex flex-col gap-y-1 border-t border-ink/15 py-4 sm:flex-row sm:flex-wrap sm:items-baseline sm:justify-between sm:gap-x-8"
                 >
                   <span className="text-ink/80">{p.title}</span>
                   <span className="text-sm text-ink/70">{p.note}</span>

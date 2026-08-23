@@ -73,7 +73,11 @@ export default function PageHero({
                 loading="eager"
                 decoding="async"
                 data-scrub-scale
-                className="aspect-[4/3] w-full object-cover sm:aspect-[16/9] lg:aspect-[21/9]"
+                /* Capped at 62vh as well as by ratio. At 1700px wide the 21:9
+                   band is 728px tall, taller than a 720px laptop viewport, so
+                   the masthead filled a whole screen with photograph and the
+                   reader never saw that a page had begun underneath it. */
+                className="aspect-[4/3] max-h-[62vh] w-full object-cover sm:aspect-[16/9] lg:aspect-[21/9]"
               />
             </div>
           </div>

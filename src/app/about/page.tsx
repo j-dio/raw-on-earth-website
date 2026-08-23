@@ -7,9 +7,8 @@ import { Section, SectionHead, LeafRule, CtaBand, Prose } from "@/components/ui"
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { site } from "@/data/site";
 import { activeStory, belief, founderBio, journey, letter } from "@/data/about";
-import { testimonials } from "@/data/home";
 
-/* About. Six blocks, in the order the two client documents put them:
+/* About. Five blocks, in the order the two client documents put them:
 
      1. Story          the chosen draft. TWO drafts exist and the client has
                        not picked; src/data/about.ts holds both and `activeStory`
@@ -22,7 +21,6 @@ import { testimonials } from "@/data/home";
      5. The letter     content PDF, "A Note from Raji's Mat". Set as a letter,
                        because it is one - it is the emotional centre of the
                        page and the only signed piece of copy on the site.
-     6. Testimonials   PLACEHOLDER quotes. See the section comment.
 
    No masthead figure. PageHero crops its figure to 21:9 on desktop and every
    photograph of her from this shoot is a 1500x2246 portrait, which at 21:9
@@ -121,7 +119,14 @@ export default function AboutPage() {
         </section>
 
         {/* JOURNEY - a hairline grid, not cards. gap-px over a tinted parent
-            draws the rules, so no cell owns a border and none double up. */}
+            draws the rules, so no cell owns a border and none double up.
+
+            Two rows rather than one grid of seven: seven cells in a four-column
+            grid leave a hole in the last row, and a lineage and a counted
+            figure are not the same kind of thing anyway. Four credentials fill
+            the first row exactly, the three figures fill the second, and the
+            second list's pt-px draws the rule between them from the same
+            parent tint. */}
         <Section className="tex tex-stone bg-sand/45 py-24 md:py-32">
           <SectionHead
             eyebrow="Journey"
@@ -129,9 +134,21 @@ export default function AboutPage() {
             standfirst="Thirteen years of study, in two lineages, taught to individuals, schools and organisations."
           />
           <ul className="mt-16 grid gap-px bg-ink/15 sm:grid-cols-2 lg:grid-cols-4" data-reveal-stagger>
-            {journey.map((item) => (
-              <li key={item.label} className="flex flex-col justify-end gap-3 bg-linen p-8 md:p-10">
-                {item.lead ? (
+            {journey
+              .filter((item) => !item.lead)
+              .map((item) => (
+                <li key={item.label} className="flex items-end bg-linen p-8 md:p-10">
+                  <span className="font-display text-[1.6rem] leading-tight text-moss md:text-[1.9rem]">
+                    {item.label}
+                  </span>
+                </li>
+              ))}
+          </ul>
+          <ul className="grid gap-px bg-ink/15 pt-px sm:grid-cols-3" data-reveal-stagger>
+            {journey
+              .filter((item) => item.lead)
+              .map((item) => (
+                <li key={item.label} className="flex flex-col gap-3 bg-linen p-8 md:p-10">
                   <span
                     className="font-display text-[2.6rem] font-light leading-none text-moss md:text-[3.2rem]"
                     data-count={item.count}
@@ -139,18 +156,9 @@ export default function AboutPage() {
                   >
                     {item.lead}
                   </span>
-                ) : null}
-                <span
-                  className={
-                    item.lead
-                      ? "text-[0.95rem] leading-snug text-ink/75"
-                      : "font-display text-[1.6rem] leading-tight text-moss md:text-[1.9rem]"
-                  }
-                >
-                  {item.label}
-                </span>
-              </li>
-            ))}
+                  <span className="text-[0.95rem] leading-snug text-ink/75">{item.label}</span>
+                </li>
+              ))}
           </ul>
         </Section>
 
@@ -183,9 +191,11 @@ export default function AboutPage() {
                 alt="The founder balances in tree pose on a park lawn, smiling with hands pressed together at her chest."
                 className="aspect-[4/5] w-full object-cover"
               />
-              {/* Pulled right and down out of the column so the pair reads as
-                  two moments rather than a grid. Desktop only: on a phone the
-                  offset would push it under the gutter. */}
+              {/* Pushed right and down inside the column so the pair reads as
+                  two moments rather than a grid. It used to carry -mr-10 as
+                  well, which cancelled the page gutter and left the frame flush
+                  against the window edge at 1280px. Desktop only: on a phone
+                  there is no room to offset anything. */}
               <img
                 src="/media/gallery/raji-24.webp"
                 width={1500}
@@ -193,7 +203,7 @@ export default function AboutPage() {
                 loading="lazy"
                 decoding="async"
                 alt="The founder sits in meditation with palms joined at her chest, eyes closed, on a mat in soft evening park light."
-                className="mt-6 aspect-[3/4] w-2/3 object-cover lg:ml-auto lg:-mr-10 lg:mt-10"
+                className="mt-6 aspect-[3/4] w-2/3 object-cover lg:ml-auto lg:mt-10"
               />
             </div>
           </div>
@@ -205,7 +215,12 @@ export default function AboutPage() {
             laid on the page. */}
         <section className="tex tex-stone bg-sand/45 py-24 md:py-32">
           <div className="mx-auto max-w-[1400px] px-6 md:px-10">
-            <div className="mx-auto max-w-[46rem]" data-reveal>
+            {/* One measure for the whole letter. The heading, the rule and
+                the photograph used to run to 46rem while the paragraphs were
+                capped at 58ch inside them, so the text sat in the left two
+                thirds of its own sheet with a ragged void beside it. 56ch is
+                the paragraph measure, so everything now shares one edge. */}
+            <div className="mx-auto max-w-[56ch]" data-reveal>
               <h2 className="font-display text-[clamp(2.1rem,4.4vw,3.4rem)] font-light leading-[1.06] text-moss">
                 {letter.heading}
               </h2>
@@ -214,14 +229,12 @@ export default function AboutPage() {
               <LeafRule className="mt-10" />
 
               {/* verbatim client copy - a signed personal letter, so the
-                  measure is 58ch rather than Prose's 62ch and the leading is
+                  measure is narrower than Prose's 62ch and the leading is
                   looser. Nothing here is Prose because a letter is not a
                   section of body copy. */}
               <div className="mt-12 space-y-7 text-[1.05rem] leading-[1.9] text-ink/80">
                 {letter.paragraphs.map((p) => (
-                  <p key={p.slice(0, 32)} className="max-w-[58ch]">
-                    {p}
-                  </p>
+                  <p key={p.slice(0, 32)}>{p}</p>
                 ))}
               </div>
 
@@ -234,6 +247,9 @@ export default function AboutPage() {
               </div>
             </div>
 
+            {/* object-top put her face on the bottom edge of the 16:10 band and
+                clipped her chin on a phone: in a 1500x2246 portrait her eyes sit
+                about 38% down the frame, which centres in the band at 30%. */}
             <img
               src="/media/gallery/raji-10.webp"
               width={1500}
@@ -241,36 +257,22 @@ export default function AboutPage() {
               loading="lazy"
               decoding="async"
               alt="The founder meditates in lotus position with a sparkling hair clip, framed close in golden backlight."
-              className="mx-auto mt-16 aspect-[16/10] w-full max-w-[46rem] object-cover object-top"
+              className="mx-auto mt-16 aspect-[16/10] w-full max-w-[56ch] object-cover object-[50%_30%]"
               data-reveal
             />
           </div>
         </section>
 
-        {/* TESTIMONIALS
-            THE QUOTES BELOW ARE PLACEHOLDER TEXT. `testimonials` in
-            src/data/home.ts is not client copy - her real quotes for the online
-            and the offline classes are still on the "RJ to share" list. The
-            names are roles, not invented people, and nothing here claims a
-            rating or a review count. Replace the array, not this markup. */}
-        <Section className="bg-linen py-24 md:py-32">
-          <SectionHead
-            eyebrow="In her students' words"
-            title="What people say"
-            standfirst="Quotes from her online and in-person classes are being gathered and will be added here."
-          />
-          <ul className="mt-16 grid gap-10 md:grid-cols-3 md:gap-8" data-reveal-stagger>
-            {testimonials.map((t) => (
-              <li key={t.name} className="border-t border-ink/15 pt-8">
-                <blockquote className="font-display text-[1.4rem] font-light italic leading-snug text-moss md:text-[1.55rem]">
-                  {t.quote}
-                </blockquote>
-                <p className="label mt-6 text-[0.7rem] text-ink/70">{t.name}</p>
-                <p className="mt-2 text-[0.9rem] text-ink/70">{t.context}</p>
-              </li>
-            ))}
-          </ul>
-        </Section>
+        {/* NO TESTIMONIALS SECTION YET, deliberately.
+
+            It was built and then taken out: the three quotes came from
+            `testimonials` in src/data/home.ts, which is placeholder text, and
+            the rendered cards read "Placeholder testimonial. Awaiting the real
+            quotes from the client." to anybody who opened the page. A heading
+            over three admissions that there is nothing under it is worse than
+            no section. Her real quotes for the online and the offline classes
+            are still on the "RJ to share" list; restore the block from git
+            history once the array holds them. */}
 
         {/* No `body`: CtaBand's default eyebrow and title are already the
             client's own closing line, and the strapline has just been said at

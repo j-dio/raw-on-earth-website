@@ -19,7 +19,7 @@ export const site = {
   description:
     "Yoga, mindfulness and corporate well-being with Rajalakshmi V. Hatha and Ashtanga Vinyasa, breathwork and meditation, taught online and in Bangalore.",
 
-  phone: "+91 7892862634",
+  phone: "+91 78928 62634",
   phoneHref: "tel:+917892862634",
   /* wa.me wants the number with no plus and no spaces. The CTA that used to say
      "Book a Session" points here or at /contact - there is no booking system

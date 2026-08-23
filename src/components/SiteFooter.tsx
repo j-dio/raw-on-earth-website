@@ -36,14 +36,14 @@ export default function SiteFooter() {
 
           <nav aria-label="Footer">
             <p className="eyebrow !text-sage">Pages</p>
-            <ul className="mt-5 space-y-3.5 md:space-y-2.5">
+            <ul className="mt-5 space-y-0.5 md:mt-5 md:space-y-1.5">
               {nav
                 .filter((item) => item.href !== "/")
                 .map((item) => (
                   <li key={item.href}>
                     <Link
                       href={item.href}
-                      className="tap text-sm text-linen/75 transition-colors hover:text-linen"
+                      className="flex min-h-11 items-center text-sm text-linen/75 transition-colors hover:text-linen md:min-h-0 md:py-1"
                     >
                       {item.label}
                     </Link>
@@ -54,14 +54,14 @@ export default function SiteFooter() {
 
           <div>
             <p className="eyebrow !text-sage">Reach her</p>
-            <ul className="mt-5 space-y-3.5 text-sm text-linen/75 md:space-y-2.5">
+            <ul className="mt-5 space-y-0.5 text-sm text-linen/75 md:mt-5 md:space-y-1.5">
               <li>
-                <a href={site.phoneHref} className="tap transition-colors hover:text-linen">
-                  +91 78928 62634
+                <a href={site.phoneHref} className="flex min-h-11 items-center transition-colors hover:text-linen md:min-h-0 md:py-1">
+                  {site.phone}
                 </a>
               </li>
               <li>
-                <a href={site.emailHref} className="tap transition-colors hover:text-linen">
+                <a href={site.emailHref} className="flex min-h-11 items-center transition-colors hover:text-linen md:min-h-0 md:py-1">
                   {site.email}
                 </a>
               </li>
@@ -70,7 +70,7 @@ export default function SiteFooter() {
                   href={site.whatsapp}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="tap transition-colors hover:text-linen"
+                  className="flex min-h-11 items-center transition-colors hover:text-linen md:min-h-0 md:py-1"
                 >
                   WhatsApp
                 </a>
@@ -81,7 +81,7 @@ export default function SiteFooter() {
                     href={l.href}
                     target="_blank"
                     rel="noreferrer noopener"
-                    className="tap transition-colors hover:text-linen"
+                    className="flex min-h-11 items-center transition-colors hover:text-linen md:min-h-0 md:py-1"
                   >
                     {l.label}
                   </a>

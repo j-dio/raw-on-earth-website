@@ -191,7 +191,7 @@ export function CtaBand({
           {title}
         </h2>
         {body ? <p className="mx-auto mt-6 max-w-[52ch] leading-relaxed text-linen/75">{body}</p> : null}
-        <div className="mt-10 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+        <div className="mt-10 flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center sm:gap-3">
           <Button href={primary.href} variant="linen" external={primary.external}>
             {primary.label}
           </Button>

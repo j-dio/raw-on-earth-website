@@ -235,7 +235,10 @@ export const serviceGroups: ServiceGroup[] = [
     title: "Online Programmes",
     eyebrow: "Wherever you are",
     intro:
-      "The same teaching, over video. Half of this practice has run online for years, so it is not a lesser version of the room.",
+      // "Half of this practice has run online for years" was cut: the 27 July
+      // notes say classes are taught online and offline and nothing more, so
+      // the proportion was ours to invent and it read as a claim.
+      "The same teaching, over video. This is taught as its own thing, not as a lesser version of the room.",
     services: [
       {
         // OURS - awaiting client confirmation. The brief names "Online
