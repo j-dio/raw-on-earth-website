@@ -1,41 +1,54 @@
-/* Footer keeps phone, email, Instagram, LinkedIn and Substack even though
-   Contact is now its own page (brief, 27 July notes).
-   Email is still rawonearth@gmail.com: the move to a professional address is
-   an open question with the client. */
-const LINKS = [
-  { label: "Instagram", href: "https://www.instagram.com/raw_on_earth/" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/rajalakshmi-v-332707127/" },
-  { label: "Substack", href: "https://rawonearth.substack.com/" },
-];
+import Link from "next/link";
+import { nav, site } from "@/data/site";
+import { LeafRule } from "@/components/ui";
 
-const PAGES = ["About", "Services", "Workshops", "Community", "Gallery", "Shop", "Journal", "Contact"];
+/* Footer keeps phone, email, Instagram, LinkedIn and Substack even though
+   Contact is now its own page (design brief, 27 July notes).
+
+   All of it reads from src/data/site.ts, so the number in the footer and the
+   number in the JSON-LD cannot disagree. */
+
+const SOCIAL = [
+  { label: "Instagram", href: site.social.instagram },
+  { label: "LinkedIn", href: site.social.linkedin },
+  { label: "Substack", href: site.social.substack },
+];
 
 export default function SiteFooter() {
   return (
-    <footer className="bg-ink text-linen">
-      <div className="mx-auto max-w-[1400px] px-6 py-20 md:px-10 md:py-28">
+    <footer className="relative overflow-hidden bg-ink text-linen grain">
+      <div className="relative mx-auto max-w-[1400px] px-6 py-20 md:px-10 md:py-28">
         <div className="grid gap-14 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <span aria-hidden className="brand-mark mark-wordmark block h-20 w-[145px] text-linen" />
-            <span className="sr-only">Raw On Earth</span>
+            <span className="sr-only">{site.name}</span>
             <p className="mt-5 max-w-sm font-display text-2xl italic leading-snug text-sand">
-              Work on yourself before you work for somebody else.
+              {/* verbatim client copy */}
+              {site.strapline}
             </p>
-            <p className="mt-6 text-sm leading-relaxed text-linen/70">
-              Rajalakshmi V — Wellness Architect. JP Nagar, Bangalore.
+            <LeafRule className="mt-8 max-w-xs" tone="linen" />
+            <p className="mt-8 text-sm leading-relaxed text-linen/70">
+              {site.founder} &mdash; {site.founderTitle}.
+              <br />
+              {site.locality}. Taught in person and online.
             </p>
           </div>
 
           <nav aria-label="Footer">
             <p className="eyebrow !text-sage">Pages</p>
             <ul className="mt-5 space-y-3.5 md:space-y-2.5">
-              {PAGES.map((p) => (
-                <li key={p}>
-                  <a href={`/${p.toLowerCase()}`} className="tap text-sm text-linen/75 transition-colors hover:text-linen">
-                    {p}
-                  </a>
-                </li>
-              ))}
+              {nav
+                .filter((item) => item.href !== "/")
+                .map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className="tap text-sm text-linen/75 transition-colors hover:text-linen"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
             </ul>
           </nav>
 
@@ -43,16 +56,26 @@ export default function SiteFooter() {
             <p className="eyebrow !text-sage">Reach her</p>
             <ul className="mt-5 space-y-3.5 text-sm text-linen/75 md:space-y-2.5">
               <li>
-                <a href="tel:+917892862634" className="tap transition-colors hover:text-linen">
+                <a href={site.phoneHref} className="tap transition-colors hover:text-linen">
                   +91 78928 62634
                 </a>
               </li>
               <li>
-                <a href="mailto:rawonearth@gmail.com" className="tap transition-colors hover:text-linen">
-                  rawonearth@gmail.com
+                <a href={site.emailHref} className="tap transition-colors hover:text-linen">
+                  {site.email}
                 </a>
               </li>
-              {LINKS.map((l) => (
+              <li>
+                <a
+                  href={site.whatsapp}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="tap transition-colors hover:text-linen"
+                >
+                  WhatsApp
+                </a>
+              </li>
+              {SOCIAL.map((l) => (
                 <li key={l.href}>
                   <a
                     href={l.href}

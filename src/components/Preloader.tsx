@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 /* Short hold on first paint: the enso painting itself, once, on an ink field.
    Ink is the colour the hero opens on, so the loader dissolves into the page
@@ -20,9 +21,23 @@ import { useEffect, useState } from "react";
 const MIN_MS = 900;
 
 export default function Preloader() {
+  const pathname = usePathname();
   const [done, setDone] = useState(false);
 
+  /* Home only. Navigation between pages is client-side, so the loader would
+     otherwise be a one-second gate on every link the visitor clicks - and it
+     would gate a page they have already seen the shell of.
+
+     `usePathname` resolves during the server render too, so a visitor who
+     lands directly on /about never receives the overlay markup at all and
+     there is nothing to flash. */
+  const enabled = pathname === "/";
+
   useEffect(() => {
+    if (!enabled) {
+      document.documentElement.classList.add("is-loaded");
+      return;
+    }
     const started = performance.now();
     let timer = 0;
 
@@ -46,7 +61,7 @@ export default function Preloader() {
       window.removeEventListener("load", finish);
       document.documentElement.style.overflow = "";
     };
-  }, []);
+  }, [enabled]);
 
   /* The hero's entry animations key off `is-loaded`, so they start when the
      loader lifts rather than playing unseen behind it. If this never runs the
@@ -56,6 +71,8 @@ export default function Preloader() {
     document.documentElement.style.overflow = "";
     document.documentElement.classList.add("is-loaded");
   }, [done]);
+
+  if (!enabled) return null;
 
   return (
     <div className={`preloader${done ? " is-done" : ""}`} role="status" aria-live="polite">

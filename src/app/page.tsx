@@ -1,4 +1,4 @@
-import Motion from "@/components/Motion";
+import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { offerings, pillars } from "@/data/home";
@@ -34,7 +34,6 @@ import { offerings, pillars } from "@/data/home";
 export default function Home() {
   return (
     <>
-      <Motion />
       <SiteHeader />
 
       <main id="main">
@@ -126,18 +125,18 @@ export default function Home() {
                 className="hero-in mx-auto mt-auto flex w-full max-w-[17rem] flex-col items-stretch gap-3 lg:mx-0 lg:mt-11 lg:max-w-none lg:flex-row lg:items-center lg:justify-start"
                 style={{ "--d": "880ms" } as React.CSSProperties}
               >
-                <a
+                <Link
                   href="/contact"
                   className="label rounded-full bg-moss px-8 py-[0.95rem] text-center text-[0.72rem] text-linen transition-colors duration-300 hover:bg-moss-deep"
                 >
                   Book a Session
-                </a>
-                <a
+                </Link>
+                <Link
                   href="/workshops"
                   className="label rounded-full border border-ink/30 px-8 py-[0.95rem] text-center text-[0.72rem] text-ink transition-colors duration-300 hover:border-moss hover:bg-moss/10"
                 >
                   Explore Workshops
-                </a>
+                </Link>
               </div>
 
               {/* Divider, then the five pillars on ONE line - never two.
@@ -295,7 +294,7 @@ export default function Home() {
         </section>
 
         {/* QUOTE PANEL - vertical line motif from the brief */}
-        <section className="relative overflow-hidden bg-moss py-28 text-linen md:py-40">
+        <section className="grain relative overflow-hidden bg-moss py-28 text-linen md:py-40">
           <div aria-hidden className="quote-rule absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-linen/20" />
           <figure className="quote-figure relative mx-auto max-w-3xl px-8 text-center" data-reveal>
             <blockquote className="font-display text-[1.7rem] font-light italic leading-[1.35] sm:text-4xl md:text-[2.9rem]">
@@ -329,7 +328,7 @@ export default function Home() {
           <ul className="offer-grid mt-16 grid gap-px bg-ink/15 sm:grid-cols-2 lg:grid-cols-3">
             {offerings.map((o) => (
               <li key={o.n}>
-                <a
+                <Link
                   href={o.href}
                   className="group flex h-full flex-col justify-between gap-10 bg-linen p-8 transition-colors duration-500 hover:bg-moss hover:text-linen md:p-10"
                 >
@@ -338,7 +337,7 @@ export default function Home() {
                     <span className="block font-display text-[1.75rem] leading-tight md:text-3xl">{o.title}</span>
                     <span className="mt-3 block text-[0.92rem] leading-relaxed opacity-75">{o.body}</span>
                   </span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
