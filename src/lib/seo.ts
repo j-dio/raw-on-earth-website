@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { site } from "@/data/site";
+import { isPreview } from "@/lib/env";
 
 /* Per-page metadata in one call, so nine pages cannot drift into nine
    different shapes. Every page exports:
@@ -31,7 +32,12 @@ export function pageMeta({
     title,
     description,
     alternates: { canonical: url },
-    robots: noindex ? { index: false, follow: true } : undefined,
+    /* `noindex` is per-page (the Shop uses it). `isPreview` is the whole
+       build, so it wins over the page's own answer. */
+    robots:
+      isPreview || noindex
+        ? { index: false, follow: !isPreview }
+        : undefined,
     openGraph: {
       type: "website",
       url,

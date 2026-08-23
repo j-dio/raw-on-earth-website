@@ -4,6 +4,7 @@ import Preloader from "@/components/Preloader";
 import Motion from "@/components/Motion";
 import JsonLd, { organisationLd, websiteLd } from "@/components/JsonLd";
 import { site } from "@/data/site";
+import { isPreview } from "@/lib/env";
 import "./globals.css";
 
 /* next/font/google self-hosts the files at build time, so there is no runtime
@@ -65,7 +66,7 @@ export const metadata: Metadata = {
     images: [{ url: "/og/default.jpg", width: 1200, height: 630, alt: site.name }],
   },
   twitter: { card: "summary_large_image" },
-  robots: { index: true, follow: true },
+  robots: isPreview ? { index: false, follow: false } : { index: true, follow: true },
   alternates: { canonical: "/" },
 };
 
