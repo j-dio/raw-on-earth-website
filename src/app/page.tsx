@@ -250,78 +250,13 @@ export default function Home() {
             </div>
 
             <div className="wellness-media relative" data-reveal>
-              {/* VINE.
-                  Five segments of ONE stem, alternating which side of the
-                  photograph they are drawn on: odd segments in the front SVG,
-                  even segments in the back SVG behind the picture. Each segment
-                  starts exactly where the last ended, so the stem reads as a
-                  single climbing shoot that keeps passing under the frame and
-                  out again. A single overlay can only ever sit on top, which
-                  reads as a sticker - the weave is what makes it wrap.
-
-                  The viewBox is 120x150, the photograph's own 4:5 box, so path
-                  coordinates ARE positions on the picture: x<0 is off its left
-                  edge, y<0 is above its top edge.
-
-                  Leaves carry no coordinates. They are placed at runtime from
-                  the real curves via MotionPathPlugin (see Motion.tsx), which
-                  is why they sit on the stem at the correct angle instead of
-                  near it - hand-guessed x/y was the first attempt and it showed.
-                  They start hidden so that with no JS the stems still render
-                  complete and no leaves pile up at the origin.
-
-                  aria-hidden throughout: decorative, and the photograph beside
-                  it carries the meaning. */}
-              <svg
-                aria-hidden
-                viewBox="0 0 120 150"
-                fill="none"
-                className="vine pointer-events-none absolute inset-0 z-0 h-full w-full overflow-visible"
-              >
-                <path id="vine-2" className="vine-stem" d="M6 118 C 12 104, 15 96, 8 84" stroke="var(--color-moss)" strokeWidth="0.9" strokeLinecap="round" opacity="0.5" />
-                <path id="vine-4" className="vine-stem" d="M7 48 C 14 36, 13 26, 6 16" stroke="var(--color-moss)" strokeWidth="0.9" strokeLinecap="round" opacity="0.5" />
-              </svg>
-
               <div
-                className="ph ph-tag relative z-10 aspect-[4/5] w-full rounded-[2px]"
+                className="ph ph-tag aspect-[4/5] w-full rounded-[2px]"
                 role="img"
                 aria-label="Placeholder for a photograph of Rajalakshmi teaching a class"
               />
-
-              <svg
-                aria-hidden
-                viewBox="0 0 120 150"
-                fill="none"
-                className="vine pointer-events-none absolute inset-0 z-20 h-full w-full overflow-visible"
-              >
-                <defs>
-                  {/* One blade, reused. Its stem sits at the origin, so scaling
-                      grows the leaf out of the shoot rather than out of the air,
-                      and rotating it pivots where it joins. */}
-                  <path id="leaf" d="M0 0 C 2.2 -1.7, 3.2 -4.9, 0 -7.7 C -3.2 -4.9, -2.2 -1.7, 0 0 Z" />
-                </defs>
-
-                <path id="vine-1" className="vine-stem" d="M15 151 C 5 142, -1 132, 6 118" stroke="var(--color-moss)" strokeWidth="0.9" strokeLinecap="round" opacity="0.55" />
-                <path id="vine-3" className="vine-stem" d="M8 84 C 1 72, 0 60, 7 48" stroke="var(--color-moss)" strokeWidth="0.9" strokeLinecap="round" opacity="0.55" />
-                <path id="vine-5" className="vine-stem" d="M6 16 C 2 6, 14 -3, 31 -6 C 54 -10, 79 -4, 99 7" stroke="var(--color-moss)" strokeWidth="0.9" strokeLinecap="round" opacity="0.55" />
-
-                {/* data-path / data-p say WHERE on the stem each leaf grows;
-                    data-side flips it to the other side of the shoot. */}
-                <g className="vine-leaves" fill="var(--color-moss)" opacity="0">
-                  <use href="#leaf" data-path="vine-1" data-p="0.34" data-side="-1" />
-                  <use href="#leaf" data-path="vine-1" data-p="0.72" data-side="1" />
-                  <use href="#leaf" data-path="vine-2" data-p="0.55" data-side="1" />
-                  <use href="#leaf" data-path="vine-3" data-p="0.3" data-side="-1" />
-                  <use href="#leaf" data-path="vine-3" data-p="0.75" data-side="-1" />
-                  <use href="#leaf" data-path="vine-4" data-p="0.5" data-side="1" />
-                  <use href="#leaf" data-path="vine-5" data-p="0.22" data-side="-1" />
-                  <use href="#leaf" data-path="vine-5" data-p="0.52" data-side="-1" />
-                  <use href="#leaf" data-path="vine-5" data-p="0.8" data-side="1" />
-                </g>
-              </svg>
-
               <div
-                className="ph-dark absolute -bottom-10 -left-8 z-20 hidden aspect-square w-40 rounded-[2px] shadow-[0_18px_48px_rgba(36,30,25,0.28)] md:block lg:w-52"
+                className="ph-dark absolute -bottom-10 -left-8 hidden aspect-square w-40 rounded-[2px] shadow-[0_18px_48px_rgba(36,30,25,0.28)] md:block lg:w-52"
                 role="img"
                 aria-label="Placeholder for a close detail photograph from a session"
               />

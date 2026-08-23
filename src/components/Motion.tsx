@@ -3,8 +3,6 @@
 import { useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
-import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 
 /* All scroll-driven motion, in one client component.
    Replaced the hand-rolled IntersectionObserver + scroll listener on
@@ -25,52 +23,16 @@ import { MotionPathPlugin } from "gsap/MotionPathPlugin";
      one identical entrance applied to everything is the tell, not motion
      itself. Nothing bounces; every ease is a decelerating curve.
 
+   A scroll-drawn vine around the wellness photograph was built here and
+   removed on 2026-08-23. It looked right at rest and fell apart everywhere in
+   between: part-drawn stem segments with leaves suspended in the gaps. Scrubbed
+   motion has to be reviewed at intermediate positions, not just at 0 and 1 -
+   that is the lesson worth keeping, and why DrawSVGPlugin and MotionPathPlugin
+   are no longer imported. See git history if it is ever revived.
+
    Plugins are registered at module scope inside a "use client" file, so this
    never runs during the server render. */
-gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin, MotionPathPlugin);
-
-/* Places every vine leaf ON its stem, at the right angle, by reading the real
-   curve rather than trusting hand-typed coordinates.
-
-   This is layout, not motion, so it runs OUTSIDE the reduced-motion gate: a
-   visitor who has asked for no animation should still see a properly drawn
-   vine, just not watch it grow.
-
-   Runs again on resize because the SVG scales with the column, and a leaf
-   placed in user units has to be re-measured when those units change size. */
-function placeVineLeaves() {
-  const leaves = gsap.utils.toArray<SVGUseElement>(".vine-leaves > use");
-  if (!leaves.length) return;
-
-  leaves.forEach((leaf) => {
-    const path = document.getElementById(leaf.dataset.path ?? "");
-    if (!path) return;
-
-    const p = Number(leaf.dataset.p ?? 0.5);
-    const side = Number(leaf.dataset.side ?? 1);
-    const raw = MotionPathPlugin.getRawPath(path as unknown as SVGPathElement);
-    MotionPathPlugin.cacheRawPathMeasurements(raw);
-    /* The third argument makes it return an `angle` too; GSAP's own types
-       declare the narrower Point2D return, so the shape is asserted here. */
-    const at = MotionPathPlugin.getPositionOnPath(raw, p, true) as {
-      x: number;
-      y: number;
-      angle: number;
-    };
-
-    /* getPositionOnPath's angle is the tangent - the direction the shoot is
-       travelling. A leaf grows ACROSS that, so it is turned a quarter turn off
-       the tangent, and `side` picks which of the two. */
-    gsap.set(leaf, {
-      x: at.x,
-      y: at.y,
-      rotation: at.angle + 90 * side,
-      transformOrigin: "0px 0px",
-    });
-  });
-
-  gsap.set(".vine-leaves", { opacity: 0.4 });
-}
+gsap.registerPlugin(ScrollTrigger);
 
 /* One decelerating curve for the whole site. Editorial pacing: things arrive
    and settle, they do not spring. */
@@ -170,71 +132,6 @@ export default function Motion() {
           );
         }
 
-        /* 2b. VINE - grows with the scroll, not on a loop.
-           A vine growing is a directional gesture, so the visitor's own scroll
-           drives it: scrubbed across the section, it reverses when they scroll
-           back and it is never spent. A loop would repeat forever and become
-           noise on a page whose brief is "calm"; a play-once would be used up
-           the first time past.
-
-           Drawn with DrawSVGPlugin. An earlier pass used raw stroke-dashoffset
-           because I believed DrawSVG was paid Club GreenSock - it is not. GSAP
-           and every former members-only plugin are free for commercial use
-           under the standard licence, so the right tool is available and the
-           hand-rolled version is gone.
-
-           The five segments are drawn in stem order (1..5), NOT DOM order -
-           segments 2 and 4 live in the other SVG, so querying the document
-           would draw them out of sequence and the shoot would appear to grow
-           in two places at once. */
-        const stems = ["1", "2", "3", "4", "5"]
-          .map((n) => document.getElementById(`vine-${n}`))
-          .filter(Boolean) as HTMLElement[];
-
-        const mediaVine = document.querySelector(".wellness-media");
-        if (mediaVine && stems.length) {
-          const leaves = gsap.utils.toArray<SVGElement>(".vine-leaves > use");
-          gsap.set(leaves, { scale: 0 });
-
-          const vine = gsap.timeline({
-            scrollTrigger: {
-              trigger: mediaVine,
-              start: "top 82%",
-              end: "bottom 70%",
-              scrub: 0.7,
-            },
-          });
-
-          /* Segments are chained end-to-end rather than staggered, so the tip
-             is only ever in one place. Their durations are weighted by real
-             path length, which is what stops the short middle segments racing
-             past while the long top one crawls. */
-          const lengths = stems.map((el) =>
-            (el as unknown as SVGPathElement).getTotalLength(),
-          );
-          const total = lengths.reduce((a, b) => a + b, 0) || 1;
-
-          stems.forEach((el, i) => {
-            vine.fromTo(
-              el,
-              { drawSVG: "0%" },
-              { drawSVG: "100%", ease: "none", duration: (lengths[i] / total) * 2 },
-              i === 0 ? 0 : ">",
-            );
-          });
-
-          /* Each leaf opens as the tip reaches it: its own position along the
-             whole stem, not an even stagger. That is the difference between
-             leaves growing from a shoot and leaves appearing near one. */
-          leaves.forEach((leaf) => {
-            const el = leaf as SVGElement & { dataset: DOMStringMap };
-            const segIndex = Number((el.dataset.path ?? "vine-1").split("-")[1]) - 1;
-            const before = lengths.slice(0, segIndex).reduce((a, b) => a + b, 0);
-            const at = (before + lengths[segIndex] * Number(el.dataset.p ?? 0.5)) / total;
-            vine.to(el, { scale: 1, ease: "back.out(1.3)", duration: 0.28 }, at * 2);
-          });
-        }
-
         /* 3. QUOTE - the brief's own motif is the animation.
            The design brief asks for "a vertical line running down the page".
            Rather than draw it and leave it inert, it draws itself downward as
@@ -309,10 +206,6 @@ export default function Motion() {
       },
     );
 
-    placeVineLeaves();
-    const replace = () => placeVineLeaves();
-    window.addEventListener("resize", replace, { passive: true });
-
     /* Web fonts and the hero artwork both land after first paint and both
        change element heights, which moves every trigger point. One refresh
        once everything has settled is cheaper and more accurate than
@@ -323,7 +216,6 @@ export default function Motion() {
 
     return () => {
       window.removeEventListener("load", refresh);
-      window.removeEventListener("resize", replace);
       mm.revert();
     };
   }, []);
