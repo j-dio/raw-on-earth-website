@@ -118,10 +118,11 @@ export const strands: Strand[] = [
    question with the client. If consent is refused, delete these five entries -
    the strip is data-driven and the section survives on the rest.
 
-   community-02.webp has a caption graphic ("Missing my big yoga family at
-   ashram") burned into the frame in a black speech bubble. It is kept small
-   here so the graphic reads as part of the photograph rather than as a broken
-   overlay. Replace it with a clean export when one arrives. */
+   community-02.webp used to carry a caption graphic ("Missing my big yoga
+   family at ashram") burned into a black speech bubble at the foot of the
+   frame. The client re-exported it at 2x on 2026-08-23 and the bubble was
+   cropped off, which is why its aspect is now 1800x2242 rather than the
+   original 1080x1920. */
 export type Snap = StrandImage & { caption: string };
 
 export const snaps: Snap[] = [
@@ -149,9 +150,9 @@ export const snaps: Snap[] = [
   {
     src: "/media/thumb/community-02.webp",
     alt: "A large crowd of yoga practitioners raises their arms and cheers outdoors under trees, with a teacher kneeling at the centre in a red and white outfit.",
-    caption: "Missing the yoga family",
+    caption: "The yoga family at the ashram",
     width: 760,
-    height: 1352,
+    height: 946,
   },
   {
     src: "/media/thumb/kids-14.webp",

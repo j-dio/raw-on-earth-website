@@ -46,7 +46,7 @@ export type GalleryItem = {
 };
 
 export const gallery: GalleryItem[] = [
-  /* Yoga - 37 */
+  /* Yoga - 33 */
   {
     id: "kids-25",
     category: "Yoga",
@@ -179,16 +179,6 @@ export const gallery: GalleryItem[] = [
     caption: "Tree pose in the park",
   },
   {
-    id: "raji-15",
-    category: "Yoga",
-    full: "/media/gallery/raji-15.webp",
-    thumb: "/media/thumb/raji-15.webp",
-    w: 1368,
-    h: 2048,
-    alt: "The founder practises cat-cow pose on a mat in a sunlit park, hair falling forward as she rounds her spine.",
-    caption: "Cat-cow in morning light",
-  },
-  {
     id: "raji-16",
     category: "Yoga",
     full: "/media/gallery/raji-16.webp",
@@ -247,16 +237,6 @@ export const gallery: GalleryItem[] = [
     h: 2246,
     alt: "The founder sits in meditation with palms joined at her chest, eyes closed, on a mat in soft evening park light.",
     caption: "Evening meditation practice",
-  },
-  {
-    id: "raji-27",
-    category: "Yoga",
-    full: "/media/gallery/raji-27.webp",
-    thumb: "/media/thumb/raji-27.webp",
-    w: 1080,
-    h: 1920,
-    alt: "The founder balances in crow pose on a purple mat before a glass wall of rain-misted trees in a studio.",
-    caption: "Crow pose, studio window light",
   },
   {
     id: "teaching-01",
@@ -394,16 +374,6 @@ export const gallery: GalleryItem[] = [
     caption: "Camel pose in the woods",
   },
   {
-    id: "raji-26",
-    category: "Yoga",
-    full: "/media/gallery/raji-26.webp",
-    thumb: "/media/thumb/raji-26.webp",
-    w: 720,
-    h: 1280,
-    alt: "The founder holds cat-cow pose on a mat on a lawn at dusk, with a house and trees softly blurred behind her.",
-    caption: "Cat pose at dusk",
-  },
-  {
     id: "teaching-05",
     category: "Yoga",
     full: "/media/gallery/teaching-05.webp",
@@ -413,18 +383,8 @@ export const gallery: GalleryItem[] = [
     alt: "A teacher supports a student balancing in a forearm arm-balance pose on a blue mat inside a thatched pavilion.",
     caption: "Guided arm-balance practice",
   },
-  {
-    id: "teaching-09",
-    category: "Yoga",
-    full: "/media/gallery/teaching-09.webp",
-    thumb: "/media/thumb/teaching-09.webp",
-    w: 1080,
-    h: 2316,
-    alt: "A teacher walks between rows of students holding downward dog and plank poses in a sunlit thatched studio.",
-    caption: "Walking the room, plank row",
-  },
 
-  /* Community - 31 */
+  /* Community - 30 */
   {
     id: "community-10",
     category: "Community",
@@ -505,8 +465,8 @@ export const gallery: GalleryItem[] = [
     category: "Community",
     full: "/media/gallery/community-02.webp",
     thumb: "/media/thumb/community-02.webp",
-    w: 1080,
-    h: 1920,
+    w: 1800,
+    h: 2242,
     alt: "A large crowd of yoga practitioners raises their arms and cheers outdoors under trees, with a teacher kneeling at the centre in a red and white outfit.",
     caption: "Missing the yoga family",
   },
@@ -636,16 +596,6 @@ export const gallery: GalleryItem[] = [
     alt: "Children hold prayer pose for a group photo as two men and an instructor stand behind them outside a rural community centre.",
     caption: "One more for the record",
     childrenFaces: true,
-  },
-  {
-    id: "kids-27",
-    category: "Community",
-    full: "/media/gallery/kids-27.webp",
-    thumb: "/media/thumb/kids-27.webp",
-    w: 1440,
-    h: 1440,
-    alt: "An instructor guides a child into a supported headstand on a blue mat indoors, with a mountain photograph on the wall behind them.",
-    caption: "Guided into inversion, indoors",
   },
   {
     id: "kids-28",
