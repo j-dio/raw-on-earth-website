@@ -16,7 +16,7 @@ const SOCIAL = [
 
 export default function SiteFooter() {
   return (
-    <footer className="relative overflow-hidden bg-ink text-linen grain">
+    <footer className="tex tex-weave relative overflow-hidden bg-ink text-linen">
       <div className="relative mx-auto max-w-[1400px] px-6 py-20 md:px-10 md:py-28">
         <div className="grid gap-14 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
@@ -91,7 +91,7 @@ export default function SiteFooter() {
           </div>
         </div>
 
-        <p className="mt-20 border-t border-linen/15 pt-8 text-xs tracking-[0.14em] text-linen/50">
+        <p className="mt-20 border-t border-linen/15 pt-8 text-xs tracking-[0.14em] text-linen/60">
           © {new Date().getFullYear()} RAW ON EARTH — REAL. AWAKENING. WELLBEING.
         </p>
       </div>

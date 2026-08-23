@@ -142,7 +142,7 @@ export default function ContactPage() {
 
         {/* FAQ - native <details>, so it is keyboard and screen-reader correct
             with no JavaScript and works on the first paint. */}
-        <section className="bg-sand/45">
+        <section className="tex tex-stone bg-sand/45">
           <Section as="div" className="py-24 md:py-32">
             <div className="grid gap-16 lg:grid-cols-12 lg:gap-20">
               <div className="lg:col-span-5" data-reveal>

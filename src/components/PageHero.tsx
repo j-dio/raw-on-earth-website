@@ -29,7 +29,7 @@ export default function PageHero({
   figure?: { src: string; alt: string; width: number; height: number };
 }) {
   return (
-    <section className="page-hero relative overflow-hidden bg-linen pt-36 md:pt-44">
+    <section className="page-hero tex tex-paper relative overflow-hidden bg-linen pt-36 md:pt-44">
       <div className="mx-auto max-w-[1400px] px-6 md:px-10">
         <div className="max-w-4xl">
           <p className="eyebrow page-hero-in" style={{ "--d": "80ms" } as React.CSSProperties}>

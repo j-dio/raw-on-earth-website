@@ -148,7 +148,7 @@ export default async function JournalPage() {
 
         {rest.length > 0 ? (
           /* THE REST - one hairline row per piece. Date, title, one line. */
-          <Section className="bg-sand/45 py-24 md:py-32">
+          <Section className="tex tex-stone bg-sand/45 py-24 md:py-32">
             <SectionHead eyebrow="More writing" title="Earlier pieces" />
             <ul className="mt-14 border-t border-ink/15" data-reveal-stagger>
               {rest.map((post) => (

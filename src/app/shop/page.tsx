@@ -71,7 +71,7 @@ export default function ShopPage() {
             a spot check, so no crop of the image can fail it. At 0.72 the body
             copy drops to 4.00:1 and fails, so do not lighten the scrim without
             re-running the numbers. */}
-        <section className="grain relative isolate overflow-hidden bg-moss-deep text-linen">
+        <section className="tex tex-weave relative overflow-hidden bg-moss-deep text-linen">
           <img
             src="/media/gallery/raji-29.webp"
             alt="A practitioner performs a headstand on grass beneath the spreading bare branches of a large park tree."

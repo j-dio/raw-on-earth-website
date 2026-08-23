@@ -294,7 +294,7 @@ export default function Home() {
         </section>
 
         {/* QUOTE PANEL - vertical line motif from the brief */}
-        <section className="grain relative overflow-hidden bg-moss py-28 text-linen md:py-40">
+        <section className="tex tex-weave relative overflow-hidden bg-moss py-28 text-linen md:py-40">
           <div aria-hidden className="quote-rule absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-linen/20" />
           <figure className="quote-figure relative mx-auto max-w-3xl px-8 text-center" data-reveal>
             <blockquote className="font-display text-[1.7rem] font-light italic leading-[1.35] sm:text-4xl md:text-[2.9rem]">

@@ -122,7 +122,7 @@ export default function AboutPage() {
 
         {/* JOURNEY - a hairline grid, not cards. gap-px over a tinted parent
             draws the rules, so no cell owns a border and none double up. */}
-        <Section className="bg-sand/45 py-24 md:py-32">
+        <Section className="tex tex-stone bg-sand/45 py-24 md:py-32">
           <SectionHead
             eyebrow="Journey"
             title="Where the practice comes from"
@@ -203,7 +203,7 @@ export default function AboutPage() {
             narrow measure, larger leading than Prose, and a signature block
             with her own sign-off. Sand ground so it reads as a sheet of paper
             laid on the page. */}
-        <section className="bg-sand/45 py-24 md:py-32">
+        <section className="tex tex-stone bg-sand/45 py-24 md:py-32">
           <div className="mx-auto max-w-[1400px] px-6 md:px-10">
             <div className="mx-auto max-w-[46rem]" data-reveal>
               <h2 className="font-display text-[clamp(2.1rem,4.4vw,3.4rem)] font-light leading-[1.06] text-moss">

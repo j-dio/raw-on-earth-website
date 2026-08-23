@@ -302,7 +302,7 @@ export default function ServicesPage() {
 
         {/* SCHOOLS - hairline grid. `.hairline` is the shared grid rule from
             globals.css: gap-px over a tinted parent, so no cell owns a border. */}
-        <Section id={schools.slug} className="bg-sand/45 py-24 md:py-32">
+        <Section id={schools.slug} className="tex tex-stone bg-sand/45 py-24 md:py-32">
           <SectionHead eyebrow={schools.eyebrow} title={schools.title} standfirst={schools.intro} />
           <ul className="hairline mt-14 md:grid-cols-3" data-reveal-stagger>
             {schools.services.map((service) => (

@@ -20,7 +20,7 @@ export default function NotFound() {
     <>
       <SiteHeader />
 
-      <main id="main" className="page-hero relative overflow-hidden bg-linen">
+      <main id="main" className="page-hero tex tex-paper relative overflow-hidden bg-linen">
         <div className="mx-auto max-w-[1400px] px-6 pb-28 pt-44 md:px-10 md:pb-36 md:pt-52">
           <p className="eyebrow page-hero-in">404</p>
           <h1 className="page-hero-title mt-6 max-w-3xl font-display text-[clamp(2.6rem,7vw,4.6rem)] font-light leading-[0.98] text-balance text-moss">

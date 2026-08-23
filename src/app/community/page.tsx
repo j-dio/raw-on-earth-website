@@ -136,7 +136,7 @@ export default function CommunityPage() {
             About renders the same testimonials as a quiet stacked list; here
             they are large pull quotes on a tinted band, so the two pages do not
             read as the same component twice. */}
-        <Section className="bg-sand/45 py-24 md:py-32">
+        <Section className="tex tex-stone bg-sand/45 py-24 md:py-32">
           <SectionHead
             eyebrow="Student stories"
             title="What people say once they have been coming a while"

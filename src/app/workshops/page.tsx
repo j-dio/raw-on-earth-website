@@ -125,7 +125,7 @@ export default function WorkshopsPage() {
 
         {/* THE WORKING PART OF THE PAGE - the online / offline dropdown the
             client asked for, plus a type filter. Given room and its own ground. */}
-        <Section id="find-a-class" className="bg-sand/45 py-24 md:py-32">
+        <Section id="find-a-class" className="tex tex-stone bg-sand/45 py-24 md:py-32">
           <SectionHead
             eyebrow="Regular classes and one-to-one"
             title="Find a class"

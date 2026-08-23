@@ -177,7 +177,7 @@ export function CtaBand({
   secondary?: { href: string; label: string; external?: boolean };
 }) {
   return (
-    <section className="relative overflow-hidden bg-moss text-linen">
+    <section className="tex tex-leaf relative overflow-hidden bg-moss text-linen">
       {/* The vertical divider motif the brief asks for, once more at the foot
           of the page. It draws itself downward on arrival (Motion.tsx). */}
       <div
