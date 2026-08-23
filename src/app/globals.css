@@ -116,72 +116,6 @@ body {
   --mark: url("/brand/enso-ring.png");
 }
 
-/* Placeholder imagery. No photography has been supplied yet, so every image
-   slot is a layered gradient standing in for the real frame: a soft light
-   source top-left, an earth wash, and a woven linen texture. Each slot also
-   carries a visible PLACEHOLDER tag so nobody mistakes it for final artwork.
-   Delete .ph / .ph-dark once RJ's photographs arrive. */
-.ph {
-  background-color: var(--color-clay);
-  background-image:
-    radial-gradient(120% 90% at 18% 8%, rgba(255, 253, 245, 0.85), transparent 55%),
-    radial-gradient(90% 80% at 90% 95%, rgba(63, 74, 54, 0.75), transparent 60%),
-    linear-gradient(155deg, rgba(163, 172, 146, 0.55), rgba(74, 58, 44, 0.45)),
-    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.07) 0 2px, transparent 2px 5px),
-    repeating-linear-gradient(-45deg, rgba(36, 30, 25, 0.06) 0 2px, transparent 2px 5px);
-}
-
-.ph-dark {
-  background-color: var(--color-walnut);
-  background-image:
-    radial-gradient(110% 85% at 78% 12%, rgba(163, 172, 146, 0.42), transparent 58%),
-    radial-gradient(120% 100% at 12% 100%, rgba(36, 30, 25, 0.95), transparent 62%),
-    linear-gradient(160deg, rgba(36, 30, 25, 0.88), rgba(63, 74, 54, 0.62) 55%, rgba(74, 58, 44, 0.75)),
-    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.04) 0 2px, transparent 2px 6px);
-}
-
-.ph-tag {
-  position: relative;
-}
-
-.ph-tag::after {
-  content: "Image placeholder";
-  position: absolute;
-  left: 0.9rem;
-  bottom: 0.9rem;
-  font-family: var(--font-label);
-  font-size: 0.55rem;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--color-linen);
-  background: rgba(36, 30, 25, 0.55);
-  padding: 0.4rem 0.7rem;
-}
-
-/* Touch targets. A 17px link is a 17px target, and on a phone that is a miss
-   waiting to happen; WCAG 2.5.8 asks for 44x44 CSS px. Rather than pad every
-   link (which would break the footer's line rhythm and the inline "Read her
-   story" flow), the hit area is grown with a pseudo-element that reaches out
-   from the link without moving anything around it.
-
-   Applied only under (pointer: coarse): a mouse does not need it, and the
-   invisible boxes would otherwise overlap and steal each other's hovers. */
-@media (pointer: coarse) {
-  .tap {
-    position: relative;
-  }
-
-  .tap::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 50%;
-    height: 44px;
-    transform: translateY(-50%);
-  }
-}
-
 /* ---------------------------------------------------------------------------
    WELLNESS BACKDROP
    Client-generated artwork (Figma), 2026-08-23: out-of-focus leaf shadows cast
@@ -210,6 +144,11 @@ body {
    --------------------------------------------------------------------------- */
 .wellness {
   position: relative;
+  /* Above the sections either side, so the photograph can hang past the tinted
+     band's bottom edge and sit ON the quote panel below it. Without this the
+     quote panel, being later in the DOM, paints over the overhang and the whole
+     effect vanishes. */
+  z-index: 2;
   isolation: isolate;
 }
 

@@ -26,8 +26,10 @@ import { offerings, pillars } from "@/data/home";
    notes put testimonials under "Tab 2 - Second Page: About". Their data is still
    in src/data/home.ts, ready for that page.
 
-   Every image is a CSS placeholder (.ph / .ph-dark). No photography has been
-   supplied yet; the slots below are sized for the real thing. */
+   The one image slot on this page now holds a real client photograph. The
+   .ph / .ph-dark placeholder system that stood in for it has been deleted from
+   globals.css along with it - other pages can bring it back from git history if
+   they need it before their photography arrives. */
 
 export default function Home() {
   return (
@@ -193,7 +195,7 @@ export default function Home() {
 
         {/* YOUR HOME OF WELLNESS - image on the right, per the brief */}
         <section className="wellness bg-sand/45">
-          <div className="mx-auto grid max-w-[1400px] items-center gap-14 px-6 py-24 md:px-10 md:py-32 lg:grid-cols-2">
+          <div className="mx-auto grid max-w-[1400px] items-start gap-14 px-6 py-24 md:px-10 md:py-32 lg:grid-cols-2 lg:pb-0">
             <div className="wellness-copy" data-reveal>
               {/* VERBATIM client copy, content PDF "Page 1 - Template 2". Every
                   word below is hers, including the British "well-being" and
@@ -249,16 +251,44 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="wellness-media relative" data-reveal>
-              <div
-                className="ph ph-tag aspect-[4/5] w-full rounded-[2px]"
-                role="img"
-                aria-label="Placeholder for a photograph of Rajalakshmi teaching a class"
-              />
-              <div
-                className="ph-dark absolute -bottom-10 -left-8 hidden aspect-square w-40 rounded-[2px] shadow-[0_18px_48px_rgba(36,30,25,0.28)] md:block lg:w-52"
-                role="img"
-                aria-label="Placeholder for a close detail photograph from a session"
+            {/* The frame hangs past the tinted band and onto the quote panel
+                below, which is the move from ouranoyoga.com: measured there at
+                ~106px of a 816px frame, and it lands at 101-106px here.
+
+                Built as a fixed -mb-28 against `lg:pb-0` on the container, NOT
+                as a percentage. A percentage margin resolves against the
+                column's WIDTH, and at 1024 that shrank the media column below
+                the copy column's height - at which point the copy sets the row
+                and the overhang silently disappears. The fixed pair holds at
+                every width from 1024 up. */}
+            <div className="wellness-media relative lg:-mb-28 lg:-mt-8" data-reveal>
+              {/* Client photograph, graded to the section - the source frame is
+                  a bright green park at golden hour, which fought a palette
+                  built on moss type and a sand ground. Desaturated to 45%, the
+                  remaining green pulled toward sage, split-toned walnut/linen
+                  and lifted to a matte curve. Grade values are in git history.
+
+                  Plain <img>, not next/image: the optimiser is off for
+                  Hostinger, so next/image would add a component and give
+                  nothing back. Dimensions are on the tag so the column reserves
+                  its height before the file lands and the section does not jump.
+
+                  2:3, the photograph's native aspect and the same ratio
+                  ouranoyoga.com uses in this block (measured: 544x816), so the
+                  full frame is used and nothing is cropped away.
+
+                  The inset placeholder square that sat here is gone. The
+                  content PDF asks for one image in this template and one
+                  photograph arrived; a lone CSS placeholder beside a real
+                  photograph looks like a bug, not a slot. */}
+              <img
+                src="/wellness/rajalakshmi-practice.jpg"
+                width={1400}
+                height={2096}
+                loading="lazy"
+                decoding="async"
+                alt="A yoga practitioner in a low crescent lunge on a mat under trees, back arched and face lifted into the morning light."
+                className="aspect-[2/3] w-full object-cover"
               />
             </div>
           </div>
