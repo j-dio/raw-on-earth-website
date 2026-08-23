@@ -86,10 +86,10 @@ export default async function JournalPage() {
           title="Notes from the practice"
           standfirst="Short essays on the things a practice keeps turning up: attention, habit, stress, and the breath underneath all of it."
           figure={{
-            src: "/media/gallery/raji-28.webp",
+            src: "/media/hero/journal.webp",
             alt: "A practitioner sits in padmasana with eyes closed on a woven mat, surrounded by dry autumn leaves and forest trees.",
-            width: 1500,
-            height: 2666,
+            width: 2400,
+            height: 1028,
           }}
         />
 

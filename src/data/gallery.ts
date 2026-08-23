@@ -113,7 +113,7 @@ export const gallery: GalleryItem[] = [
     full: "/media/gallery/community-03.webp",
     thumb: "/media/thumb/community-03.webp",
     w: 1500,
-    h: 846,
+    h: 844,
     alt: "Four practitioners kneel on mats in child's pose and cat-cow stretches under a sprawling banyan tree in a park.",
     caption: "Practice under the banyan",
   },

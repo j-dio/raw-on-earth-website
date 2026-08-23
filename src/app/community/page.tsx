@@ -88,10 +88,10 @@ export default function CommunityPage() {
           title="Grow together"
           standfirst="A practice is easier to keep when somebody else is expecting you. This is the part of Raw On Earth that happens off the mat."
           figure={{
-            src: "/media/gallery/community-03.webp",
+            src: "/media/hero/community.webp",
             alt: "Four practitioners kneel on mats in child's pose and cat-cow stretches under a sprawling banyan tree in a park.",
-            width: 1500,
-            height: 846,
+            width: 2400,
+            height: 1030,
           }}
         />
 

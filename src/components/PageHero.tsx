@@ -59,7 +59,10 @@ export default function PageHero({
 
       {figure ? (
         /* Full-bleed and slightly taller than a strip: 21:9 on desktop so it
-           reads as a plate rather than a banner. `data-scrub-scale` gives it a
+           reads as a plate rather than a banner. The files in /media/hero are
+           pre-cropped to 21:9 from the originals, so `object-cover` only has to
+           trim the sides on a phone rather than discard two thirds of the
+           picture - which is why the mobile frame is 16:9 and not 4:3. `data-scrub-scale` gives it a
            slow push-in on scroll (Motion.tsx) - the one moving thing at the top
            of an inner page. */
         <div className="page-hero-in mt-12 overflow-hidden md:mt-16">
@@ -77,7 +80,7 @@ export default function PageHero({
                    band is 728px tall, taller than a 720px laptop viewport, so
                    the masthead filled a whole screen with photograph and the
                    reader never saw that a page had begun underneath it. */
-                className="aspect-[4/3] max-h-[62vh] w-full object-cover sm:aspect-[16/9] lg:aspect-[21/9]"
+                className="aspect-[16/9] max-h-[62vh] w-full object-cover lg:aspect-[21/9]"
               />
             </div>
           </div>

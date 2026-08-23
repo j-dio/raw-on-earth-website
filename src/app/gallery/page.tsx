@@ -42,10 +42,10 @@ export default function GalleryPage() {
           title="The practice, as it actually looks"
           standfirst="Mornings under the trees, rooms full of children, quiet weeks away. Most of these were taken by somebody who was in the room."
           figure={{
-            src: "/media/gallery/community-10.webp",
-            alt: "A monk in maroon robes shares a blessing ritual with a man and a woman over a small bowl, in a bright room with yoga mats stacked in the background.",
-            width: 1500,
-            height: 1126,
+            src: "/media/hero/gallery.webp",
+            alt: "A teacher leads a standing group class with palms pressed together, students lined up on mats inside a long thatched hall.",
+            width: 2400,
+            height: 1028,
           }}
         />
 

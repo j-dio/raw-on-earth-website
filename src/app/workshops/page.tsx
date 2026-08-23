@@ -65,10 +65,10 @@ export default function WorkshopsPage() {
           title="Classes, workshops and immersions"
           standfirst="An hour a week, a day given over to breath, or a weekend away from a screen. Same practice, different amounts of time."
           figure={{
-            src: "/media/gallery/community-10.webp",
+            src: "/media/hero/workshops.webp",
             alt: "A monk in maroon robes shares a blessing ritual with a man and a woman over a small bowl, in a bright room with yoga mats stacked in the background.",
-            width: 1500,
-            height: 1126,
+            width: 2400,
+            height: 1028,
           }}
         />
 

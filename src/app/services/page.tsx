@@ -151,10 +151,10 @@ export default function ServicesPage() {
           title="Ways to practise"
           standfirst="Individual teaching, workplace programmes, retreats, schools and online courses. The same practice, sized to whoever is in the room."
           figure={{
-            src: "/media/gallery/kids-25.webp",
+            src: "/media/hero/services.webp",
             alt: "A row of students hold crow pose on coloured mats in a bright studio with floor-to-ceiling windows and potted palms, the instructor demonstrating at the front.",
-            width: 1440,
-            height: 1440,
+            width: 2400,
+            height: 1028,
           }}
         />
 

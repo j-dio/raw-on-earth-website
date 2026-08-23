@@ -11,7 +11,7 @@ import { site } from "@/data/site";
    none of them shows an identifiable child (that consent question is still open
    with the client). They are looked up in the gallery data rather than retyped,
    so the alt text stays single-sourced with the gallery itself. */
-const GLIMPSE = ["teaching-07", "raji-19", "kids-02", "teaching-01", "kids-34"]
+const GLIMPSE = ["teaching-06", "raji-19", "kids-02", "teaching-01", "kids-34"]
   .map((id) => gallery.find((item) => item.id === id))
   .filter((item): item is NonNullable<typeof item> => Boolean(item));
 
