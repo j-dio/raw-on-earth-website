@@ -2,8 +2,9 @@ import Link from "next/link";
 import { nav, site } from "@/data/site";
 import { LeafRule } from "@/components/ui";
 
-/* Footer keeps phone, email, Instagram, LinkedIn and Substack even though
-   Contact is now its own page (design brief, 27 July notes).
+/* Footer keeps phone, email, Instagram and LinkedIn even though Contact is now
+   its own page (design brief, 27 July notes). Substack went with the Journal on
+   2026-09-06 - the link belonged to a page that no longer exists.
 
    All of it reads from src/data/site.ts, so the number in the footer and the
    number in the JSON-LD cannot disagree. */
@@ -11,7 +12,6 @@ import { LeafRule } from "@/components/ui";
 const SOCIAL = [
   { label: "Instagram", href: site.social.instagram },
   { label: "LinkedIn", href: site.social.linkedin },
-  { label: "Substack", href: site.social.substack },
 ];
 
 export default function SiteFooter() {

@@ -30,7 +30,15 @@ export function Section({
 }) {
   return (
     <Tag id={id} className={className}>
-      <div className={`mx-auto px-6 md:px-10 ${wide ? "max-w-[1700px]" : "max-w-[1400px]"}`}>
+      {/* Gutter measured off ouranoyoga.com: 128px at a 1280 viewport, so the
+          content column is 1024 and a full fifth of the screen is air. Ours was
+          40px, which is why the same page read as crowded next to theirs. The
+          `wide` variant keeps its own looser frame for full-bleed strips. */}
+      <div
+        className={`mx-auto px-6 md:px-10 lg:px-20 xl:px-32 ${
+          wide ? "max-w-[1700px]" : "max-w-[1280px]"
+        }`}
+      >
         {children}
       </div>
     </Tag>
@@ -69,15 +77,13 @@ export function SectionHead({
         <p className={`eyebrow ${light ? "!text-sage" : ""}`}>{eyebrow}</p>
       ) : null}
       <h2
-        className={`font-display font-light leading-[1.06] text-balance ${
-          eyebrow ? "mt-5" : ""
-        } text-[clamp(2.1rem,4.4vw,3.4rem)] ${light ? "text-linen" : "text-moss"}`}
+        className={`t-h2 ${eyebrow ? "mt-5" : ""} ${light ? "text-linen" : "text-moss"}`}
       >
         {title}
       </h2>
       {standfirst ? (
         <div
-          className={`mt-6 max-w-[58ch] leading-relaxed ${centred ? "mx-auto" : ""} ${
+          className={`t-body mt-8 ${centred ? "mx-auto" : ""} ${
             light ? "text-linen/75" : "text-ink/75"
           }`}
         >
@@ -122,8 +128,11 @@ export function LeafRule({
    site and nothing here submits a form, so a <a> styled two ways covers every
    CTA. `solid` on light grounds, `ghost` on light, `light` on moss/ink.
    --------------------------------------------------------------------------- */
+/* Measured off ouranoyoga.com at 1280: Lato 14px, 2px tracking, 12px/25px
+   padding, 100px radius, 48px tall. `.label` already carries the face, size and
+   tracking, so this only owns the box. */
 const BTN_BASE =
-  "label inline-flex items-center justify-center rounded-full px-8 py-[0.95rem] text-center text-[0.72rem] transition-colors duration-300";
+  "label inline-flex min-h-12 items-center justify-center rounded-full px-7 text-center transition-colors duration-300";
 
 const BTN_VARIANTS = {
   solid: "bg-moss text-linen hover:bg-moss-deep",
@@ -160,12 +169,23 @@ export function Button({
    CTA BAND - the closing panel every inner page ends on. The design brief's
    own line, 27 July: "Last line - Begin your journey Inward - Book your
    session/ immersion". So this is the client's closer, not a template's.
+
+   Ground is mist, not moss, since 2026-09-15. On a dark green ground this band
+   made every page run pale, drop into dark green, then drop again into the dark
+   footer - which is the "suddenly a darker tone comes" the client described
+   (call, 00:46:22). The footer is now the only dark thing on a page.
+
+   NO vertical rule down the middle. One used to run the full height of this
+   panel, straight through the heading, and it is the exact thing the client
+   pointed at: "do you see there is a line in the center? I do not want that
+   line" (00:34:38). The line she DOES want is the short one between sections,
+   which lives in ContinuityRule on the home page. Do not put this one back.
    --------------------------------------------------------------------------- */
 export function CtaBand({
   eyebrow = "Begin your journey inward",
   title = "Book your session",
   body,
-  primary = { href: "/contact", label: "Book a Session" },
+  primary = { href: "/contact", label: "Book a session" },
   secondary,
 }: {
   eyebrow?: string;
@@ -177,26 +197,17 @@ export function CtaBand({
   secondary?: { href: string; label: string; external?: boolean };
 }) {
   return (
-    <section className="tex tex-leaf relative overflow-hidden bg-moss text-linen">
-      {/* The vertical divider motif the brief asks for, once more at the foot
-          of the page. It draws itself downward on arrival (Motion.tsx). */}
-      <div
-        aria-hidden
-        data-scrub-line
-        className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-linen/15"
-      />
+    <section className="tex tex-leaf relative overflow-hidden bg-mist text-ink">
       <div className="relative mx-auto max-w-3xl px-6 py-24 text-center md:px-10 md:py-32" data-reveal>
-        <p className="eyebrow !text-sand">{eyebrow}</p>
-        <h2 className="mt-6 font-display text-[clamp(2.2rem,5vw,3.6rem)] font-light leading-[1.05] text-balance">
-          {title}
-        </h2>
-        {body ? <p className="mx-auto mt-6 max-w-[52ch] leading-relaxed text-linen/75">{body}</p> : null}
+        <p className="eyebrow">{eyebrow}</p>
+        <h2 className="t-h2 mt-6 text-moss">{title}</h2>
+        {body ? <p className="mx-auto mt-6 max-w-[52ch] leading-relaxed text-ink/80">{body}</p> : null}
         <div className="mt-10 flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center sm:gap-3">
-          <Button href={primary.href} variant="linen" external={primary.external}>
+          <Button href={primary.href} variant="solid" external={primary.external}>
             {primary.label}
           </Button>
           {secondary ? (
-            <Button href={secondary.href} variant="light" external={secondary.external}>
+            <Button href={secondary.href} variant="ghost" external={secondary.external}>
               {secondary.label}
             </Button>
           ) : null}
@@ -213,6 +224,6 @@ export function CtaBand({
    --------------------------------------------------------------------------- */
 export function Prose({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
-    <div className={`max-w-[62ch] space-y-6 leading-[1.75] text-ink/80 ${className}`}>{children}</div>
+    <div className={`t-body space-y-7 text-ink/80 ${className}`}>{children}</div>
   );
 }

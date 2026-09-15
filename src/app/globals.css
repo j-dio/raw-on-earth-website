@@ -11,23 +11,43 @@
    hover swapped moss for ink, which changed hue mid-interaction and read as
    a different button.
 
-   Contrast note, unchanged: sage, sand, clay and gold are DECORATIVE ONLY.
-   Gold is 2.78:1 on linen - it is a hairline and rule colour, never text.
-   Text is ink or moss on light, linen on moss/walnut. */
+   Brightened 2026-09-15. The client's word for the site was "dull", and she was
+   right: the grounds carried too much brown. Linen, sand and clay each moved up
+   in value and down in yellow. Moss, ink and gold did NOT move - moss is the
+   green on her business cards and is carrying the whole site now, and lightening
+   it is how a green page starts failing contrast.
+
+   The greens are one voice and one whisper, settled 2026-09-15. Moss is the
+   green you see: headings, buttons, panels, rules. Sage is a wash and a tint
+   and never carries a word of text. Mixing the two at equal weight is what she
+   called confusing.
+
+   Contrast note: sage, sand, clay and gold are DECORATIVE ONLY. Gold is a
+   hairline and rule colour, never text. Text is ink or moss on light, linen on
+   moss/walnut. */
 @theme {
   --color-moss: #2E442C;
   --color-moss-deep: #192917;
-  --color-sage: #A3AC92;
-  --color-linen: #F3F1E9;
-  --color-sand: #DDD2BE;
+  /* The one mild green ground, added 2026-09-15. The client's complaint was not
+     the shade, it was the switching: pale section, then a full-bleed dark green
+     panel, then pale again. "It's confusing my own mind whether it is lighter
+     tones of greens or darker." So a whole section never takes `moss` as its
+     ground any more - it takes `mist`, and moss stays what it always was: the
+     colour of type, buttons and rules. Measured on mist: moss 8.19:1, ink
+     12.72:1. The footer is the one exception and stays dark, because a foot is
+     an ending, not a switch the reader falls through mid-page. */
+  --color-mist: #DDE5D2;
+  --color-sage: #AEB89C;
+  --color-linen: #F7F5EE;
+  --color-sand: #E7DFD0;
   --color-walnut: #4A3A2C;
-  --color-clay: #C3B5A4;
+  --color-clay: #D2C7B7;
   --color-ink: #241E19;
   --color-gold: #B18B4F;
 
   --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
   --font-sans: var(--font-lato), Lato, system-ui, sans-serif;
-  --font-label: var(--font-cinzel), Cinzel, Georgia, serif;
+  --font-label: var(--font-montserrat), Montserrat, system-ui, sans-serif;
 }
 
 html {
@@ -52,19 +72,17 @@ body {
    TYPE ROLES - three families, one job each. Settled 2026-08-22.
 
    Cormorant Garamond  display: every heading, pull-quote, stat figure
-   Cinzel              small tracked caps: kickers, nav, buttons, labels
+   Montserrat          small tracked caps: nav, buttons, labels
    Lato                running body prose, and nothing else
 
-   Cinzel was previously used for kickers ONLY, at 0.7rem / 0.32em. That is
-   below the size the face survives: Cinzel is an inscriptional capital with
-   high stroke contrast, and at 11px in weight 400 its thin strokes drop to
-   less than a pixel and grey out. Both numbers moved (0.78rem, 0.2em) and the
-   weight went to 500, which is what the face needs at label size.
+   These are the three faces ouranoyoga.com loads, verified 2026-09-15 by
+   reading its Google Fonts request. The client asked for the same headings and
+   the same body as that site, so the mapping is hers, not taste.
 
-   Giving Cinzel the rest of the small-caps work is also closer to the brief
-   than the old split was: the content PDF marked a heading as Cinzel, and the
-   site was answering that by setting 11px kickers in it while every button and
-   nav item ran in Lato. One face per role, no arbitrary split.
+   Cinzel used to hold the label role. It is an inscriptional capital with high
+   stroke contrast, so below about 12px its thin strokes fell under a pixel and
+   greyed out, and the sizes here were propped up to compensate. Montserrat has
+   even strokes and holds at small sizes, so the props came back off.
    --------------------------------------------------------------------------- */
 /* In `@layer components`, deliberately. Unlayered rules beat every Tailwind
    utility, so an unlayered `font-size` here would silently override any caller
@@ -80,9 +98,103 @@ body {
   }
 
   .eyebrow {
-    font-size: 0.78rem;
-    letter-spacing: 0.2em;
+    font-size: 0.8rem;
+    letter-spacing: 0.16em;
     color: var(--color-moss);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   TYPE SCALE. Rebuilt 2026-09-15 against measured values from ouranoyoga.com,
+   the site the client keeps pointing at. Read off the live page at 1280px with
+   getComputedStyle, not eyeballed from a screenshot:
+
+     hero h1      Cormorant Garamond  53px / 58.3 / weight 500 / tracking 5px
+     section h2   Cormorant Garamond  73px / 73   / weight 300 / tracking 4px
+     statement    Cormorant Garamond  38px / 45.6 / weight 300 / tracking 1px
+     body         Lato                16px / 32   / weight 500 / measure 433px
+     button       Lato                14px / tracking 2px / 48px tall / pill
+
+   Two things that matter more than the numbers:
+
+   - Their display type is TRACKED OUT, 0.055-0.095em. That is what makes 53px
+     read as grand rather than merely large. Ours was bigger and tighter, which
+     is why it felt blunt next to theirs.
+   - Their body line-height is 2.0, not the 1.6 a framework gives you. On a calm
+     page the air between lines is the calm.
+
+   Sizes here are fluid where theirs are fixed, because they do not support a
+   phone well and we do. The desktop end of each ramp matches their measured
+   value.
+   --------------------------------------------------------------------------- */
+@layer components {
+  /* Page masthead, one per page, in PageHero. */
+  .t-h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 5.7vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: 0.055em;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+
+  /* Section heading. 73px at 1280 is theirs; the cap is 4.5rem = 72px. */
+  .t-h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5.7vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: 0.055em;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+
+  /* Sub-heading inside a section. Sentence case: at this size all-caps stops
+     being grand and starts being shouting. */
+  .t-h3 {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    font-weight: 300;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+  }
+
+  /* The centred statement they set between sections. Not a heading role - it is
+     a held sentence, so it keeps sentence case and a tighter measure. */
+  .t-statement {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3vw, 2.375rem);
+    font-weight: 300;
+    line-height: 1.2;
+    letter-spacing: 0.026em;
+    text-wrap: balance;
+  }
+
+  /* Standfirst under a heading. */
+  .t-lead {
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 2vw, 1.5rem);
+    font-style: italic;
+    line-height: 1.4;
+    text-wrap: balance;
+  }
+
+  .t-quote {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4.2vw, 3rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+
+  /* Running body. 16px on a 2.0 leading, and a measure that lands near their
+     433px - about 55 characters at this size. */
+  .t-body {
+    font-size: 1rem;
+    line-height: 2;
+    max-width: 55ch;
   }
 }
 
@@ -91,11 +203,11 @@ body {
    heading. Size is set by the caller; only the face and tracking are fixed. */
 @layer components {
   .label {
+    /* 2px of tracking at 14px is what the reference runs on its buttons and nav
+       (measured). The old 12px/0.12em was small enough that the caps greyed
+       out at a glance. */
     letter-spacing: 0.14em;
-    /* A default, because `.label` set no size at all and a caller that forgot
-       one rendered 16px tracked capitals. Every current caller sets its own,
-       and the components layer means theirs still wins. */
-    font-size: 0.78rem;
+    font-size: 0.875rem;
   }
 }
 

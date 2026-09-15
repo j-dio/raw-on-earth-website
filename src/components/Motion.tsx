@@ -186,10 +186,11 @@ export default function Motion() {
         });
 
         /* ---------------------------------------------------------------
-           THE VERTICAL RULE. The design brief asks for "a vertical line running
-           down the page". Rather than draw it and leave it inert, it draws
-           itself as its panel arrives - one idea doing both jobs. */
-        gsap.utils.toArray<HTMLElement>("[data-scrub-line], .quote-rule").forEach((el) => {
+           THE VERTICAL RULE. The client asked for "a vertical line that takes me
+           to the next page... giving me a feel of continuity" (call, 00:32:40).
+           It draws itself as it arrives, so the line IS the transition rather
+           than a border that happens to be there. */
+        gsap.utils.toArray<HTMLElement>("[data-scrub-line]").forEach((el) => {
           gsap.fromTo(
             el,
             { scaleY: 0 },

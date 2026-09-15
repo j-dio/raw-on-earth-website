@@ -36,14 +36,14 @@ export default function PageHero({
             {eyebrow}
           </p>
           <h1
-            className="page-hero-title mt-6 font-display text-[clamp(2.6rem,7.5vw,5rem)] font-light leading-[0.98] tracking-[-0.005em] text-balance text-moss"
+            className="page-hero-title t-h1 mt-6 text-moss"
             style={{ "--d": "160ms" } as React.CSSProperties}
           >
             {title}
           </h1>
           {standfirst ? (
             <p
-              className="page-hero-in mt-8 max-w-[54ch] font-display text-[clamp(1.15rem,2vw,1.5rem)] italic leading-snug text-balance text-ink/75"
+              className="page-hero-in t-lead mt-8 max-w-[54ch] text-ink/75"
               style={{ "--d": "320ms" } as React.CSSProperties}
             >
               {standfirst}

@@ -21,7 +21,9 @@ import { site } from "@/data/site";
    console call in this file on purpose - a failed send would otherwise write
    the enquirer's address into a shared host's log. */
 
-export type Field = "name" | "email" | "phone" | "instagram" | "message";
+/* Three fields, her instruction on 2026-09-06: "name, email address, your
+   message". Phone and Instagram were dropped with the boxed layout. */
+export type Field = "name" | "email" | "message";
 
 export type State = {
   /* "invalid" -> render field errors. "sent" -> replace the form.
@@ -42,7 +44,6 @@ const text = (v: FormDataEntryValue | null) => (typeof v === "string" ? v.trim()
    that it could plausibly be one - anything stricter rejects real addresses,
    and the real proof is that she can reply to it. */
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-const PHONE = /^[0-9+\-()\s]+$/;
 
 export async function submitEnquiry(_prevState: State, formData: FormData): Promise<State> {
   /* Honeypot. A hidden field a person never sees and a bot fills in. Return
@@ -52,19 +53,9 @@ export async function submitEnquiry(_prevState: State, formData: FormData): Prom
 
   const name = text(formData.get("name"));
   const email = text(formData.get("email"));
-  const phone = text(formData.get("phone"));
   const message = text(formData.get("message"));
 
-  /* People give their Instagram five ways. Normalise to a bare handle rather
-     than making them guess the format. */
-  const instagram = text(formData.get("instagram"))
-    .replace(/^https?:\/\//i, "")
-    .replace(/^www\./i, "")
-    .replace(/^instagram\.com\//i, "")
-    .replace(/^@/, "")
-    .replace(/\/+$/, "");
-
-  const values = { name, email, phone, instagram, message };
+  const values = { name, email, message };
   const errors: Partial<Record<Field, string>> = {};
 
   /* Server-side validation, always. The `required` attributes on the inputs
@@ -76,12 +67,6 @@ export async function submitEnquiry(_prevState: State, formData: FormData): Prom
   if (!email || email.length > 160 || !EMAIL.test(email)) {
     errors.email = "Please give an email address she can reply to.";
   }
-  if (phone && (phone.length > 32 || !PHONE.test(phone))) {
-    errors.phone = "Please use digits, spaces and + - ( ) only.";
-  }
-  if (instagram.length > 60) {
-    errors.instagram = "That handle is too long. Just the username is enough.";
-  }
   if (message.length < 10 || message.length > 2000) {
     errors.message = "Please write between 10 and 2000 characters.";
   }
@@ -92,10 +77,8 @@ export async function submitEnquiry(_prevState: State, formData: FormData): Prom
   if (!key) return { status: "unconfigured", values };
 
   const body = [
-    `Name:      ${name}`,
-    `Email:     ${email}`,
-    `Phone:     ${phone || "-"}`,
-    `Instagram: ${instagram ? `@${instagram}` : "-"}`,
+    `Name:  ${name}`,
+    `Email: ${email}`,
     "",
     message,
     "",

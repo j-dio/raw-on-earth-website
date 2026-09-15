@@ -26,3 +26,5 @@ Photos/
 # Scratch: image conversion scripts, the vision-pass catalogue and the page
 # spec the parallel build agents worked from. Regenerable, not part of the site.
 .work/
+.shots/
+.next-qa

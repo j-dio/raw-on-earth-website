@@ -1,66 +1,61 @@
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import { Section, SectionHead, LeafRule, CtaBand } from "@/components/ui";
-import { offerings, pillars, stats } from "@/data/home";
-import { gallery } from "@/data/gallery";
-import { getPosts } from "@/lib/substack";
+import { CtaBand } from "@/components/ui";
+import { offerings, pillars } from "@/data/home";
 import { site } from "@/data/site";
 
-/* Five frames for the glimpse strip, chosen so no other page opens on them and
-   none of them shows an identifiable child (that consent question is still open
-   with the client). They are looked up in the gallery data rather than retyped,
-   so the alt text stays single-sourced with the gallery itself. */
-const GLIMPSE = ["teaching-06", "raji-19", "kids-02", "teaching-01", "kids-34"]
-  .map((id) => gallery.find((item) => item.id === id))
-  .filter((item): item is NonNullable<typeof item> => Boolean(item));
+/* The continuity line the client asked for (call, 00:32:40): "a vertical line
+   that takes me to the next page... giving me a feel of continuity". It sits in
+   the gap between two sections and draws itself downward on scroll via
+   `data-scrub-line`, which is skipped under prefers-reduced-motion.
 
-/* Home. Four blocks, and the order is the client's, not a template's:
+   Measured off ouranoyoga.com rather than guessed: 2px wide, 130px tall,
+   centred on the page, and it STRADDLES the boundary between two sections -
+   about 55px sits in the section above and 75px in the one below. That overlap
+   is the whole effect. A line that stops at the seam is a divider; a line that
+   crosses it carries you over, which is what she described (00:32:40).
 
-     1. Hero              design brief, "Home": name, strapline, the five
-                          practices, and the two CTAs, all named explicitly
-     2. Your Home of      content PDF "Page 1 - Template 2", image on the right,
-        Wellness          closing on "Move. Breathe. Become."
-     3. Quote             content PDF "Page 1 Template 3", with the vertical
-                          line motif the brief asks for
-     4. Offerings         content PDF "Page 1 Template 4", six small tabs,
-                          heading marked CINZEL in the PDF
+   Weight matters as much as length. Theirs is 2px of mid-grey, 3.94:1 against
+   its ground - quiet, but unmistakably drawn. Ours was 1px at 30% opacity,
+   1.70:1, which read as a printing flaw. moss/70 at 2px lands at about 3.7.
 
-   Those four are the client's own templates and their order and copy are hers.
-   Four more were added on 2026-08-24, and the test each had to pass was: does
-   it carry something the brief asks for, a fact she actually gave us, or a way
-   into a page that already exists? Anything that would have meant writing new
-   claims in her voice was left out.
+   Not to be confused with the rule down the middle of a panel, which she asked
+   to have removed (00:34:38). Used once, between the quote panel and Offerings.
+   It was twice until the page lost a section; on a four-block page one is the
+   whole point - more and it stops marking a transition and becomes decoration.
 
-     5. The five         the design brief's Home section asks the page to name
-        practices        Yoga, Mindfulness, Corporate Well-being, Conscious
-                         Living and Chanting for Kids. The hero's row is
-                         desktop-only, so a phone visitor never saw them.
-     6. Proof            her own Journey figures from the brief: 13+ years,
-                         5,000+ participants, 35+ workshops, two lineages
-     7. A glimpse        five gallery photographs, linking into /gallery
-     8. From the journal the newest Substack post, which the brief calls the
-                         site's "strongest long-term asset"
-     9. Closing CTA      the client's own line, 27 July: "Begin your journey
-                         Inward - Book your session/ immersion"
+   Sits in a zero-height flex row so the line can hang past its own box into the
+   next section without reserving space for itself. */
+function ContinuityRule() {
+  return (
+    <div aria-hidden className="relative z-10 flex h-0 justify-center overflow-visible">
+      <span
+        data-scrub-line
+        className="block h-[110px] w-[2px] -translate-y-[45px] bg-moss/70 md:h-[130px] md:-translate-y-[55px]"
+      />
+    </div>
+  );
+}
 
-   An earlier pass on 2026-08-23 cut six invented blocks from this page - a
-   marquee, a "taught five ways" grid, an intro paragraph, a stats band, a
-   testimonials row and a CTA - because they carried copy nobody at Raw On Earth
-   wrote. That reasoning still stands and is why sections 5 to 9 are built from
-   the brief, from src/data/home.ts and from the live feed rather than from new
-   prose. Testimonials are still absent: the quotes are placeholders, and a
-   landing page is the worst place to show scaffolding.
+/* Home. Four blocks and a closing band, which is the structure her 27 July
+   notes ask for and nothing more:
 
-   The image slots on this page hold real client photographs. The .ph / .ph-dark
-   placeholder system that stood in for them was deleted from globals.css; other
-   pages can bring it back from git history if they need it. */
+     hero -> Your Home of Wellness -> a pull quote -> Offerings -> her last line
 
-export default async function Home() {
-  /* Resolved at build time (force-cache in getPosts), so the built site never
-     makes a runtime request and a slow Substack cannot slow the home page. */
-  const latest = (await getPosts()).find((post) => !post.placeholder) ?? null;
+   Three blocks came off on 2026-09-15, each because it was not in that list and
+   read as a second helping of something already on the page: her Journey
+   figures (About says them), the five practices as a section of their own (the
+   names now sit inside Offerings), and a gallery strip (Community holds the
+   gallery).
 
+   Every block carries copy she wrote or a fact she gave us. Nothing here is
+   written in her voice by us.
+
+   Testimonials are absent on purpose. The quotes we hold are placeholders, and
+   a landing page is the worst place to show scaffolding. */
+
+export default function Home() {
   return (
     <>
       <SiteHeader />
@@ -95,156 +90,90 @@ export default async function Home() {
               headline look jammed against the right of the frame. One spare
               column of air reads as composition rather than overflow. */}
           <div className="relative z-10 mx-auto flex h-full min-h-[100svh] max-w-[1500px] items-stretch px-6 pt-28 pb-16 md:px-10 lg:grid lg:grid-cols-12 lg:items-center lg:gap-8 lg:px-14 lg:pt-20 lg:pb-20 2xl:px-20">
-            {/* Portrait is a full-height flex column so the buttons can be
-                pushed to the foot of the screen (see the button block below).
-                Desktop drops back to normal flow inside the grid cell. */}
+            {/* Portrait is a full-height flex column so the link can be pushed
+                to the foot of the screen (see the link block below). Desktop
+                drops back to normal flow inside the grid cell. */}
             <div className="hero-copy flex w-full flex-col text-center lg:col-span-6 lg:col-start-7 lg:block lg:text-left">
-              {/* R-A-W is what the brand name stands for, so this is a named
-                  kicker rather than a decorative eyebrow. No leading hairline:
-                  the divider below is the block's one gold mark and a second
-                  rule up here competed with it. */}
-              <p className="eyebrow hero-in" style={{ "--d": "520ms" } as React.CSSProperties}>
-                Real &middot; Awakening &middot; Wellbeing
-              </p>
+              {/* Same shape as ouranoyoga.com, which is the reference the client
+                  named and the one she keeps pointing at: a short display line,
+                  a plain sentence under it, then one button. Her content, their
+                  format.
 
-              {/* Fluid rather than four breakpoint jumps, capped at 5.5rem (88px)
-                  because the old 6.4rem ran "Earth" into the right edge at 1440.
+                  "Yoga | Life" is her own line from the 6 September call. It
+                  replaced the "Real - Awakening - Wellbeing" kicker, which she
+                  asked to remove. The brand name is not repeated here because
+                  the wordmark is already top-left, which is how the reference
+                  handles it too.
 
-                  The 15.8vw ramp is measured on the phone end, where it matters:
-                  at 390px the headline fits one line up to 64px, and the old
-                  8.5vw/3.1rem floor was serving 49.6px - the hero's one big move,
-                  a third smaller than the space allowed. 15.8vw gives 61.6px at
-                  390 and still clears the measure at 320 (267px of 272). Above
-                  ~560px the 5.5rem cap takes over and nothing changed there. */}
-              {/* Moss, not ink. Ink is the neutral default and left the headline
-                  reading as body copy set large; moss ties it to the mark and the
-                  buttons. Measured 4.93:1 on the worst backdrop pixel under it -
-                  clear of 4.5:1, and large text only needs 3:1. */}
+                  Size and tracking come from their live page, measured at
+                  1280px: 53px, weight 500, 5px of tracking (0.094em). The
+                  tracking is the point - it is what makes 53px read as grand
+                  rather than merely large, and our old 88px with 0.06em was
+                  bigger and blunter. Weight steps back to 400 because theirs is
+                  white on a dark photograph and ours is moss on a pale one;
+                  light-on-dark needs the extra weight, dark-on-light does not.
+
+                  Re-measure on a real phone, not with `chrome --window-size`:
+                  Chrome on Windows will not open a window under 500px, so a
+                  390px screenshot is a crop of a 500px page. Use scripts/shot.mjs. */}
               <h1
-                className="hero-in-title mt-4 font-display text-[clamp(2.9rem,15.8vw,5.5rem)] font-light leading-[0.92] tracking-[-0.005em] text-balance text-moss"
+                className="hero-in-title font-display text-[clamp(2.4rem,4.6vw,3.6rem)] font-normal uppercase leading-[1.1] tracking-[0.094em] text-moss"
                 style={{ "--d": "600ms" } as React.CSSProperties}
               >
-                Raw on Earth
+                Yoga <span className="font-light text-moss/40">|</span> Life
               </h1>
 
+              {/* Her tagline, and it is a statement, not a quotation - the quote
+                  marks that used to sit around it made it read as somebody
+                  else's words. Set in Lato rather than display italic, which is
+                  what the reference does under its own headline.
+
+                  Its own role, not body copy: measured on ouranoyoga's hero at
+                  1280, their subline is Lato 24px / 33.6 / weight 300 in a 304px
+                  measure - bigger and TIGHTER than their 16px/32 body. Ours held
+                  16px/2.0 at every width, which was right on a phone and far too
+                  small beside a 58px headline on a desktop. Floor stays 1rem so
+                  the phone is unchanged. */}
               <p
-                className="hero-in mx-auto mt-6 max-w-[30ch] font-display text-[clamp(1.2rem,1.85vw,1.55rem)] italic leading-snug text-balance text-ink/80 lg:mx-0 lg:max-w-none"
+                className="hero-in mx-auto mt-8 max-w-[26ch] text-[clamp(1rem,1.9vw,1.5rem)] font-light leading-[1.4] text-ink/80 lg:mx-0"
                 style={{ "--d": "760ms" } as React.CSSProperties}
               >
-                {/* verbatim client copy - her strapline, runs through everything */}
-                &ldquo;Work on yourself before you work for somebody else.&rdquo;
+                {/* verbatim client copy */}
+                Work on yourself before you work for somebody else.
               </p>
 
-              {/* Tight above (the quote belongs to the headline), generous here:
-                  the gap is what marks the switch from reading to acting.
+              {/* One button, not two. She asked for "Explore Workshops" to go and
+                  for a book-now to stay, and the reference carries exactly one
+                  pill in the same slot.
 
-                  Stacked and equal-width on a phone. Side by side they were 183px
-                  and 223px, both centred, so neither edge lined up with anything -
-                  the label decided the button's width, which is a desktop habit.
-                  A column of two matched buttons is also the easier thumb target.
-                  Back to a row from lg, where the labels fit side by side.
-
-                  `mt-auto` pins the pair to the foot of the hero on a phone, so
-                  the order down the screen is type, then her, then the actions.
-                  That puts the two things a thumb has to reach inside the thumb's
-                  reach, and gives the figure the middle of the screen instead of
-                  the leftovers. The space it reserves is the `--med-gap` in
-                  globals.css - the two numbers have to move together. */}
+                  `mt-auto` pins it to the foot of the hero on a phone, so the
+                  order down the screen is type, then her, then the one thing a
+                  thumb has to reach. The space it reserves is `--med-gap` in
+                  globals.css; the two numbers move together. */}
               <div
-                className="hero-in mx-auto mt-auto flex w-full max-w-[17rem] flex-col items-stretch gap-3 lg:mx-0 lg:mt-11 lg:max-w-none lg:flex-row lg:items-center lg:justify-start"
+                className="hero-in mx-auto mt-auto flex w-full justify-center lg:mx-0 lg:mt-14 lg:justify-start"
                 style={{ "--d": "880ms" } as React.CSSProperties}
               >
                 <Link
                   href="/contact"
-                  className="label rounded-full bg-moss px-8 py-[0.95rem] text-center text-[0.72rem] text-linen transition-colors duration-300 hover:bg-moss-deep"
+                  className="label inline-flex min-h-12 items-center rounded-full bg-moss px-7 text-linen transition-colors duration-300 hover:bg-moss-deep"
                 >
-                  Book a Session
-                </Link>
-                <Link
-                  href="/workshops"
-                  className="label rounded-full border border-ink/30 px-8 py-[0.95rem] text-center text-[0.72rem] text-ink transition-colors duration-300 hover:border-moss hover:bg-moss/10"
-                >
-                  Explore Workshops
+                  Book a session
                 </Link>
               </div>
 
-              {/* Divider, then the five pillars on ONE line - never two.
-
-                  The rule is split either side of a leaf rather than a single
-                  border-top: the leaf is the business cards' own motif and it
-                  gives the row a centre, which a plain hairline does not.
-
-                  One line is a hard requirement, so the row cannot wrap: it is
-                  `flex-nowrap`, and `justify-between` spreads the five labels
-                  across exactly the rule's width, so both ends line up with it.
-                  Only the type size is fluid; gap-x-2 is the floor the labels
-                  never fall below. 1024px is the pinch point (the narrowest
-                  width this block shows at) - if a sixth pillar is ever added,
-                  re-measure there first. */}
-              {/* Capped at 34rem, not the full column. The column is 648px at
-                  1440 but the type's ink stops well short of it, so a rule run
-                  to the column edge overhangs everything above it and the block
-                  reads lopsided. 34rem is just past the strapline's own measure:
-                  the rule ends where the longest line above it ends. */}
-              <div
-                className="hero-in mt-12 hidden lg:block lg:max-w-[34rem]"
-                style={{ "--d": "1000ms" } as React.CSSProperties}
-              >
-                <div aria-hidden className="flex items-center gap-3">
-                  <span className="h-px flex-1 bg-gradient-to-r from-transparent to-gold/55" />
-                  {/* Pointed-oval blade with a midrib. Moss, not gold: at 16px
-                      the gold blade lost its silhouette against the backdrop and
-                      read as a dot. The rule either side stays gold. */}
-                  <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 text-moss/75" fill="none" aria-hidden>
-                    <path d="M12 2.5C19.5 8 19.5 16 12 21.5 4.5 16 4.5 8 12 2.5Z" fill="currentColor" />
-                    <path d="M12 21.5V4" stroke="var(--color-linen)" strokeWidth="1.1" strokeLinecap="round" opacity="0.55" />
-                  </svg>
-                  <span className="h-px flex-1 bg-gradient-to-l from-transparent to-gold/55" />
-                </div>
-
-                <ul className="mt-5 flex flex-nowrap items-center justify-between gap-x-2 whitespace-nowrap">
-                  {/* Lato, NOT Cinzel, and the one exception to the type roles in
-                    globals.css. This row is pinned to one line inside a fixed
-                    measure, so its size is decided by the width, not by taste:
-                    Cinzel is the wider face and fitting five labels in it drove
-                    the computed size to 7.4px, where an inscriptional capital
-                    greys out completely. Lato holds the same row at 8-9.6px and
-                    stays legible.
-
-                    The ramp is 0.75vw, not 0.62vw. Floor and cap are unchanged;
-                    only the slope between them is steeper, because 0.62vw never
-                    reached the cap at a width a laptop actually uses - 1280 and
-                    1440 both resolved to the 8px floor, and the five labels
-                    measure 403px of ink at 8px inside a 544px rule, so a
-                    quarter of the row was empty. At the 9.6px cap they measure
-                    ~484px and still clear the four 8px gaps. 1024 is the pinch
-                    point and is untouched: 0.75vw is 7.7px there, so the floor
-                    still wins, which is all the 440px rule at that width can
-                    hold. */}
-                  {pillars.map((p) => (
-                    <li key={p.slug} className="text-[clamp(0.5rem,0.75vw,0.6rem)] uppercase tracking-[0.12em] text-moss">
-                      {p.name}
-                    </li>
-                  ))}
-                </ul>
-              </div>
             </div>
           </div>
         </section>
 
         {/* YOUR HOME OF WELLNESS - image on the right, per the brief */}
         <section className="wellness bg-sand/45">
-          {/* `lg:items-center`, not top-aligned. The photograph is 2:3 and the
-              copy is not: at 1280 the column is 572px wide, so the frame is
-              858px tall against ~490px of copy. Top-aligned, all 250-odd px of
-              the difference pooled under "Move. Breathe. Become." as one blank
-              corner of sand, which reads as copy that ran out rather than as
-              composition. Centred, the same air splits either side of the copy
-              block. The overhang below is unaffected: the image still sets the
-              row height and still hangs -mb-28 past it. */}
-          <div className="mx-auto grid max-w-[1400px] items-start gap-14 px-6 py-24 md:px-10 md:py-32 lg:grid-cols-2 lg:items-center lg:pb-0">
+          {/* `lg:items-center`, not top-aligned: the two columns are different
+              heights, and centred the difference splits either side of the copy
+              instead of pooling under it as one blank corner of sand. */}
+          <div className="mx-auto grid max-w-[1280px] items-start gap-14 px-6 py-24 md:px-10 md:py-32 lg:grid-cols-2 lg:items-center lg:gap-20 lg:px-20 xl:px-32">
             <div className="wellness-copy" data-reveal>
-              {/* VERBATIM client copy, content PDF "Page 1 - Template 2". Every
+              {/* VERBATIM client copy, the panel the 27 July notes call "Page 1 (t2)". Every
                   word below is hers, including the British "well-being" and
                   "practices" spellings - do not tidy them.
 
@@ -259,11 +188,9 @@ export default async function Home() {
                   first bold phrase and re-cutting it, plus a one-paragraph
                   paraphrase of all three paragraphs. Her heading is the heading
                   now. */}
-              <h2 className="font-display text-4xl font-light leading-[1.1] text-moss md:text-5xl lg:text-[3.4rem]">
-                Your Home of Wellness
-              </h2>
+              <h2 className="t-h2 text-moss">Your Home of Wellness</h2>
 
-              <div className="mt-8 max-w-[52ch] space-y-6 leading-relaxed text-ink/80">
+              <div className="t-body mt-10 space-y-7 text-ink/80">
                 <p>
                   We bring together a range of classes and practices to help you develop{" "}
                   <strong className="font-bold text-moss">
@@ -290,44 +217,36 @@ export default async function Home() {
                 </p>
               </div>
 
-              {/* Her closing line, and the last thing in this template before the
-                  image note. It is set as display type rather than a fourth
-                  paragraph because that is the job it does. */}
-              <p className="mt-10 font-display text-3xl italic text-moss md:text-4xl">
-                Move. Breathe. Become.
-              </p>
+              {/* The client asked for a book-now here on 6 September. It is the
+                  page's one filled button, and it sits at the end of the copy
+                  rather than in the hero: by this point a visitor has read what
+                  she actually teaches, which is when the ask is fair. The hero
+                  link and this one name the same action on purpose - one action
+                  said twice, not two choices. */}
+              <Link
+                href="/contact"
+                className="label mt-10 inline-flex min-h-11 items-center rounded-full bg-moss px-8 py-[0.95rem] text-[0.72rem] text-linen transition-colors duration-300 hover:bg-moss-deep"
+              >
+                Book a session
+              </Link>
+
             </div>
 
-            {/* The frame hangs past the tinted band and onto the quote panel
-                below, which is the move from ouranoyoga.com: measured there at
-                ~106px of a 816px frame, and it lands at 101-106px here.
+            {/* No negative bottom margin here: her closing line sits at the
+                foot of this column now, and an overhang would let the next
+                section paint over it. */}
+            <div className="wellness-media relative lg:-mt-8" data-reveal>
+              {/* Plain <img>, not next/image: the optimiser is off for
+                  Hostinger. Dimensions are on the tag so the column reserves
+                  its height before the file lands.
 
-                Built as a fixed -mb-28 against `lg:pb-0` on the container, NOT
-                as a percentage. A percentage margin resolves against the
-                column's WIDTH, and at 1024 that shrank the media column below
-                the copy column's height - at which point the copy sets the row
-                and the overhang silently disappears. The fixed pair holds at
-                every width from 1024 up. */}
-            <div className="wellness-media relative lg:-mb-28 lg:-mt-8" data-reveal>
-              {/* Client photograph, graded to the section - the source frame is
-                  a bright green park at golden hour, which fought a palette
-                  built on moss type and a sand ground. Desaturated to 45%, the
-                  remaining green pulled toward sage, split-toned walnut/linen
-                  and lifted to a matte curve. Grade values are in git history.
-
-                  Plain <img>, not next/image: the optimiser is off for
-                  Hostinger, so next/image would add a component and give
-                  nothing back. Dimensions are on the tag so the column reserves
-                  its height before the file lands and the section does not jump.
-
-                  2:3, the photograph's native aspect and the same ratio
-                  ouranoyoga.com uses in this block (measured: 544x816), so the
-                  full frame is used and nothing is cropped away.
-
-                  The inset placeholder square that sat here is gone. The
-                  content PDF asks for one image in this template and one
-                  photograph arrived; a lone CSS placeholder beside a real
-                  photograph looks like a bug, not a slot. */}
+                  A9, "zoom in where the photo has empty space top and bottom"
+                  (call, 00:58:25). It was shown at its native 2:3, and measured
+                  down the frame the subject only occupies 35%-70% of the
+                  height: above her is out-of-focus canopy, below her is nothing
+                  but blurred grass. A square crop takes 16.7% off each end,
+                  which puts her head at 27% and the mat at 80% - nothing of her
+                  is cut, and the frame stops being a tall box of empty lawn. */}
               <img
                 src="/wellness/rajalakshmi-practice.jpg"
                 width={1400}
@@ -335,258 +254,124 @@ export default async function Home() {
                 loading="lazy"
                 decoding="async"
                 alt="A yoga practitioner in a low crescent lunge on a mat under trees, back arched and face lifted into the morning light."
-                className="aspect-[2/3] w-full object-cover"
+                className="aspect-square w-full object-cover object-center"
               />
+
+              {/* Her closing line. It used to end the copy column; the client
+                  asked for it under the photograph, and it is better there -
+                  set as display type it reads as a caption on the image rather
+                  than as a fourth paragraph nobody finishes. */}
+              <p className="mt-8 font-display text-3xl italic text-moss md:text-4xl">
+                Move. Breathe. Become.
+              </p>
             </div>
           </div>
         </section>
 
-        {/* THE FIVE PRACTICES
-            The design brief's Home section asks the page to "Include Yoga,
-            Mindfulness, Corporate Well-being, Conscious Living, Chanting for
-            Kids". The hero names them in a single tracked row, but that row is
-            desktop-only - it is pinned to one line inside a fixed measure and
-            there is no room for it on a phone - so until now a phone visitor
-            never saw the five named at all. This section is where the brief's
-            requirement is actually met, at every width.
+        {/* A4b. Her own transition: "Move. Breathe. Become." ends the section
+            above and the line carries the eye from it into the next one. */}
+        {/* QUOTE PANEL, on mist rather than a full-bleed moss ground. The page
+            falling from pale into dark green and back is what she meant by "it's
+            confusing my own mind" (00:46:22); moss stays the colour of type and
+            buttons, not of whole sections. Measured on mist: moss 8.02:1 through
+            the texture, ink 12.46:1.
 
-            Set as a numbered list rather than a card grid on purpose: five
-            equal cards would repeat the Offerings grid further down the page,
-            and these are five aspects of one practice, not six doors. */}
-        <Section className="py-24 md:py-32">
-          <div className="lg:grid lg:grid-cols-12 lg:gap-16">
-            {/* Sticky from lg, because the list beside it is 900px tall and
-                without it the left column is empty for most of the scroll. */}
-            <div className="lg:sticky lg:top-28 lg:col-span-4">
-              <SectionHead
-                eyebrow="The practice"
-                title="Five ways in, one direction"
-                standfirst="Whichever door you come through, the work is the same: pay attention, breathe, and keep showing up."
-              />
-            </div>
-
-            <ul className="mt-14 lg:col-span-8 lg:mt-0" data-reveal-stagger>
-              {pillars.map((pillar, i) => (
-                <li
-                  key={pillar.slug}
-                  className="grid grid-cols-[2.5rem_1fr] gap-x-5 border-t border-ink/12 py-7 first:border-t-0 first:pt-0 md:grid-cols-[3.5rem_1fr] md:gap-x-8 md:py-9"
-                >
-                  <span className="font-display text-[1.6rem] font-light leading-none text-gold md:text-[2.1rem]">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div>
-                    <h3 className="font-display text-[1.6rem] font-light leading-tight text-moss md:text-[2rem]">
-                      {pillar.name}
-                    </h3>
-                    {/* PLACEHOLDER copy - see the header of src/data/home.ts.
-                        Her own words replace these lines before launch. */}
-                    <p className="mt-2 max-w-[52ch] leading-relaxed text-ink/75">{pillar.line}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </Section>
-
-        {/* PROOF
-            Four figures, all of them hers and all of them from the design
-            brief's "Journey" list. They are on About as well, which is where
-            the brief files them - but a landing page that never says how long
-            she has been doing this is asking a stranger to take it on trust.
-
-            A hairline band rather than a tinted one: the section above and the
-            quote panel below are already doing the colour work, and a third
-            ground between them would break the page's rhythm. */}
-        <Section className="pb-24 md:pb-32">
-          <LeafRule className="mb-14 md:mb-20" />
-          <dl className="grid grid-cols-2 gap-x-8 gap-y-12 lg:grid-cols-4" data-reveal-stagger>
-            {stats.map((stat) => {
-              /* Only the plain counts animate. "2" is a count of lineages and
-                 counting to two is not a flourish, it is a twitch. */
-              const numeric = /^[\d,]+\+?$/.test(stat.value) && stat.value !== "2";
-              const target = Number(stat.value.replace(/[^\d]/g, ""));
-              return (
-                <div key={stat.label}>
-                  <dt className="sr-only">{stat.label}</dt>
-                  <dd>
-                    <span
-                      className="block font-display text-[clamp(2.6rem,6vw,4rem)] font-light leading-none text-moss"
-                      {...(numeric
-                        ? { "data-count": String(target), "data-count-suffix": "+" }
-                        : {})}
-                    >
-                      {stat.value}
-                    </span>
-                    <span className="mt-4 block text-[0.9rem] leading-relaxed text-ink/75">
-                      {stat.label}
-                    </span>
-                  </dd>
-                </div>
-              );
-            })}
-          </dl>
-        </Section>
-
-        {/* QUOTE PANEL - vertical line motif from the brief */}
-        <section className="tex tex-weave relative overflow-hidden bg-moss py-28 text-linen md:py-40">
-          <div aria-hidden className="quote-rule absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-linen/20" />
+            The rule down the centre is gone and stays gone - on a panel holding
+            one centred quote it was a line through the middle of the sentence. */}
+        <section className="tex tex-paper relative overflow-hidden bg-mist py-28 md:py-40">
           <figure className="quote-figure relative mx-auto max-w-3xl px-8 text-center" data-reveal>
-            <blockquote className="font-display text-[1.7rem] font-light italic leading-[1.35] sm:text-4xl md:text-[2.9rem]">
+            <blockquote className="t-quote text-moss">
               {/* verbatim client copy - one of the two quotes she offered for this
                   panel. Which one runs here is still hers to confirm. */}
               &ldquo;Listening to your own breath draws your attention inward and takes
               it away from external sounds. This is a meditation aid.&rdquo;
             </blockquote>
-            <figcaption className="eyebrow mt-10 !text-sand">Rajalakshmi V</figcaption>
+            <figcaption className="eyebrow mt-10">Rajalakshmi V</figcaption>
           </figure>
         </section>
 
-        {/* OFFERINGS */}
-        <section className="mx-auto max-w-[1400px] px-6 py-24 md:px-10 md:py-32">
-          {/* The content PDF marks this heading, and only this heading, as
-              Cinzel. It was running as a 0.78rem kicker over an invented
-              headline ("Six ways in.") - which honoured the letter of the note
-              in the one place the face is too small to read, and put words in
-              her mouth in the other. The word she wrote is the heading now, set
-              in the face she asked for, at a size it survives. */}
-          <div className="max-w-2xl" data-reveal>
-            <h2 className="label text-[clamp(2rem,4.5vw,3.25rem)] leading-tight text-moss">Offerings</h2>
-            <p className="mt-6 leading-relaxed text-ink/75">
-              Start where you are. Every offering below leads to the same place, at a
-              different door.
-            </p>
-          </div>
+        {/* A4b, second and last use: out of the quote and into what she offers. */}
+        <ContinuityRule />
 
-          {/* gap-px over a dark parent draws the hairline grid. No borders to
-              double up on adjacent cells. */}
-          <ul className="offer-grid mt-16 grid gap-px bg-ink/15 sm:grid-cols-2 lg:grid-cols-3">
-            {offerings.map((o) => (
-              <li key={o.n}>
-                <Link
-                  href={o.href}
-                  className="group flex h-full flex-col justify-between gap-10 bg-linen p-8 transition-colors duration-500 hover:bg-moss hover:text-linen md:p-10"
-                >
-                  <span className="eyebrow group-hover:!text-sand">{o.n}</span>
-                  <span>
-                    <span className="block font-display text-[1.75rem] leading-tight md:text-3xl">{o.title}</span>
-                    <span className="mt-3 block text-[0.92rem] leading-relaxed opacity-75">{o.body}</span>
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
+        {/* OFFERINGS
+            Plain linen, not a photograph. A park frame sat behind this block for
+            a while, the way ouranoyoga.com does it, but every wide photograph in
+            the library is an indoor hall or a busy lawn, and under the 75% scrim
+            the contrast floor demands they all collapse into grey. A backdrop
+            you cannot see is a payload with no design in it.
 
-        {/* A GLIMPSE
-            The gallery is nine categories deep and a landing page cannot carry
-            that, but it can carry the feeling of it. A horizontal strip rather
-            than a grid: it reads as one continuous scene on a phone, it costs
-            one row of vertical space instead of four, and swiping it is a
-            gentler invitation than a wall of thumbnails.
-
-            `snap-x` with `scroll-pl` so the first tile keeps the page gutter -
-            without it the browser aligns tile one to the scrollport edge and
-            the strip looks clipped before you have touched it. */}
-        <Section wide className="tex tex-stone bg-sand/45 py-24 md:py-32">
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <SectionHead
-              eyebrow="A glimpse"
-              title="Where the practice happens"
-              standfirst="Parks at dawn, studio floors, school courtyards and the quiet of a hall between sessions."
-            />
-            <Link
-              href="/gallery"
-              className="label -my-2 flex min-h-11 items-center border-b border-gold/60 py-2 text-[0.7rem] text-moss transition-colors hover:border-moss"
-            >
-              See the gallery
-            </Link>
-          </div>
-
-          <ul
-            className="mt-14 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-pl-6 pb-4 md:gap-6 md:scroll-pl-10"
-            data-reveal
-          >
-            {GLIMPSE.map((item) => (
-              <li key={item.id} className="w-[76vw] shrink-0 snap-start sm:w-[46vw] lg:w-[28vw]">
-                <img
-                  src={item.thumb}
-                  alt={item.alt}
-                  width={item.w}
-                  height={item.h}
-                  loading="lazy"
-                  decoding="async"
-                  className="aspect-[3/4] w-full object-cover"
-                />
-                <p className="mt-4 text-[0.85rem] leading-relaxed text-ink/75">{item.caption}</p>
-              </li>
-            ))}
-          </ul>
-        </Section>
-
-        {/* FROM THE JOURNAL
-            The design brief calls the Journal "the strongest long-term asset of
-            the website", and an asset nobody can find from the front door is
-            not one. One post, given room, rather than a list of three.
-
-            Rendered only when the Substack feed actually returned something. If
-            the feed is unreachable at build time getPosts falls back to topic
-            cards, and a topic card is not an article - putting one here under
-            "From the journal" would be a small lie. */}
-        {latest ? (
-          <Section className="py-24 md:py-32">
-            <div className="grid gap-12 lg:grid-cols-12 lg:items-start lg:gap-16">
-              <div className="lg:col-span-4">
-                <SectionHead eyebrow="From the journal" title="She writes it down" />
-                <p className="mt-6 max-w-[40ch] leading-relaxed text-ink/75">
-                  Mindfulness, human behaviour, conscious living, and what pressure
-                  does to a body. New pieces land on Substack.
-                </p>
-                <Link
-                  href="/journal"
-                  className="label mt-8 -mb-2 flex min-h-11 w-fit items-center border-b border-gold/60 py-2 text-[0.7rem] text-moss transition-colors hover:border-moss"
-                >
-                  All writing
-                </Link>
-              </div>
-
-              <article className="border-t border-ink/12 pt-8 lg:col-span-8 lg:border-l lg:border-t-0 lg:pl-16 lg:pt-0" data-reveal>
-                {latest.date ? (
-                  <time
-                    dateTime={latest.date}
-                    className="label block text-[0.68rem] text-ink/70"
-                  >
-                    {new Intl.DateTimeFormat("en-GB", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    }).format(new Date(latest.date))}
-                  </time>
-                ) : null}
-                <h3 className="mt-5 font-display text-[clamp(1.9rem,3.6vw,2.9rem)] font-light leading-[1.08] text-balance text-moss">
-                  {latest.title}
-                </h3>
-                <p className="mt-6 max-w-[60ch] leading-relaxed text-ink/80">{latest.excerpt}</p>
-                <a
-                  href={latest.url}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  aria-label={`${latest.title} - read on Substack, opens in a new tab`}
-                  className="label mt-8 -mb-2 flex min-h-11 w-fit items-center gap-2 border-b border-gold/60 py-2 text-[0.7rem] text-moss transition-colors hover:border-moss"
-                >
-                  Read on Substack
-                  <span aria-hidden>&#8599;</span>
-                </a>
-              </article>
+            The client is sending replacement photographs and has already said
+            the current ones "do not match" (00:57:25). When a calm wide frame
+            arrives, put it back: absolute <img> at -z-10 under a bg-linen/75
+            scrim, cards at bg-linen/92. 75% is a measured floor, not taste - at
+            70% the standfirst fell to 4.40:1 and failed. */}
+        <section className="bg-linen">
+          <div className="mx-auto max-w-[1280px] px-6 py-24 md:px-10 md:py-32 lg:px-20 xl:px-32">
+            {/* "Offerings" is her word and it is the heading, not a kicker over
+                an invented headline. */}
+            <div className="max-w-2xl" data-reveal>
+              <h2 className="t-h2 text-moss">Offerings</h2>
+              <p className="mt-6 leading-relaxed text-ink/75">
+                Start where you are. Every offering below leads to the same place, at a
+                different door.
+              </p>
             </div>
-          </Section>
-        ) : null}
+
+            {/* The brief's Home paragraph asks the page to "Include Yoga,
+                Mindfulness, Corporate Well-being, Conscious Living, Chanting for
+                Kids". They used to be a tracked row under the hero headline; the
+                client had that removed and said to put them "in the last page
+                somewhere but not here" (00:27:55), and this is somewhere.
+
+                They sit here rather than in a section of their own because a
+                visitor scrolling past two similar lists in a row is the "too
+                much" she is trying to remove. These five are the SUBJECTS she
+                teaches; the grid below is the WAYS IN. One block, two jobs.
+
+                Names only. The section they came from carried a written line
+                under each, and every one of those lines was ours, not hers.
+
+                Full moss, no opacity step. It measured 3.99:1 at moss/85 back
+                when a photograph sat behind this block, and small tracked caps
+                need 4.5. The photograph is gone but the rule stands. */}
+            <ul
+              className="mt-10 flex flex-wrap gap-x-8 gap-y-3 border-t border-ink/15 pt-8 md:gap-x-12"
+              data-reveal
+            >
+              {pillars.map((pillar) => (
+                <li key={pillar.slug} className="label text-[0.75rem] text-moss">
+                  {pillar.name}
+                </li>
+              ))}
+            </ul>
+
+            {/* gap-px over a tinted parent draws the hairline grid. Cards are
+                linen at 92%, so the photograph reads through them rather than
+                only in the gutters; card body text still measures 6.7:1. */}
+            <ul className="offer-grid mt-16 grid gap-px bg-ink/15 sm:grid-cols-2 lg:grid-cols-3">
+              {offerings.map((o) => (
+                <li key={o.n}>
+                  <Link
+                    href={o.href}
+                    className="group flex h-full flex-col bg-linen p-8 transition-colors duration-500 hover:bg-moss hover:text-linen md:p-10"
+                  >
+                    <span>
+                      <span className="block font-display text-[1.75rem] leading-tight md:text-3xl">{o.title}</span>
+                      <span className="mt-3 block text-[0.92rem] leading-relaxed opacity-75">{o.body}</span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
 
         {/* The client's own closing line, 27 July: "Last line - Begin your
             journey Inward - Book your session/ immersion". Home was the only
             page without it. */}
         <CtaBand
           body={`Classes run online and in person from ${site.locality}. Tell her where you are starting from and she will suggest where to begin.`}
-          secondary={{ href: "/services", label: "See what she teaches" }}
+          secondary={{ href: "/mentorship", label: "See the mentorship" }}
         />
 
       </main>

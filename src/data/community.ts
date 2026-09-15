@@ -14,6 +14,11 @@
    invented schedules ("every second Saturday, 6:30am"); replace them with what
    she confirms.
 
+   A `snaps` array used to sit at the foot of this file, feeding a horizontal
+   photo strip that teased the old /gallery route. The gallery is a section on
+   the Community page now (2026-09-15), so the strip was the same photographs
+   twice and both went. They are in git history.
+
    Image dimensions were measured off the files, not copied from the catalogue:
    /media/thumb/* is capped at 760px wide, /media/gallery/* is the full frame.
    Alt text is the catalogue's own, written per image. */
@@ -112,65 +117,5 @@ export const strands: Strand[] = [
       width: 760,
       height: 570,
     },
-  },
-];
-
-/* The scroll strip. Small tiles only, deliberately.
-
-   CONSENT: every `kids-*` frame here is flagged `children_faces: true` in
-   .work/catalog-keep.json. Per CLAUDE.md those may run at thumbnail size but
-   never as a large feature image, and publishing them at all is an open
-   question with the client. If consent is refused, delete these five entries -
-   the strip is data-driven and the section survives on the rest.
-
-   community-02.webp used to carry a caption graphic ("Missing my big yoga
-   family at ashram") burned into a black speech bubble at the foot of the
-   frame. The client re-exported it at 2x on 2026-08-23 and the bubble was
-   cropped off, which is why its aspect is now 1800x2242 rather than the
-   original 1080x1920. */
-export type Snap = StrandImage & { caption: string };
-
-export const snaps: Snap[] = [
-  {
-    src: "/media/thumb/kids-33.webp",
-    alt: "An instructor smiles while standing over a seated group of children stretching on mats in an outdoor enclosure lined with trees.",
-    caption: "A warm moment mid-session",
-    width: 760,
-    height: 506,
-  },
-  {
-    src: "/media/thumb/kids-35.webp",
-    alt: "An instructor shares a high-five with a child on a tiled terrace, with a decorative painted wall and a bench behind them.",
-    caption: "A high-five after practice",
-    width: 760,
-    height: 1140,
-  },
-  {
-    src: "/media/thumb/kids-31.webp",
-    alt: "An instructor kneels among a group of children practising seated forward folds outdoors on colourful mats near a wooded chain-link boundary.",
-    caption: "Outdoor practice, side by side",
-    width: 760,
-    height: 506,
-  },
-  {
-    src: "/media/thumb/community-02.webp",
-    alt: "A large crowd of yoga practitioners raises their arms and cheers outdoors under trees, with a teacher kneeling at the centre in a red and white outfit.",
-    caption: "The yoga family at the ashram",
-    width: 760,
-    height: 946,
-  },
-  {
-    src: "/media/thumb/kids-14.webp",
-    alt: "Rows of schoolchildren in white shirts stand at attention on coloured mats arranged in a wide outdoor courtyard, trees and a traditional building visible behind.",
-    caption: "A full courtyard, ready to begin",
-    width: 760,
-    height: 570,
-  },
-  {
-    src: "/media/thumb/kids-20.webp",
-    alt: "An instructor guides a girl into a supported headstand on a mat in front of a community building, a seated child watching in the foreground.",
-    caption: "Learning to hold still, upside down",
-    width: 760,
-    height: 1014,
   },
 ];

@@ -9,7 +9,8 @@ import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { site } from "@/data/site";
 import { serviceGroups, type Service } from "@/data/services";
 
-/* Services. The commercial page, so it has to convert without raising its
+/* Mentorship - renamed from Services, label and URL, on the client call of
+   2026-09-06. The commercial page, so it has to convert without raising its
    voice. Everything on it is read out of src/data/services.ts - the page never
    names a service in its own markup, so adding one is an object and nothing
    here has to change.
@@ -21,7 +22,10 @@ import { serviceGroups, type Service } from "@/data/services";
    columns (Online). The "three ways in" strip above them carries the five anchors, so
    the page stays navigable without a sticky sidebar.
 
-   Grounds alternate: linen - linen(quiet) - MOSS - linen - sand/45 - linen -
+   Grounds are all light since 2026-09-15: linen, a quiet linen, mist, sand/45.
+   No section takes a dark ground any more - the old corporate band was moss and
+   the page dropping in and out of dark green is what the client asked us to stop
+   (call, 00:46:22). Old order for reference: linen - linen(quiet) - MOSS - linen - sand/45 - linen -
    MOSS(CtaBand). Two moss panels, which is the ceiling in the page spec.
 
    No client company is named. The business cards list them, but publishing
@@ -32,10 +36,10 @@ import { serviceGroups, type Service } from "@/data/services";
    this page goes to /contact or to WhatsApp. */
 
 export const metadata: Metadata = pageMeta({
-  title: "Services",
+  title: "Mentorship",
   description:
     "Private yoga, mindfulness coaching, breathwork, corporate well-being, retreats, school sessions and online courses with Rajalakshmi V in Bangalore.",
-  path: "/services",
+  path: "/mentorship",
 });
 
 /* Format / who-it-suits, set under a service. Only fields the client has
@@ -46,14 +50,14 @@ export const metadata: Metadata = pageMeta({
    is the same handful of words on every card, but "who it suits" is a real
    sentence and was unreadable set as tracked caps at 10px - on a phone it
    wrapped to two lines of shouting. */
-function Meta({ service, tone = "ink" }: { service: Service; tone?: "ink" | "linen" }) {
+function Meta({ service }: { service: Service }) {
   const format = [service.format, service.duration].filter(Boolean).join("  ·  ");
   if (!format && !service.for) return null;
 
   return (
     <p
       className={`mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 ${
-        tone === "linen" ? "text-linen/75" : "text-ink/70"
+        "text-ink/70"
       }`}
     >
       {format ? <span className="label text-[0.62rem]">{format}</span> : null}
@@ -119,16 +123,16 @@ const howItWorks = [
 const catalogueLd = {
   "@context": "https://schema.org",
   "@type": "OfferCatalog",
-  "@id": `${site.url}/services#catalogue`,
-  name: `Services - ${site.name}`,
-  url: `${site.url}/services`,
+  "@id": `${site.url}/mentorship#catalogue`,
+  name: `Mentorship - ${site.name}`,
+  url: `${site.url}/mentorship`,
   provider: { "@id": `${site.url}#business` },
   itemListElement: serviceGroups.map((group, i) => ({
     "@type": "OfferCatalog",
     position: i + 1,
     name: group.title,
     description: group.intro,
-    url: `${site.url}/services#${group.slug}`,
+    url: `${site.url}/mentorship#${group.slug}`,
     itemListElement: group.services.map((service, j) => ({
       "@type": "Service",
       position: j + 1,
@@ -140,14 +144,14 @@ const catalogueLd = {
   })),
 };
 
-export default function ServicesPage() {
+export default function MentorshipPage() {
   return (
     <>
       <SiteHeader />
 
       <main id="main">
         <PageHero
-          eyebrow="Services"
+          eyebrow="Mentorship"
           title="Ways to practise"
           standfirst="Individual teaching, workplace programmes, retreats, schools and online courses. The same practice, sized to whoever is in the room."
           figure={{
@@ -230,13 +234,15 @@ export default function ServicesPage() {
             1024-1480px the container's own gutter equals the rule's offset, so
             it landed exactly on the first letter of every line and read as a
             stray border. The motif still closes the page in the CtaBand. */}
-        <section id={corporate.slug} className="bg-moss text-linen">
+        {/* Mist, not moss. A whole section never takes dark green as its ground
+            any more - the client found the page dropping in and out of dark green
+            confusing (call, 00:46:22). Moss 8.19:1 on mist. */}
+        <section id={corporate.slug} className="bg-mist text-ink">
           <Section className="py-24 md:py-32">
             <SectionHead
               eyebrow={corporate.eyebrow}
               title={corporate.title}
               standfirst={corporate.intro}
-              tone="linen"
             />
 
             <ol className="mt-16 grid gap-x-16 gap-y-12 md:grid-cols-2" data-reveal-stagger>
@@ -247,27 +253,27 @@ export default function ServicesPage() {
                    its rule crosses the panel and the row looks deliberate. */
                 <li
                   key={service.slug}
-                  className={`border-t border-linen/20 pt-6 ${
+                  className={`border-t border-ink/15 pt-6 ${
                     corporate.services.length % 2 === 1 && i === corporate.services.length - 1
                       ? "md:col-span-2"
                       : ""
                   }`}
                 >
-                  <p className="label text-[0.62rem] text-sand">{String(i + 1).padStart(2, "0")}</p>
-                  <h3 className="mt-4 font-display text-[1.6rem] font-light leading-tight text-linen md:text-[2rem]">
+                  <p className="label text-[0.62rem] text-moss/70">{String(i + 1).padStart(2, "0")}</p>
+                  <h3 className="mt-4 font-display text-[1.6rem] font-light leading-tight text-moss md:text-[2rem]">
                     {service.name}
                   </h3>
-                  <p className="mt-3 max-w-[48ch] leading-relaxed text-linen/75">{service.summary}</p>
-                  <Meta service={service} tone="linen" />
+                  <p className="mt-3 max-w-[48ch] leading-relaxed text-ink/75">{service.summary}</p>
+                  <Meta service={service}  />
                 </li>
               ))}
             </ol>
 
             <div className="mt-16 flex flex-col items-start gap-4 sm:flex-row sm:items-center" data-reveal>
-              <Button href="/contact" variant="linen">
+              <Button href="/contact" variant="solid">
                 Discuss a programme
               </Button>
-              <Button href={site.whatsapp} variant="light" external>
+              <Button href={site.whatsapp} variant="ghost" external>
                 Message on WhatsApp
               </Button>
             </div>
@@ -420,7 +426,7 @@ export default function ServicesPage() {
 
       <SiteFooter />
 
-      <JsonLd data={[breadcrumbLd([{ name: "Services", path: "/services" }]), catalogueLd]} />
+      <JsonLd data={[breadcrumbLd([{ name: "Mentorship", path: "/mentorship" }]), catalogueLd]} />
     </>
   );
 }

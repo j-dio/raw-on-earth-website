@@ -4,43 +4,47 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import JsonLd from "@/components/JsonLd";
-import { Section, SectionHead, LeafRule, Button, CtaBand } from "@/components/ui";
+import GalleryGrid from "@/components/GalleryGrid";
+import { Section, SectionHead, Button, CtaBand } from "@/components/ui";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { site } from "@/data/site";
-import { strands, snaps } from "@/data/community";
+import { strands } from "@/data/community";
+import { gallery, galleryCategories } from "@/data/gallery";
 import { testimonials } from "@/data/home";
 
 /* Community. The design brief's theme is "Grow Together" and its success test
    is emotional, not informational: a visitor should finish this page wanting
-   in. So the page is built round the three things a brochure page usually
-   skips - faces, a cadence you can actually turn up to, and a way in that
-   costs nothing.
+   in.
 
-   Order:
+   Order, reset 2026-09-15 when /gallery was folded in (client call 00:38:42,
+   confirmed 00:46:22). Her structural instruction was that the sections which
+   used to sit BELOW the gallery move ABOVE it, so the gallery reads as the end
+   of the page:
 
      1. Masthead        four practitioners under a banyan. Adults, so no
                         consent question, and it is the one frame in the
                         library that reads as a group rather than a class.
-     2. The strands     the seven things the brief names, as one mosaic. Not
-                        seven equal cards: the ones with a photograph run
-                        larger, which is also the honest hierarchy - those are
-                        the ones we can show actually happen.
-     3. Stories         PLACEHOLDER. See the section comment: no real
-                        testimonials exist yet and none are invented here.
-     4. Photo strip     a horizontal scroll of community frames, into /gallery.
-     5. Retreats        the one quiet dark block on the page.
-     6. How to join     the low-friction close. WhatsApp, Instagram, contact.
-     7. CtaBand         community-flavoured, not the default booking line.
+     2. The strands     the seven things the brief names, as one mosaic.
+     3. Stories         renders NOTHING while the testimonials are placeholder.
+                        See the note above `stories`.
+     4. Retreats        moved up from below the gallery.
+     5. How to join     moved up from below the gallery.
+     6. Gallery         id="gallery", the whole grid, was its own route.
+     7. CtaBand
 
-   Grounds alternate linen -> sand -> linen -> moss -> linen -> moss, so the
-   page has a pulse and no two tinted bands touch. Three moving ideas: the
-   masthead push-in (PageHero), the staggered strand grid, and a slow drift on
-   alternate photo tiles. */
+   The horizontal photo strip that used to sit here was removed in the same
+   pass. It existed to tease /gallery; with the gallery on this page it was the
+   same photographs twice, which is the "too much to choose from" complaint the
+   redesign is answering.
+
+   Grounds: linen -> mist -> sand -> linen, closing on the CtaBand. One mild
+   green (mist), not a page that keeps falling into a dark panel (client,
+   00:47:13). */
 
 export const metadata: Metadata = pageMeta({
   title: "Community",
   description:
-    "Nature walks, a running club, a book club, volunteer teaching, retreats and community events with Raw On Earth. No membership, and no fee to turn up.",
+    "Nature walks, a running club, a book club, volunteer teaching, retreats and community events with Raw On Earth, plus the full photograph gallery. No membership, and no fee to turn up.",
   path: "/community",
 });
 
@@ -69,14 +73,25 @@ const SPAN: Record<string, string> = {
   "community-events": "sm:col-span-2 lg:col-span-3",
 };
 
-/* PLACEHOLDER - the `testimonials` array in src/data/home.ts is three stub
-   objects waiting on the client ("RJ to share"). Rather than print
-   "Placeholder testimonial." at 3rem on a public page, or invent a quote and
-   attach a person's name to it, the section renders an honest waiting state
-   and asks the reader for theirs. When the real quotes replace the stubs in
-   home.ts this filter goes non-empty and the pull-quote treatment below turns
-   on with no further edit here. */
+/* PLACEHOLDER - `testimonials` in src/data/home.ts is three stub objects
+   waiting on the client, each of whose quote literally reads "Placeholder
+   testimonial. Awaiting the real quotes from the client."
+
+   WHAT FLIPS THE SECTION ON: replace those stub quotes in src/data/home.ts
+   with the real ones. This filter then goes non-empty and the whole block
+   below renders. Nothing else has to change here.
+
+   Until then the section renders nothing at all - not a heading, not a
+   waiting state. A heading over three admissions that there is nothing under
+   it is worse than no section. */
 const stories = testimonials.filter((t) => !t.quote.startsWith("Placeholder"));
+
+/* Only the categories that hold photographs are offered. The data file
+   declares all nine the brief names; the client has still sent no Corporate
+   and no Retreats frames, so those two carry a count of 0. They reappear on
+   their own the day the pictures arrive. A filter button that opens on an
+   empty grid is worse than no button. */
+const shownCategories = galleryCategories.filter((category) => category.count > 0);
 
 export default function CommunityPage() {
   return (
@@ -126,9 +141,7 @@ export default function CommunityPage() {
                   />
                 ) : null}
                 <div className="flex flex-1 flex-col p-8 md:p-10">
-                  <h3 className="font-display text-[1.6rem] font-light leading-tight text-moss md:text-[2rem]">
-                    {s.name}
-                  </h3>
+                  <h3 className="t-h3 text-moss">{s.name}</h3>
                   <p className="mt-4 max-w-[46ch] flex-1 leading-relaxed text-ink/80">{s.summary}</p>
                   {/* Cadence, set apart from the description because it is the
                       line a reader scans for. It says where a date will appear,
@@ -143,27 +156,23 @@ export default function CommunityPage() {
           </ul>
         </Section>
 
-        {/* STUDENT STORIES - see the PLACEHOLDER note above `stories`.
-            About renders the same testimonials as a quiet stacked list; here
-            they are large pull quotes on a tinted band, so the two pages do not
-            read as the same component twice. */}
-        <Section className="tex tex-stone bg-sand/45 py-24 md:py-32">
-          <SectionHead
-            eyebrow="Student stories"
-            title="What people say once they have been coming a while"
-            align="centre"
-          />
-
-          {stories.length > 0 ? (
+        {/* STUDENT STORIES - the whole section is behind the guard, so while
+            the quotes are placeholder this page renders no trace of it. See
+            the note above `stories` for what turns it on. */}
+        {stories.length > 0 ? (
+          <Section className="tex tex-stone bg-sand/45 py-24 md:py-32">
+            <SectionHead
+              eyebrow="Student stories"
+              title="What people say once they have been coming a while"
+              align="centre"
+            />
             <div className="mt-16 grid gap-px bg-ink/15 md:grid-cols-2">
               {stories.map((t) => (
                 <figure
                   key={t.quote}
                   className="flex flex-col justify-between gap-8 bg-linen p-10 md:p-14"
                 >
-                  <blockquote className="font-display text-[1.7rem] font-light italic leading-[1.3] text-moss md:text-[2.2rem]">
-                    &ldquo;{t.quote}&rdquo;
-                  </blockquote>
+                  <blockquote className="t-quote text-moss">&ldquo;{t.quote}&rdquo;</blockquote>
                   <figcaption className="text-[0.9rem] text-ink/75">
                     <span className="label block text-[0.7rem] text-moss">{t.name}</span>
                     <span className="mt-2 block">{t.context}</span>
@@ -171,102 +180,21 @@ export default function CommunityPage() {
                 </figure>
               ))}
             </div>
-          ) : (
-            <div className="mx-auto mt-14 max-w-[54ch] text-center" data-reveal>
-              <LeafRule className="mx-auto max-w-xs" />
-              <p className="mt-10 font-display text-[1.6rem] font-light italic leading-snug text-balance text-moss md:text-[2rem]">
-                We are collecting these properly rather than writing them ourselves.
-              </p>
-              <p className="mt-6 leading-relaxed text-ink/80">
-                If you have practised with us, online or in Bangalore, we would like to
-                hear how it went - the honest version. Send it on WhatsApp and it may
-                appear here, with your name or without it, whichever you prefer.
-              </p>
-              <div className="mt-10 flex justify-center">
-                <Button href={site.whatsapp} external>
-                  Send yours on WhatsApp
-                </Button>
-              </div>
-            </div>
-          )}
-        </Section>
+          </Section>
+        ) : null}
 
-        {/* PHOTO STRIP - horizontal scroll, so a wide band of photographs costs
-            one screen of height rather than five. A real overflow container
-            with scroll-snap works with a trackpad and a thumb; `tabIndex={0}`
-            is what gives a keyboard user the scroll, and the group is named so
-            a screen reader announces what it is.
-
-            The drift is on alternate tiles only. Six moving photographs would
-            be a carousel; three slow ones are a band that breathes. */}
-        <section className="overflow-hidden py-24 md:py-32" aria-labelledby="snaps-head">
-          <div className="mx-auto max-w-[1400px] px-6 md:px-10">
-            <div className="flex flex-wrap items-end justify-between gap-6" data-reveal>
-              <div className="max-w-2xl">
-                <p className="eyebrow">In the room</p>
-                <h2
-                  id="snaps-head"
-                  className="mt-5 font-display text-[clamp(2.1rem,4.4vw,3.4rem)] font-light leading-[1.06] text-balance text-moss"
-                >
-                  Group photographs, mostly unposed
-                </h2>
-              </div>
-              {/* py-3/-mb-3: a 14px label is a 19px tap target. The padding
-                  takes it to ~43px and the negative margin cancels the visual
-                  shift, so it still sits on the heading's bottom edge. */}
-              <Link
-                href="/gallery"
-                className="link label -mb-3 py-3 text-[0.72rem] whitespace-nowrap"
-              >
-                See the full gallery
-              </Link>
-            </div>
-          </div>
-
-          {/* scroll-pl matches the horizontal padding. Without it a mandatory
-              snap aligns the first tile to the scrollport edge, not to the
-              padding edge, so the browser scrolls the gutter away on load and
-              the strip lands flush against the viewport, looking clipped. */}
-          <div
-            tabIndex={0}
-            role="group"
-            aria-label="Community photographs, scroll sideways"
-            className="mt-14 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-pl-6 px-6 pb-6 md:gap-6 md:scroll-pl-10 md:px-10"
-          >
-            {snaps.map((s, i) => (
-              <figure
-                key={s.src}
-                {...(i % 2 === 1 ? { "data-parallax": "40" } : {})}
-                className="w-[76vw] shrink-0 snap-start sm:w-[46vw] lg:w-[30vw] xl:w-[24vw]"
-              >
-                <img
-                  src={s.src}
-                  alt={s.alt}
-                  width={s.width}
-                  height={s.height}
-                  loading="lazy"
-                  decoding="async"
-                  className="aspect-[4/5] w-full object-cover"
-                />
-                <figcaption className="mt-4 text-[0.82rem] leading-relaxed text-ink/70">
-                  {s.caption}
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        </section>
-
-        {/* RETREAT MEMORIES - the quiet block. One dark panel, one large frame
-            and one small offset one. No grid, because this section is a pause
-            between two grids. */}
-        <section className="bg-moss py-24 text-linen md:py-32">
+        {/* RETREAT MEMORIES - the quiet block. Was a full-bleed moss panel with
+            linen type; it is mist now, because the client could not tell
+            whether the site was pale green or dark green (00:46:22). Every
+            child that assumed a dark ground was re-toned with it. */}
+        <section className="bg-mist py-24 md:py-32">
           <div className="mx-auto grid max-w-[1400px] items-center gap-14 px-6 md:px-10 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
             <div data-reveal>
-              <p className="eyebrow !text-sage">Retreat memories</p>
-              <h2 className="mt-5 font-display text-[clamp(2.1rem,4.4vw,3.4rem)] font-light leading-[1.06] text-balance text-linen">
+              <p className="eyebrow">Retreat memories</p>
+              <h2 className="t-h2 mt-5 text-moss">
                 What people remember is rarely the practice
               </h2>
-              <div className="mt-8 max-w-[54ch] space-y-6 leading-relaxed text-linen/75">
+              <div className="mt-8 max-w-[54ch] space-y-6 leading-relaxed text-ink/80">
                 <p>
                   It is the walk to breakfast, the person you sat next to without
                   planning to, the afternoon nobody filled. The sessions hold the days
@@ -279,13 +207,15 @@ export default function CommunityPage() {
                 </p>
               </div>
               <div className="mt-10">
-                <Button href="/workshops" variant="light">
-                  Retreats and workshops
-                </Button>
+                <Button href="/workshops">Retreats and workshops</Button>
               </div>
             </div>
 
             <div className="relative" data-reveal>
+              {/* A9 - the source frame carries ~19% of rafters above the room
+                  and ~14% of bare floor below it. Square crop held low
+                  (object-position 58%) drops both without touching either
+                  face. */}
               <img
                 src="/media/gallery/teaching-04.webp"
                 alt="A teacher assists a student into a supported bow pose on a purple mat inside a wooden, thatch-roofed pavilion."
@@ -293,12 +223,13 @@ export default function CommunityPage() {
                 height={2000}
                 loading="lazy"
                 decoding="async"
-                className="aspect-[3/4] w-full object-cover"
+                className="aspect-square w-full object-cover object-[50%_58%]"
               />
               {/* The small frame overlaps the large one from below left, the
                   offset pair the reference site uses. Hidden below sm: at phone
                   width it lands on top of the main image rather than beside it,
-                  and the container has no room to hold it clear. */}
+                  and the container has no room to hold it clear. The border is
+                  the section ground, so it reads as a cut-out, not a frame. */}
               <img
                 src="/media/thumb/community-06.webp"
                 alt="Two Buddhist monks in maroon robes stand with two guests beside a golden Buddha statue in a bright, minimal room."
@@ -306,22 +237,19 @@ export default function CommunityPage() {
                 height={1350}
                 loading="lazy"
                 decoding="async"
-                className="absolute -bottom-10 -left-10 hidden w-[38%] border-4 border-moss object-cover sm:block"
+                className="absolute -bottom-10 -left-10 hidden w-[38%] border-4 border-mist object-cover sm:block"
               />
             </div>
           </div>
         </section>
 
         {/* HOW TO JOIN */}
-        <Section className="py-24 md:py-32">
+        <Section className="tex tex-stone bg-sand/45 py-24 md:py-32">
           <div className="mx-auto max-w-3xl text-center" data-reveal>
             <p className="eyebrow">How to join</p>
             {/* The one data-lines heading on this page. Plain text child only -
                 the attribute replaces the element's content. */}
-            <h2
-              data-lines
-              className="mt-5 font-display text-[clamp(2.1rem,4.4vw,3.4rem)] font-light leading-[1.06] text-balance text-moss"
-            >
+            <h2 data-lines className="t-h2 mt-5 text-moss">
               You turn up. That is the whole process.
             </h2>
             <p className="mx-auto mt-6 max-w-[54ch] leading-relaxed text-ink/80">
@@ -372,12 +300,32 @@ export default function CommunityPage() {
           </ul>
         </Section>
 
+        {/* GALLERY - was its own route until 2026-09-15. It is the end of the
+            page on purpose: a visitor who scrolls this far is browsing, not
+            deciding, which is exactly who the photographs are for.
+
+            scroll-mt clears the fixed header, because the nav links straight
+            to /community#gallery. */}
+        <Section
+          id="gallery"
+          className="scroll-mt-24 bg-linen py-24 md:scroll-mt-28 md:py-32"
+        >
+          <SectionHead
+            eyebrow="Gallery"
+            title="The practice, as it actually looks"
+            standfirst="Mornings under the trees, rooms full of children, quiet weeks away. These are working photographs rather than a shoot, so the light is whatever the light was. Choose a category to narrow the grid, or open any picture to see it whole."
+          />
+          <div className="mt-14">
+            <GalleryGrid items={gallery} categories={shownCategories} />
+          </div>
+        </Section>
+
         <CtaBand
           eyebrow="Grow together"
           title="Come to the next one"
           body="Walks, runs, the book club and volunteer sessions are open to anybody. Tell us which one you would like to hear about and we will let you know when it is on."
           primary={{ href: "/contact", label: "Get in touch" }}
-          secondary={{ href: "/gallery", label: "See the gallery" }}
+          secondary={{ href: "/workshops", label: "See Workshops" }}
         />
       </main>
       <SiteFooter />
@@ -402,6 +350,21 @@ export default function CommunityPage() {
               description: s.summary,
               url: `${site.url}/community#${s.slug}`,
             })),
+          },
+          /* Moved here with the gallery itself. Still an ImageGallery object
+             and nothing more: emitting an inline ImageObject per item would
+             add a large payload to every page load and buys no ranking,
+             because Google reads the real <img> elements and they already
+             carry the same alt text. */
+          {
+            "@context": "https://schema.org",
+            "@type": "ImageGallery",
+            name: `Gallery — ${site.name}`,
+            description:
+              "Photographs and short films from Raw On Earth yoga classes, children's sessions, community gatherings and retreats.",
+            url: `${site.url}/community#gallery`,
+            numberOfItems: gallery.length,
+            isPartOf: { "@id": `${site.url}#website` },
           },
         ]}
       />
