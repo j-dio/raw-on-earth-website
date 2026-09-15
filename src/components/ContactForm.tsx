@@ -18,58 +18,55 @@ import { site } from "@/data/site";
 
 const INITIAL: State = { status: "idle" };
 
-/* border-ink/50 is a measured floor, not taste: WCAG 1.4.11 wants 3:1 between a
-   control's boundary and its ground, and ink/50 on linen is 3.14:1 where the
-   old ink/20 was 1.5:1. py-3.5 puts the control at 48px, over the 44px target. */
+/* Underline, not a box. Her instruction on 2026-09-06: "rather than having a
+   box, we can just have a single line."
+
+   Tailwind's preflight already zeroes every border, so `border-b` is the whole
+   rule and nothing has to be turned off first. ink/50 is a measured floor, not
+   taste: WCAG 1.4.11 wants 3:1 between a control's boundary and its ground, and
+   ink/50 on linen is 3.14:1. py-3 keeps the control at 48px, over the 44px
+   target. Focus is the site-wide :focus-visible ring in globals.css, so nothing
+   here suppresses an outline. */
 const CONTROL =
-  "mt-3 w-full border border-ink/50 bg-transparent px-4 py-3.5 text-ink placeholder:text-ink/45 " +
+  "mt-2 w-full border-b border-ink/50 bg-transparent px-0 py-3 text-ink " +
   "transition-colors duration-300 hover:border-ink/70 focus:border-moss aria-[invalid=true]:border-moss";
 
 const LABEL_TEXT: Record<FieldName, string> = {
   name: "Your name",
-  email: "Email",
-  phone: "Phone",
-  instagram: "Instagram",
+  email: "Email address",
   message: "Your message",
 };
 
 function Field({
   name,
   error,
-  hint,
   defaultValue,
   type = "text",
   rows,
-  required = false,
   autoComplete,
   inputMode,
   maxLength,
 }: {
   name: FieldName;
   error?: string;
-  hint?: string;
   defaultValue?: string;
   type?: string;
   rows?: number;
-  required?: boolean;
   autoComplete?: string;
-  inputMode?: "text" | "email" | "tel";
+  inputMode?: "text" | "email";
   maxLength?: number;
 }) {
-  const describedBy = [error ? `${name}-error` : null, hint ? `${name}-hint` : null]
-    .filter(Boolean)
-    .join(" ");
-
+  // All three fields are required, so there is no optional marker to render.
   const shared = {
     id: name,
     name,
-    required,
+    required: true,
     maxLength,
     defaultValue,
     autoComplete,
     inputMode,
     "aria-invalid": error ? true : undefined,
-    "aria-describedby": describedBy || undefined,
+    "aria-describedby": error ? `${name}-error` : undefined,
     className: CONTROL,
   };
 
@@ -77,16 +74,10 @@ function Field({
     <div>
       <label htmlFor={name} className="label block text-[0.72rem] text-moss">
         {LABEL_TEXT[name]}
-        {required ? null : <span className="ml-2 normal-case tracking-normal text-ink/70">optional</span>}
       </label>
 
       {rows ? <textarea {...shared} rows={rows} /> : <input {...shared} type={type} />}
 
-      {hint ? (
-        <p id={`${name}-hint`} className="mt-2 text-[0.85rem] leading-relaxed text-ink/70">
-          {hint}
-        </p>
-      ) : null}
       {error ? (
         <p id={`${name}-error`} className="mt-2 text-[0.85rem] font-bold leading-relaxed text-moss">
           {error}
@@ -240,43 +231,22 @@ export default function ContactForm() {
           <input id="company" name="company" type="text" tabIndex={-1} autoComplete="off" />
         </div>
 
-        <div className="grid gap-8 sm:grid-cols-2">
-          <Field name="name" required autoComplete="name" maxLength={80} error={errors.name} defaultValue={values.name} />
-          <Field
-            name="email"
-            type="email"
-            required
-            autoComplete="email"
-            inputMode="email"
-            maxLength={160}
-            error={errors.email}
-            defaultValue={values.email}
-          />
-          <Field
-            name="phone"
-            type="tel"
-            autoComplete="tel"
-            inputMode="tel"
-            maxLength={32}
-            error={errors.phone}
-            defaultValue={values.phone}
-          />
-          <Field
-            name="instagram"
-            autoComplete="off"
-            maxLength={60}
-            hint="Handle or profile link. Either is fine."
-            error={errors.instagram}
-            defaultValue={values.instagram}
-          />
-        </div>
-
+        {/* Stacked, one field per line. A two-column grid is the boxed layout
+            she asked us to drop. */}
+        <Field name="name" autoComplete="name" maxLength={80} error={errors.name} defaultValue={values.name} />
+        <Field
+          name="email"
+          type="email"
+          autoComplete="email"
+          inputMode="email"
+          maxLength={160}
+          error={errors.email}
+          defaultValue={values.email}
+        />
         <Field
           name="message"
-          rows={7}
-          required
+          rows={3}
           maxLength={2000}
-          hint="What you are looking for, and whether you would prefer to practise online or in person."
           error={errors.message}
           defaultValue={values.message ?? prefill}
         />

@@ -213,9 +213,11 @@ export default function WorkshopsPage() {
           </div>
         </Section>
 
-        {/* FOR ORGANISATIONS AND SCHOOLS - walnut ground. Linen on walnut
-            measures 9.61:1, linen/75 on walnut 6.21:1, sand on walnut 7.26:1. */}
-        <section className="bg-walnut text-linen">
+        {/* FOR ORGANISATIONS AND SCHOOLS. Mist ground since 2026-09-15: this was
+            walnut, and a page that runs pale, drops into a dark brown band and
+            comes back is the switching the client asked us to stop (call,
+            00:46:22). Moss 8.19:1 on mist, ink 12.72:1. */}
+        <section className="bg-mist text-ink">
           <Section className="py-24 md:py-32">
             <div className="grid gap-14 lg:grid-cols-12 lg:gap-16 lg:items-center">
               <div className="lg:col-span-6">
@@ -223,27 +225,27 @@ export default function WorkshopsPage() {
                   eyebrow="For organisations and schools"
                   title="Work that happens on your premises"
                   standfirst="Programmes for teams under load, and sessions for children and teaching staff. Run over weeks where that suits, or as a single session for a wellness day."
-                  tone="linen"
+                  
                 />
                 <ul className="mt-10 space-y-4" data-reveal-stagger>
                   {forOrganisations.map((w) => (
-                    <li key={w.slug} className="border-t border-linen/20 pt-4">
-                      <h3 className="font-display text-[1.35rem] font-light leading-tight text-linen">
+                    <li key={w.slug} className="border-t border-ink/15 pt-4">
+                      <h3 className="font-display text-[1.35rem] font-light leading-tight text-moss">
                         {w.title}
                       </h3>
-                      <p className="mt-2 max-w-[52ch] leading-relaxed text-linen/75">{w.summary}</p>
-                      <p className="label mt-3 text-[0.62rem] text-sand">
+                      <p className="mt-2 max-w-[52ch] leading-relaxed text-ink/75">{w.summary}</p>
+                      <p className="label mt-3 text-[0.62rem] text-moss/70">
                         {w.duration} &middot; {modeLabels[w.mode]}
                       </p>
                     </li>
                   ))}
                 </ul>
-                <LeafRule tone="linen" className="mt-12" />
+                <LeafRule  className="mt-12" />
                 <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-                  <Button href="/services" variant="linen">
+                  <Button href="/mentorship" variant="solid">
                     See the full programmes
                   </Button>
-                  <Button href={site.whatsapp} variant="light" external>
+                  <Button href={site.whatsapp} variant="ghost" external>
                     Ask on WhatsApp
                   </Button>
                 </div>
@@ -295,7 +297,7 @@ export default function WorkshopsPage() {
 
         <CtaBand
           body="Tell her which format you are after and she will answer with dates as soon as they are set."
-          secondary={{ href: "/services", label: "Explore Services" }}
+          secondary={{ href: "/mentorship", label: "Explore Mentorship" }}
         />
       </main>
       <SiteFooter />

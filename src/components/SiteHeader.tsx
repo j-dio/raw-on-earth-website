@@ -3,7 +3,79 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { nav, site } from "@/data/site";
+import { nav, site, type NavItem } from "@/data/site";
+
+/* A top-row item that carries a submenu. The trigger is a button, not a link,
+   so the parent page is reached through the first entry in its own panel -
+   a link that also opens a menu is ambiguous with a keyboard.
+
+   No global listeners and no focus trap: Escape closes and hands focus back,
+   and the panel closes when focus leaves the wrapper, which covers a click
+   anywhere else on the page as well. */
+function NavDropdown({ item, current }: { item: NavItem; current: boolean }) {
+  const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const btn = useRef<HTMLButtonElement>(null);
+  const panelId = `nav-${item.href.replace(/\W+/g, "")}`;
+
+  return (
+    <div
+      className="relative"
+      onKeyDown={(e) => {
+        if (e.key === "Escape" && open) {
+          setOpen(false);
+          btn.current?.focus();
+        }
+        if (e.key === "ArrowDown" && !open) {
+          e.preventDefault();
+          setOpen(true);
+        }
+      }}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setOpen(false);
+      }}
+    >
+      <button
+        ref={btn}
+        type="button"
+        aria-expanded={open}
+        aria-controls={panelId}
+        onClick={() => setOpen((v) => !v)}
+        className="label group relative flex items-center gap-1.5 py-2 text-[0.72rem] text-ink"
+      >
+        {item.label}
+        <span aria-hidden className={`text-[0.6rem] transition-transform duration-300 ${open ? "rotate-180" : ""}`}>
+          &#9662;
+        </span>
+        <span
+          aria-hidden
+          className={`absolute inset-x-0 -bottom-0.5 h-px origin-left bg-gold transition-transform duration-300 ease-out group-hover:scale-x-100 ${
+            current ? "scale-x-100" : "scale-x-0"
+          }`}
+        />
+      </button>
+
+      <ul
+        id={panelId}
+        hidden={!open}
+        className="absolute left-0 top-full z-50 min-w-[13rem] border border-ink/15 bg-linen py-2 shadow-[0_8px_24px_rgba(43,45,38,0.10)]"
+      >
+        {item.children?.map((child) => (
+          <li key={child.href}>
+            <Link
+              href={child.href}
+              onClick={() => setOpen(false)}
+              aria-current={child.href === pathname ? "page" : undefined}
+              className="label block px-5 py-3 text-[0.7rem] text-ink transition-colors hover:bg-sand/60"
+            >
+              {child.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -54,10 +126,9 @@ export default function SiteHeader() {
           : "bg-transparent"
       }`}
     >
-      {/* Full-bleed, not a 1400px box. Nine items packed into a centred column
-          read as a dense band next to the wordmark; letting the row use the
-          whole viewport is what buys the space between them. The bar also
-          shrinks on scroll so it stops competing with the hero headline. */}
+      {/* Full-bleed, not a 1400px box: the row reads better with the whole
+          viewport between the wordmark and the links. The bar also shrinks on
+          scroll so it stops competing with the hero headline. */}
       <div
         className={`relative z-50 flex items-center justify-between px-6 transition-[height] duration-500 md:px-10 lg:px-14 2xl:px-20 ${
           scrolled ? "h-[68px]" : "h-24"
@@ -71,16 +142,17 @@ export default function SiteHeader() {
           <span className="sr-only">{site.name} &mdash; home</span>
         </Link>
 
-        {/* Tight tracking on nine items (a wide track is what made the first
-            row shout), and a gold underline that grows on hover. Colour stays
-            full ink - dimming it to ink/70 would put the label under 4.5:1
-            against the palest hero pixels. The current page keeps its
-            underline drawn, which is the only state a visitor cannot get to
-            by hovering. */}
+        {/* Colour stays full ink - dimming it to ink/70 would put the label
+            under 4.5:1 against the palest hero pixels. The current page keeps
+            its underline drawn, which is the only state a visitor cannot get
+            to by hovering. */}
         <nav aria-label="Primary" className="hidden items-center gap-x-7 xl:flex 2xl:gap-x-9">
           {nav.map((item) => {
             const current =
               item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+
+            if (item.children) return <NavDropdown key={item.href} item={item} current={current} />;
+
             return (
               <Link
                 key={item.href}
@@ -101,13 +173,13 @@ export default function SiteHeader() {
             );
           })}
 
-          {/* One standing action. Hidden below 2xl, where nine labels plus a
-              pill stop fitting the row. */}
+          {/* One standing action. Six labels plus the pill fit from xl now;
+              it was held back to 2xl when the row carried nine. */}
           <Link
             href="/contact"
-            className="label hidden rounded-full bg-moss px-6 py-3 text-[0.7rem] text-linen transition-colors duration-300 hover:bg-moss-deep 2xl:inline-flex"
+            className="label hidden rounded-full bg-moss px-6 py-3 text-[0.7rem] text-linen transition-colors duration-300 hover:bg-moss-deep xl:inline-flex"
           >
-            Book a Session
+            Book a session
           </Link>
         </nav>
 
@@ -136,8 +208,9 @@ export default function SiteHeader() {
         </button>
       </div>
 
-      {/* Nine items is heavy on a phone, so the mobile nav is a full-screen
-          overlay behind one button rather than a squeezed row. */}
+      {/* The mobile nav is a full-screen overlay behind one button rather than
+          a squeezed row. Submenus nest inside it as an indented list - a
+          dropdown inside an overlay is one tap too many. */}
       <div
         id="overlay-nav"
         ref={panelRef}
@@ -162,6 +235,26 @@ export default function SiteHeader() {
                     {String(i + 1).padStart(2, "0")}
                   </span>
                 </Link>
+
+                {/* The child that repeats its parent's href is dropped: the
+                    big link above already goes there. */}
+                {item.children ? (
+                  <ul className="mb-3 flex flex-col gap-1 pl-5">
+                    {item.children
+                      .filter((child) => child.href !== item.href)
+                      .map((child) => (
+                        <li key={child.href}>
+                          <Link
+                            href={child.href}
+                            onClick={() => setOpen(false)}
+                            className="label flex min-h-11 items-center text-[0.72rem] text-linen/75 transition-colors hover:text-linen"
+                          >
+                            {child.label}
+                          </Link>
+                        </li>
+                      ))}
+                  </ul>
+                ) : null}
               </li>
             ))}
           </ul>
@@ -171,7 +264,7 @@ export default function SiteHeader() {
               href="/contact"
               className="label inline-flex justify-center rounded-full bg-linen px-7 py-3.5 text-[0.74rem] text-moss"
             >
-              Book a Session
+              Book a session
             </Link>
             <p className="text-sm text-linen/60">
               <a href={site.phoneHref} className="tap transition-colors hover:text-linen">

@@ -3,34 +3,33 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import JsonLd from "@/components/JsonLd";
-import { Section, SectionHead, LeafRule, CtaBand, Prose } from "@/components/ui";
+import { Section, SectionHead, CtaBand, Prose } from "@/components/ui";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { site } from "@/data/site";
-import { activeStory, belief, founderBio, journey, letter } from "@/data/about";
+import { story, belief, journey, corporateClients } from "@/data/about";
 
-/* About. Five blocks, in the order the two client documents put them:
+/* About:
 
-     1. Story          the chosen draft. TWO drafts exist and the client has
-                       not picked; src/data/about.ts holds both and `activeStory`
-                       is the one line that switches them.
-     2. Belief         the design brief sets this quote apart from the running
-                       copy, so it gets the vertical-rule panel rather than a
-                       paragraph.
-     3. Journey        the brief's own "Journey" list, seven items.
-     4. Founder bio    content PDF, "Meet Rajalakshmi, the Founder".
-     5. The letter     content PDF, "A Note from Raji's Mat". Set as a letter,
-                       because it is one - it is the emotional centre of the
-                       page and the only signed piece of copy on the site.
+     1. Story      her own words on how she got here.
+     2. Belief     the brief indents this quote away from the running copy, so
+                   it gets a panel rather than a paragraph.
+     3. Journey    the brief's "Journey" list, seven items.
+     4. Corporate  the four companies she named on the call. Text, never logos.
+     5. Photo band three frames, no captions.
+
+   Grounds: linen -> mist -> sand -> linen, closing on the CtaBand. One mild
+   green, not a page that keeps falling into a dark panel (client, 00:46:22
+   and 00:47:13).
 
    No masthead figure. PageHero crops its figure to 21:9 on desktop and every
    photograph of her from this shoot is a 1500x2246 portrait, which at 21:9
    keeps a horizontal band across her chest. The portrait runs in the story
-   block instead, at its native ratio. */
+   block instead. */
 
 export const metadata: Metadata = pageMeta({
   title: "About",
   description:
-    "Rajalakshmi V on the practice behind Raw On Earth: thirteen years of Hatha and Ashtanga Vinyasa, training in Rishikesh and Dharamshala, and a letter from her mat.",
+    "Rajalakshmi V on the practice behind Raw On Earth: thirteen years of Hatha and Ashtanga Vinyasa, training in Rishikesh and Dharamshala, and workshops for teams at Volvo, JP Morgan, Amazon and Sayronics.",
   path: "/about",
 });
 
@@ -42,8 +41,8 @@ export default function AboutPage() {
       <main id="main">
         <PageHero
           eyebrow="About"
-          title={activeStory.heading}
-          standfirst={activeStory.subheading}
+          title={story.heading}
+          standfirst={story.subheading}
         />
 
         {/* STORY - two-column editorial, portrait left. The portrait is the
@@ -52,14 +51,18 @@ export default function AboutPage() {
           <div className="grid items-start gap-14 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-5" data-reveal>
               <div data-parallax="60">
+                {/* A9 - the frame carries ~18% blurred canopy above her head
+                    and ~14% bare grass below her feet. 4:5 held slightly high
+                    (30%) drops both and keeps the whole tree pose, head to
+                    standing foot. */}
                 <img
-                  src="/media/gallery/raji-08.webp"
+                  src="/media/gallery/raji-20.webp"
                   width={1500}
                   height={2246}
                   loading="lazy"
                   decoding="async"
-                  alt="The founder sits cross-legged with hands in prayer position, eyes closed, backlit by golden-hour light in a park."
-                  className="w-full object-cover"
+                  alt="The founder balances in tree pose on a park lawn, smiling with hands pressed together at her chest."
+                  className="aspect-[4/5] w-full object-cover object-[50%_30%]"
                 />
               </div>
             </div>
@@ -69,7 +72,7 @@ export default function AboutPage() {
                   from the data file rather than typed into the page so that
                   swapping drafts is one line there and nothing here. */}
               <Prose>
-                {activeStory.paragraphs.map((p) => (
+                {story.paragraphs.map((p) => (
                   <p key={p.slice(0, 32)}>{p}</p>
                 ))}
               </Prose>
@@ -78,21 +81,20 @@ export default function AboutPage() {
         </Section>
 
         {/* BELIEF - the design brief indents these two lines away from the
-            prose. Moss panel, and the one place on this page a heading is
-            split and uncovered (data-lines, once per page). */}
-        <section className="relative overflow-hidden bg-moss py-24 text-linen md:py-32">
-          <div
-            aria-hidden
-            data-scrub-line
-            className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-linen/15"
-          />
+            prose, so it gets a panel rather than a paragraph. It is also the
+            one place on this page a heading is split and uncovered
+            (data-lines, once per page).
+
+            Was a full-bleed moss panel with linen type until 2026-09-15. The
+            client could not tell whether the site was pale green or dark green
+            (00:46:22) and asked for "just a mild green tone" (00:47:13), so
+            the ground is mist and every child that assumed a dark ground was
+            re-toned with it. */}
+        <section className="relative overflow-hidden bg-mist py-24 md:py-32">
           <figure className="relative mx-auto max-w-3xl px-6 text-center md:px-10" data-reveal>
-            <figcaption className="eyebrow !text-sand">{belief.intro}</figcaption>
+            <figcaption className="eyebrow">{belief.intro}</figcaption>
             {/* verbatim client copy */}
-            <blockquote
-              data-lines
-              className="mt-8 font-display text-[clamp(1.8rem,4.2vw,3rem)] font-light italic leading-[1.25] text-balance"
-            >
+            <blockquote data-lines className="t-quote mt-8 text-moss">
               {belief.quote}
             </blockquote>
           </figure>
@@ -103,13 +105,13 @@ export default function AboutPage() {
               column because that is how the brief sets them. */}
           <div className="relative mx-auto mt-16 max-w-[52ch] space-y-6 px-6 text-center md:px-10" data-reveal>
             {/* verbatim client copy */}
-            {activeStory.closing.map((line, i) => (
+            {story.closing.map((line, i) => (
               <p
                 key={line.slice(0, 32)}
                 className={
-                  i === activeStory.closing.length - 1
-                    ? "font-display text-[1.5rem] italic leading-snug text-sand md:text-[1.8rem]"
-                    : "leading-relaxed text-linen/75"
+                  i === story.closing.length - 1
+                    ? "t-h3 italic text-moss"
+                    : "leading-relaxed text-ink/80"
                 }
               >
                 {line}
@@ -129,7 +131,6 @@ export default function AboutPage() {
             parent tint. */}
         <Section className="tex tex-stone bg-sand/45 py-24 md:py-32">
           <SectionHead
-            eyebrow="Journey"
             title="Where the practice comes from"
             standfirst="Thirteen years of study, in two lineages, taught to individuals, schools and organisations."
           />
@@ -138,9 +139,7 @@ export default function AboutPage() {
               .filter((item) => !item.lead)
               .map((item) => (
                 <li key={item.label} className="flex items-end bg-linen p-8 md:p-10">
-                  <span className="font-display text-[1.6rem] leading-tight text-moss md:text-[1.9rem]">
-                    {item.label}
-                  </span>
+                  <span className="t-h3 text-moss">{item.label}</span>
                 </li>
               ))}
           </ul>
@@ -162,40 +161,80 @@ export default function AboutPage() {
           </ul>
         </Section>
 
-        {/* FOUNDER - offset image pair against the biography. The two frames
-            are deliberately unequal and out of line with each other: a matched
-            pair beside a column of text is the third two-column block on this
-            page and reads as a template. */}
-        <Section className="bg-linen py-24 md:py-32">
-          <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
-            <div className="lg:col-span-6">
-              <SectionHead eyebrow="The founder" title={founderBio.heading} />
-              {/* verbatim client copy */}
-              <p className="mt-8 max-w-[52ch] font-display text-[1.6rem] italic leading-snug text-moss md:text-[2rem]">
-                {founderBio.lead}
-              </p>
-              <Prose className="mt-10">
-                {founderBio.paragraphs.map((p) => (
-                  <p key={p.slice(0, 32)}>{p}</p>
-                ))}
-              </Prose>
-            </div>
+        {/* A founder biography and a signed letter used to sit here. Both came
+            from a content document that is no longer followed, and with the
+            story above the page carried three biographies of one person. Cut
+            2026-09-15; their photographs are in the band below. */}
 
-            <div className="lg:col-span-5 lg:col-start-8" data-reveal>
+        {/* TESTIMONIALS live on Community, not here. The client asked for them
+            near the end of the site rather than on the home page (00:37:34),
+            and Community is the page about the people who would be quoted.
+            That section is written and is behind a guard that keeps it off the
+            page while `testimonials` in src/data/home.ts is still placeholder
+            text - see src/app/community/page.tsx. */}
+
+        {/* CORPORATE CREDENTIALS (B7). She asked for this herself: "these
+            companies have to be projected somewhere" (00:55:45).
+
+            Four names as plain type and nothing else. No logos - we have no
+            licence to reproduce anyone's mark - and no invented context, so
+            the section makes exactly the claim she made and no larger one.
+            The names and the open spelling question are in src/data/about.ts. */}
+        <Section className="bg-linen pt-24 md:pt-32">
+          <div className="mx-auto max-w-3xl text-center" data-reveal>
+            <p className="eyebrow">Corporate work</p>
+            <h2 className="t-h2 mt-5 text-moss">Taken into the workplace</h2>
+            <p className="mx-auto mt-6 max-w-[54ch] leading-relaxed text-ink/80">
+              Workshops have been run for teams at:
+            </p>
+          </div>
+          <ul
+            className="mx-auto mt-10 flex max-w-3xl flex-wrap items-baseline justify-center gap-x-10 gap-y-4 md:gap-x-14"
+            data-reveal-stagger
+          >
+            {corporateClients.map((name) => (
+              <li key={name} className="t-h3 text-moss">
+                {name}
+              </li>
+            ))}
+          </ul>
+        </Section>
+
+        {/* A breath between the copy and the CtaBand. Three frames, three
+            different ratios, staggered so the row reads as three moments rather
+            than a grid of thumbnails. No captions: the alt text carries the
+            description for a screen reader and a caption under each would turn
+            the band into a gallery, which Community already is. */}
+        <Section wide className="bg-linen pt-20 pb-24 md:pt-24 md:pb-32">
+          {/* A9 - all three are 2:3 park frames with a quarter of blurred
+              canopy above the head and a strip of grass below. Each is cropped
+              tighter and held low (object-position Y above 50%) because the
+              dead space is mostly at the top; the Y values are per frame,
+              measured off where the subject actually sits in each one. */}
+          <ul className="grid gap-4 sm:grid-cols-3 md:gap-6" data-reveal-stagger>
+            <li>
               <img
-                src="/media/gallery/raji-20.webp"
+                src="/media/gallery/raji-08.webp"
                 width={1500}
                 height={2246}
                 loading="lazy"
                 decoding="async"
-                alt="The founder balances in tree pose on a park lawn, smiling with hands pressed together at her chest."
-                className="aspect-[4/5] w-full object-cover"
+                alt="The founder sits cross-legged with hands in prayer position, eyes closed, backlit by golden-hour light in a park."
+                className="aspect-[4/5] w-full object-cover object-[50%_80%] sm:mt-10"
               />
-              {/* Pushed right and down inside the column so the pair reads as
-                  two moments rather than a grid. It used to carry -mr-10 as
-                  well, which cancelled the page gutter and left the frame flush
-                  against the window edge at 1280px. Desktop only: on a phone
-                  there is no room to offset anything. */}
+            </li>
+            <li>
+              <img
+                src="/media/gallery/raji-10.webp"
+                width={1500}
+                height={2246}
+                loading="lazy"
+                decoding="async"
+                alt="The founder meditates in lotus position with a sparkling hair clip, framed close in golden backlight."
+                className="aspect-square w-full object-cover object-[50%_57%]"
+              />
+            </li>
+            <li>
               <img
                 src="/media/gallery/raji-24.webp"
                 width={1500}
@@ -203,81 +242,16 @@ export default function AboutPage() {
                 loading="lazy"
                 decoding="async"
                 alt="The founder sits in meditation with palms joined at her chest, eyes closed, on a mat in soft evening park light."
-                className="mt-6 aspect-[3/4] w-2/3 object-cover lg:ml-auto lg:mt-10"
+                className="aspect-[4/5] w-full object-cover object-[50%_62%] sm:mt-16"
               />
-            </div>
-          </div>
+            </li>
+          </ul>
         </Section>
-
-        {/* THE LETTER - set as a letter and not as a section of copy: one
-            narrow measure, larger leading than Prose, and a signature block
-            with her own sign-off. Sand ground so it reads as a sheet of paper
-            laid on the page. */}
-        <section className="tex tex-stone bg-sand/45 py-24 md:py-32">
-          <div className="mx-auto max-w-[1400px] px-6 md:px-10">
-            {/* One measure for the whole letter. The heading, the rule and
-                the photograph used to run to 46rem while the paragraphs were
-                capped at 58ch inside them, so the text sat in the left two
-                thirds of its own sheet with a ragged void beside it. 56ch is
-                the paragraph measure, so everything now shares one edge. */}
-            <div className="mx-auto max-w-[56ch]" data-reveal>
-              <h2 className="font-display text-[clamp(2.1rem,4.4vw,3.4rem)] font-light leading-[1.06] text-moss">
-                {letter.heading}
-              </h2>
-              <p className="mt-3 text-[0.95rem] text-ink/70">{letter.note}</p>
-
-              <LeafRule className="mt-10" />
-
-              {/* verbatim client copy - a signed personal letter, so the
-                  measure is narrower than Prose's 62ch and the leading is
-                  looser. Nothing here is Prose because a letter is not a
-                  section of body copy. */}
-              <div className="mt-12 space-y-7 text-[1.05rem] leading-[1.9] text-ink/80">
-                {letter.paragraphs.map((p) => (
-                  <p key={p.slice(0, 32)}>{p}</p>
-                ))}
-              </div>
-
-              <div className="mt-14">
-                <p className="text-ink/80">{letter.signOff}</p>
-                <p className="mt-4 font-display text-[2rem] font-light leading-none text-moss md:text-[2.4rem]">
-                  {letter.signature}
-                </p>
-                <p className="mt-3 text-[0.95rem] text-ink/70">{letter.signatureRole}</p>
-              </div>
-            </div>
-
-            {/* object-top put her face on the bottom edge of the 16:10 band and
-                clipped her chin on a phone: in a 1500x2246 portrait her eyes sit
-                about 38% down the frame, which centres in the band at 30%. */}
-            <img
-              src="/media/gallery/raji-10.webp"
-              width={1500}
-              height={2246}
-              loading="lazy"
-              decoding="async"
-              alt="The founder meditates in lotus position with a sparkling hair clip, framed close in golden backlight."
-              className="mx-auto mt-16 aspect-[16/10] w-full max-w-[56ch] object-cover object-[50%_30%]"
-              data-reveal
-            />
-          </div>
-        </section>
-
-        {/* NO TESTIMONIALS SECTION YET, deliberately.
-
-            It was built and then taken out: the three quotes came from
-            `testimonials` in src/data/home.ts, which is placeholder text, and
-            the rendered cards read "Placeholder testimonial. Awaiting the real
-            quotes from the client." to anybody who opened the page. A heading
-            over three admissions that there is nothing under it is worse than
-            no section. Her real quotes for the online and the offline classes
-            are still on the "RJ to share" list; restore the block from git
-            history once the array holds them. */}
 
         {/* No `body`: CtaBand's default eyebrow and title are already the
             client's own closing line, and the strapline has just been said at
             the foot of the belief panel. */}
-        <CtaBand secondary={{ href: "/services", label: "See What She Teaches" }} />
+        <CtaBand secondary={{ href: "/mentorship", label: "See Her Mentorship" }} />
       </main>
 
       <SiteFooter />
@@ -320,7 +294,11 @@ export default function AboutPage() {
             ],
             worksFor: { "@id": `${site.url}#business` },
             url: `${site.url}/about`,
-            sameAs: [site.social.instagram, site.social.linkedin, site.social.substack],
+            /* Instagram and LinkedIn only. Substack came off the site with the
+               Journal (client, 00:48:30), and `sameAs` is a claim that this
+               person is the same entity as that profile - not one to keep
+               making about an account we no longer link to. */
+            sameAs: [site.social.instagram, site.social.linkedin],
           },
         ]}
       />

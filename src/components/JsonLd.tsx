@@ -59,9 +59,12 @@ export const organisationLd = {
     jobTitle: site.founderTitle,
     description:
       "Yoga facilitator and mindfulness coach with 13+ years of practice, trained in Rishikesh and Dharamshala in Classical Hatha Yoga and Ashtanga Vinyasa.",
-    sameAs: [site.social.instagram, site.social.linkedin, site.social.substack],
+    sameAs: [site.social.instagram, site.social.linkedin],
   },
-  sameAs: [site.social.instagram, site.social.linkedin, site.social.substack],
+  /* Substack came out on 2026-09-15 with the Journal page. Claiming the site
+     and a Substack are the same entity, while linking to neither, is a claim we
+     are not making. */
+  sameAs: [site.social.instagram, site.social.linkedin],
 } as const;
 
 export const websiteLd = {

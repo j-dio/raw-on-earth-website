@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Lato, Cinzel } from "next/font/google";
+import { Cormorant_Garamond, Lato, Montserrat } from "next/font/google";
 import Preloader from "@/components/Preloader";
 import Motion from "@/components/Motion";
 import JsonLd, { organisationLd, websiteLd } from "@/components/JsonLd";
@@ -8,9 +8,12 @@ import { isPreview } from "@/lib/env";
 import "./globals.css";
 
 /* next/font/google self-hosts the files at build time, so there is no runtime
-   request to Google and nothing Vercel-only here. Faces settled 2026-08-21 by
-   measuring ouranoyoga.com: Cormorant Garamond headings, Lato body. Cinzel is
-   held back for small all-caps labels only. */
+   request to Google and nothing Vercel-only here.
+
+   These are the three faces ouranoyoga.com loads, which is what the client
+   asked for: same headings, same body. Measured again 2026-09-15 from that
+   site's Google Fonts request - Cormorant Garamond, Lato, Montserrat, in that
+   order. Montserrat replaced Cinzel, which had no client source behind it. */
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
@@ -26,10 +29,10 @@ const lato = Lato({
   display: "swap",
 });
 
-const cinzel = Cinzel({
+const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["400", "500"],
-  variable: "--font-cinzel",
+  variable: "--font-montserrat",
   display: "swap",
 });
 
@@ -79,7 +82,7 @@ export const viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-GB" className={`${cormorant.variable} ${lato.variable} ${cinzel.variable}`}>
+    <html lang="en-GB" className={`${cormorant.variable} ${lato.variable} ${montserrat.variable}`}>
       <body>
         {/* First thing in the tab order, hidden until it has focus. Nine nav
             items is a lot to tab past on every page. */}

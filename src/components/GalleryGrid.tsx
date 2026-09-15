@@ -107,8 +107,12 @@ export default function GalleryGrid({
               aria-pressed={on}
               onClick={() => setFilter(name)}
               /* min-h-11 is 44px: the buttons were 31px tall, under the tap
-                 target minimum, and this row is the page's only control. */
-              className={`label inline-flex min-h-11 items-center rounded-full border px-5 text-[0.68rem] transition-colors duration-300 ${
+                 target minimum, and this row is the page's only control.
+
+                 `gap-1.5` and not the space in the JSX below. The button is a
+                 flex container, so the label and the count are flex items and
+                 the whitespace between them is dropped - it rendered "YOGA33". */
+              className={`label inline-flex min-h-11 items-center gap-1.5 rounded-full border px-5 text-[0.68rem] transition-colors duration-300 ${
                 on
                   ? "border-moss bg-moss text-linen"
                   : "border-ink/25 text-ink hover:border-moss hover:bg-moss/10"
@@ -145,7 +149,11 @@ export default function GalleryGrid({
                 alt={item.alt}
                 width={item.w}
                 height={item.h}
-                loading={i < 4 ? "eager" : "lazy"}
+                /* All lazy. The first four used to be eager because the grid
+                   was the top of its own /gallery route; it is now the last
+                   section of /community, so nothing here is ever above the
+                   fold and four eager requests are four wasted ones. */
+                loading="lazy"
                 decoding="async"
                 className="w-full opacity-90 transition-opacity duration-500 group-hover:opacity-100"
               />

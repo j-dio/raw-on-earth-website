@@ -4,7 +4,7 @@
    edit rather than nine.
 
    Facts settled from the business cards (docs/brand/business-card-rajalakshmi.pdf)
-   and the content PDF's footer block. `email` is still the gmail address: the
+   and the 27 July notes' footer line. `email` is still the gmail address: the
    move to a professional address is an open question with the client. */
 
 export const site = {
@@ -35,6 +35,8 @@ export const site = {
   social: {
     instagram: "https://www.instagram.com/raw_on_earth/",
     linkedin: "https://www.linkedin.com/in/rajalakshmi-v-332707127/",
+    /* Kept only for the JSON-LD sameAs lists. The Journal page and the footer
+       link are gone - she dropped Substack on 2026-09-06. */
     substack: "https://rawonearth.substack.com/",
   },
 
@@ -45,18 +47,27 @@ export const site = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://rawonearth.com",
 } as const;
 
-export type NavItem = { label: string; href: string };
+export type NavItem = { label: string; href: string; children?: NavItem[] };
 
-/* Nine top-level items, settled by the project owner 2026-08-21.
-   Do not reopen the count. */
+/* Six top-level items, cut from nine on the client call of 2026-09-06: Journal
+   and Shop are gone, Services is now Mentorship, and Gallery moved inside the
+   Community page.
+
+   `children` renders as a dropdown (SiteHeader) so the top row stays short
+   without losing a destination - her own sketch at 00:39:48. Gallery is a
+   fragment on /community, not a route, so it is a child and never a top item. */
 export const nav: NavItem[] = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
-  { label: "Services", href: "/services" },
+  { label: "Mentorship", href: "/mentorship" },
   { label: "Workshops", href: "/workshops" },
-  { label: "Community", href: "/community" },
-  { label: "Gallery", href: "/gallery" },
-  { label: "Shop", href: "/shop" },
-  { label: "Journal", href: "/journal" },
+  {
+    label: "Community",
+    href: "/community",
+    children: [
+      { label: "Community", href: "/community" },
+      { label: "Gallery", href: "/community#gallery" },
+    ],
+  },
   { label: "Contact", href: "/contact" },
 ];

@@ -9,10 +9,11 @@ import { Section, SectionHead, CtaBand } from "@/components/ui";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { site } from "@/data/site";
 
-/* Contact. The design brief asks for one thing here - "Form with name, email,
-   phone number, Instagram. Plus the footer details above" - and that is what
-   this page is. There is no booking system on this site and the brief
-   specifies none, so nothing here embeds a scheduler or a calendar.
+/* Contact. One form, plus the footer details in full. The call of 2026-09-06
+   cut the form to three fields - "name, email address, your message" - so the
+   design brief's phone and Instagram fields are gone. There is no booking
+   system on this site and none is specified, so nothing here embeds a
+   scheduler or a calendar.
 
    No masthead photograph. Every other inner page opens on one, but this page's
    job is a form, and a 21:9 plate pushes the first input below the fold on a
@@ -65,7 +66,6 @@ const details: { label: string; value: string; href?: string; external?: boolean
   { label: "Email", value: site.email, href: site.emailHref },
   { label: "Instagram", value: "@raw_on_earth", href: site.social.instagram, external: true },
   { label: "LinkedIn", value: site.founder, href: site.social.linkedin, external: true },
-  { label: "Substack", value: "Raw On Earth", href: site.social.substack, external: true },
   { label: "Where", value: `${site.locality} – taught in person and online` },
 ];
 

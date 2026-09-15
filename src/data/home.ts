@@ -8,7 +8,14 @@ export type Pillar = {
   line: string;
 };
 
-/* The five practices the brief asks the hero to name. */
+/* The five practices the brief's Home paragraph asks the page to name. Home
+   renders `name` only, inside the Offerings block.
+
+   `line` IS NOT RENDERED and has not been since 2026-09-15. Those five sentences
+   were written by us to hold a layout, never by her, and they were sitting on
+   the landing page reading as her words. Kept because the field is typed and a
+   future page may want it - but if she ever supplies her own, replace them
+   before rendering, do not ship these. */
 export const pillars: Pillar[] = [
   { slug: "yoga", name: "Yoga", line: "Classical Hatha and Ashtanga Vinyasa, taught at the pace of a body that is listening." },
   { slug: "mindfulness", name: "Mindfulness", line: "Attention as a practised skill. Breathwork, meditation and the long quiet in between." },
@@ -24,25 +31,28 @@ export type Offering = {
   href: string;
 };
 
-/* The six Offerings tabs named in the content PDF.
+/* The six Offerings tabs the 27 July notes list under "Page 1-4".
 
-   Each href now carries the Services page's own section anchor. Four of the six
-   used to point at a bare `/services`, so two thirds of the grid dropped a
-   visitor at the top of the same long page and left them to find the part they
-   had just clicked. The anchors match the `slug` values in src/data/services.ts,
-   which is what that page renders its section `id`s from. */
+   Each href carries a section anchor on /mentorship (renamed from /services on
+   2026-09-06), so a card lands on the part it names rather than at the top of a
+   long page. The anchors are the `slug` values in src/data/services.ts, which is
+   what that page renders its section `id`s from. */
 export const offerings: Offering[] = [
-  { n: "01", title: "Holistic Health", body: "Whole-person practice: movement, breath, rest and the habits that carry them.", href: "/services#individual" },
-  { n: "02", title: "Private & Group Class", body: "One-to-one attention, or a small group that keeps its own rhythm. Online and in person.", href: "/services#individual" },
+  { n: "01", title: "Holistic Health", body: "Whole-person practice: movement, breath, rest and the habits that carry them.", href: "/mentorship#individual" },
+  { n: "02", title: "Private & Group Class", body: "One-to-one attention, or a small group that keeps its own rhythm. Online and in person.", href: "/mentorship#individual" },
   { n: "03", title: "Events & Workshops", body: "Immersions, retreats and day workshops. 35+ run so far, in India and online.", href: "/workshops" },
-  { n: "04", title: "Mindfulness & Breathwork", body: "Pranayama and meditation taught as tools, not theory. Something you can use on a Tuesday.", href: "/services#individual" },
-  { n: "05", title: "Corporate Well-being", body: "Programmes for teams under load. Desk yoga, resilience, leadership mindfulness.", href: "/services#corporate" },
-  { n: "06", title: "Counselling", body: "A held conversation, where the practice needs support that a class cannot give.", href: "/services#corporate" },
+  { n: "04", title: "Mindfulness & Breathwork", body: "Pranayama and meditation taught as tools, not theory. Something you can use on a Tuesday.", href: "/mentorship#individual" },
+  { n: "05", title: "Corporate Well-being", body: "Programmes for teams under load. Desk yoga, resilience, leadership mindfulness.", href: "/mentorship#corporate" },
+  { n: "06", title: "Counselling", body: "A held conversation, where the practice needs support that a class cannot give.", href: "/mentorship#corporate" },
 ];
 
 export type Stat = { value: string; label: string };
 
-/* From her credentials in the brief. */
+/* From her credentials in the brief. NOT RENDERED ANYWHERE as of 2026-09-15:
+   the landing page used to carry these as a four-figure band and the project
+   owner cut it, because About's Journey list already says the same numbers and
+   saying them twice on one site is what "too much" looks like. Kept typed so
+   nobody retypes them off a PDF. */
 /* Not rendered on Home any more (2026-08-23). The design brief files these
    figures under About -> Journey, and the 27 July notes put testimonials under
    "Tab 2 - Second Page: About". Kept here, typed and ready, for when that page
