@@ -968,3 +968,117 @@ body {
     transform: none;
   }
 }
+
+/* ── Desktop nav dropdown ──────────────────────────────────────────────────
+   Hover-opens, like the reference. Measured on ouranoyoga.com 2026-09-16:
+   `.nav li:hover > ul` flips visibility/opacity and the panel runs Divi's
+   `fadeBottom` (translateY(10%) -> 0). Ours unrolls instead of sliding.
+
+   clip-path, not scaleY: scaling the box squashes every label inside it, and
+   the client's whole type scale is the point of this header. The panel is
+   painted at full size and revealed top-down, so the letterforms never distort.
+
+   `visibility` is in the transition list on purpose - it is what keeps the
+   closed panel out of the tab order, and the delay on close is what lets the
+   fade finish before it leaves. */
+.nav-panel {
+  clip-path: inset(0 0 100% 0);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-3px);
+  transition:
+    clip-path 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 200ms ease-out,
+    visibility 0s linear 420ms;
+}
+
+.nav-panel[data-open="true"] {
+  clip-path: inset(0 0 0 0);
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s, 0s, 0s, 0s;
+}
+
+/* The rows settle a beat after the sheet, which is what makes it read as
+   unrolling rather than as a box that appeared. Delays are inline, per index. */
+.nav-panel > li {
+  opacity: 0;
+  transform: translateY(-5px);
+  transition:
+    opacity 300ms ease-out,
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-panel[data-open="true"] > li {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-panel,
+  .nav-panel > li {
+    transition: opacity 120ms linear;
+    transform: none;
+    clip-path: none;
+  }
+  .nav-panel {
+    transition:
+      opacity 120ms linear,
+      visibility 0s linear 120ms;
+  }
+  .nav-panel[data-open="true"] {
+    transition-delay: 0s, 0s;
+  }
+}
+
+/* ── The header's standing "Book a session" ────────────────────────────────
+   Two moves, deliberately not at the same time.
+
+   The wrapper opening is what pushes the nav links left, and it has to clip to
+   do that. Clipping a pill mid-open shears its rounded end off, which is the
+   flat edge that made the old version look cut. So the pill is held at zero
+   opacity for the whole of that open, and only fades in once the space already
+   exists. Nothing ever shows a sliced button.
+
+   Closing runs the other way round: the pill leaves first, then the gap closes
+   behind it. The delays below are what encode that order - the base rule is the
+   closed state, the [data-show="true"] rule is the open one. */
+.nav-cta {
+  max-width: 0;
+  overflow: hidden;
+  transition: max-width 560ms cubic-bezier(0.32, 0.72, 0, 1) 220ms;
+}
+
+.nav-cta[data-show="true"] {
+  max-width: 18rem;
+  transition-delay: 0ms;
+}
+
+.nav-cta > a {
+  opacity: 0;
+  transform: translateX(14px);
+  transition:
+    opacity 360ms ease-out,
+    transform 520ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.nav-cta[data-show="true"] > a {
+  opacity: 1;
+  transform: none;
+  transition-delay: 300ms, 300ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-cta,
+  .nav-cta[data-show="true"] {
+    transition: max-width 1ms linear;
+  }
+  .nav-cta > a {
+    transform: none;
+    transition: opacity 140ms linear;
+  }
+  .nav-cta[data-show="true"] > a {
+    transition-delay: 0ms;
+  }
+}
