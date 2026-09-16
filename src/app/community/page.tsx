@@ -8,17 +8,16 @@ import { Section, SectionHead, Button, CtaBand } from "@/components/ui";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { site } from "@/data/site";
 import { strands } from "@/data/community";
-import { gallery, galleryCategories } from "@/data/gallery";
 import { testimonials } from "@/data/home";
 
 /* Community. The design brief's theme is "Grow Together" and its success test
    is emotional, not informational: a visitor should finish this page wanting
    in.
 
-   Order, reset 2026-09-15 when /gallery was folded in (client call 00:38:42,
-   confirmed 00:46:22). Her structural instruction was that the sections which
-   used to sit BELOW the gallery move ABOVE it, so the gallery reads as the end
-   of the page:
+   Order. The gallery grid was folded into the foot of this page on 2026-09-15
+   (client call 00:38:42, confirmed 00:46:22) and moved back out to its own
+   /gallery route on 2026-09-16 with the gallery redesign. The section order she
+   asked for in that same call is kept, because it was never about the gallery:
 
      1. Masthead        four practitioners under a banyan. Adults, so no
                         consent question, and it is the one frame in the
@@ -26,15 +25,18 @@ import { testimonials } from "@/data/home";
      2. The strands     the seven things the brief names, as one mosaic.
      3. Stories         renders NOTHING while the testimonials are placeholder.
                         See the note above `stories`.
-     4. Retreats        moved up from below the gallery.
-     5. How to join     moved up from below the gallery.
-     6. Gallery         id="gallery", the whole grid, was its own route.
-     7. CtaBand
+     4. Retreats
+     5. How to join
+     6. CtaBand
 
-   The horizontal photo strip that used to sit here was removed in the same
-   pass. It existed to tease /gallery; with the gallery on this page it was the
-   same photographs twice, which is the "too much to choose from" complaint the
-   redesign is answering.
+   The horizontal photo strip that used to tease /gallery from here has not come
+   back. It was the same photographs twice, which is the "too much to choose
+   from" complaint the redesign is answering.
+
+   OPEN WITH THE CLIENT: on the 6 September call she asked for the gallery to
+   live at the end of this page - "under community in the last we can have
+   gallery" (00:38:42), agreed at 00:46:22. The route is separate again. Raise
+   it through Priyanka rather than moving it a third time.
 
    Grounds: linen -> mist -> sand -> linen, closing on the CtaBand. One mild
    green (mist), not a page that keeps falling into a dark panel (client,
@@ -90,8 +92,6 @@ const stories = testimonials.filter((t) => !t.quote.startsWith("Placeholder"));
    and no Retreats frames, so those two carry a count of 0. They reappear on
    their own the day the pictures arrive. A filter button that opens on an
    empty grid is worse than no button. */
-const shownCategories = galleryCategories.filter((category) => category.count > 0);
-
 export default function CommunityPage() {
   return (
     <>
@@ -331,21 +331,6 @@ export default function CommunityPage() {
               description: s.summary,
               url: `${site.url}/community#${s.slug}`,
             })),
-          },
-          /* Moved here with the gallery itself. Still an ImageGallery object
-             and nothing more: emitting an inline ImageObject per item would
-             add a large payload to every page load and buys no ranking,
-             because Google reads the real <img> elements and they already
-             carry the same alt text. */
-          {
-            "@context": "https://schema.org",
-            "@type": "ImageGallery",
-            name: `Gallery — ${site.name}`,
-            description:
-              "Photographs and short films from Raw On Earth yoga classes, children's sessions, community gatherings and retreats.",
-            url: `${site.url}/community#gallery`,
-            numberOfItems: gallery.length,
-            isPartOf: { "@id": `${site.url}#website` },
           },
         ]}
       />

@@ -45,7 +45,7 @@ const OFFERINGS = [
   { label: "Private Classes", href: "/mentorship" },
   { label: "Workshops", href: "/workshops" },
   { label: "Community", href: "/community" },
-  { label: "Gallery", href: "/community#gallery" },
+  { label: "Gallery", href: "/gallery" },
 ];
 
 /* Drawn, one stroke weight, one 24-unit box - no glyph font and no emoji. */
