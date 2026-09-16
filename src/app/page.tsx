@@ -248,12 +248,12 @@ export default function Home() {
                   which puts her head at 27% and the mat at 80% - nothing of her
                   is cut, and the frame stops being a tall box of empty lawn. */}
               <img
-                src="/wellness/rajalakshmi-practice.jpg"
-                width={1400}
-                height={2096}
+                src="/media/gallery/raji-28.webp"
+                width={1500}
+                height={2666}
                 loading="lazy"
                 decoding="async"
-                alt="A yoga practitioner in a low crescent lunge on a mat under trees, back arched and face lifted into the morning light."
+                alt="A practitioner sits in padmasana with eyes closed on a woven mat, surrounded by dry autumn leaves and forest trees."
                 className="aspect-square w-full object-cover object-center"
               />
 

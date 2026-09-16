@@ -65,6 +65,7 @@ export const nav: NavItem[] = [
   { label: "Mentorship", href: "/mentorship" },
   { label: "Workshops", href: "/workshops" },
   { label: "Community", href: "/community" },
+  { label: "Gallery", href: "/gallery" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -93,10 +94,10 @@ export const headerNav: HeaderNavItem[] = [
     children: [
       { label: "Private Classes", href: "/mentorship" },
       { label: "Community", href: "/community" },
-      { label: "Gallery", href: "/community#gallery" },
     ],
   },
   { label: "Workshops", href: "/workshops" },
+  { label: "Gallery", href: "/gallery" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
