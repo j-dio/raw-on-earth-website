@@ -52,7 +52,7 @@ export default function PageHero({
         </div>
 
         <LeafRule
-          className="page-hero-in mt-14 md:mt-20"
+          className="page-hero-in mt-14 max-w-[240px] md:mt-20"
           // eslint-disable-next-line react/jsx-no-duplicate-props
         />
       </div>

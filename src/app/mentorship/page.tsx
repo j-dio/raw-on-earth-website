@@ -299,7 +299,7 @@ export default function MentorshipPage() {
 
           <Section className="mt-16 md:mt-20">
             <SectionHead eyebrow={retreats.eyebrow} title={retreats.title} standfirst={retreats.intro} />
-            <LeafRule className="mt-14" />
+            <LeafRule className="mt-14 max-w-[240px]" />
 
             <div className="mt-14 space-y-14" data-reveal-stagger>
               {retreats.services.map((service) => (

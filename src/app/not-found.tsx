@@ -31,7 +31,7 @@ export default function NotFound() {
             lost. Start again from anywhere below.
           </p>
 
-          <LeafRule className="page-hero-in mt-14 max-w-xl" />
+          <LeafRule className="page-hero-in mt-14 max-w-[240px]" />
 
           <nav aria-label="All pages" className="mt-12">
             <ul className="hairline max-w-3xl sm:grid-cols-2 lg:grid-cols-3">

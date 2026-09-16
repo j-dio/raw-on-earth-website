@@ -240,7 +240,7 @@ export default function WorkshopsPage() {
                     </li>
                   ))}
                 </ul>
-                <LeafRule  className="mt-12" />
+                <LeafRule className="mt-12 max-w-[240px]" />
                 <div className="mt-10 flex flex-col gap-3 sm:flex-row">
                   <Button href="/mentorship" variant="solid">
                     See the full programmes
