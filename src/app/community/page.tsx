@@ -4,7 +4,6 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import JsonLd from "@/components/JsonLd";
-import GalleryGrid from "@/components/GalleryGrid";
 import { Section, SectionHead, Button, CtaBand } from "@/components/ui";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { site } from "@/data/site";
@@ -300,25 +299,7 @@ export default function CommunityPage() {
           </ul>
         </Section>
 
-        {/* GALLERY - was its own route until 2026-09-15. It is the end of the
-            page on purpose: a visitor who scrolls this far is browsing, not
-            deciding, which is exactly who the photographs are for.
 
-            scroll-mt clears the fixed header, because the nav links straight
-            to /community#gallery. */}
-        <Section
-          id="gallery"
-          className="scroll-mt-24 bg-linen py-24 md:scroll-mt-28 md:py-32"
-        >
-          <SectionHead
-            eyebrow="Gallery"
-            title="The practice, as it actually looks"
-            standfirst="Mornings under the trees, rooms full of children, quiet weeks away. These are working photographs rather than a shoot, so the light is whatever the light was. Choose a category to narrow the grid, or open any picture to see it whole."
-          />
-          <div className="mt-14">
-            <GalleryGrid items={gallery} categories={shownCategories} />
-          </div>
-        </Section>
 
         <CtaBand
           eyebrow="Grow together"

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { GalleryCategoryName, GalleryItem } from "@/data/gallery";
+import type { GalleryItem } from "@/data/gallery";
 
 /* The gallery's one interactive part: a category filter, a masonry grid and a
    lightbox. Everything else on the page is a Server Component.
@@ -26,16 +26,13 @@ import type { GalleryCategoryName, GalleryItem } from "@/data/gallery";
    Motion: opacity only, nowhere a transform. So there is nothing here that a
    prefers-reduced-motion rule would need to switch off. */
 
-type Filter = GalleryCategoryName | "All";
+
 
 export default function GalleryGrid({
   items,
-  categories,
 }: {
   items: GalleryItem[];
-  categories: { name: GalleryCategoryName; count: number }[];
 }) {
-  const [filter, setFilter] = useState<Filter>("All");
   const [index, setIndex] = useState<number | null>(null);
 
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -65,7 +62,8 @@ export default function GalleryGrid({
       .map((entry) => entry.item);
   }, [items]);
 
-  const shown = filter === "All" ? mixed : items.filter((item) => item.category === filter);
+  // Items are already filtered by the parent, so we just use them directly.
+  const shown = mixed;
   const current = index === null ? null : shown[index];
 
   useEffect(() => {
@@ -95,77 +93,53 @@ export default function GalleryGrid({
 
   return (
     <>
-      {/* FILTER ------------------------------------------------------------ */}
-      <div className="flex flex-wrap items-center gap-2 md:gap-3">
-        {(["All", ...categories.map((c) => c.name)] as Filter[]).map((name) => {
-          const on = filter === name;
-          const count = name === "All" ? items.length : categories.find((c) => c.name === name)?.count;
-          return (
-            <button
-              key={name}
-              type="button"
-              aria-pressed={on}
-              onClick={() => setFilter(name)}
-              /* min-h-11 is 44px: the buttons were 31px tall, under the tap
-                 target minimum, and this row is the page's only control.
-
-                 `gap-1.5` and not the space in the JSX below. The button is a
-                 flex container, so the label and the count are flex items and
-                 the whitespace between them is dropped - it rendered "YOGA33". */
-              className={`label inline-flex min-h-11 items-center gap-1.5 rounded-full border px-5 text-[0.68rem] transition-colors duration-300 ${
-                on
-                  ? "border-moss bg-moss text-linen"
-                  : "border-ink/25 text-ink hover:border-moss hover:bg-moss/10"
-              }`}
-            >
-              {name} <span className="opacity-60">{count}</span>
-            </button>
-          );
-        })}
-      </div>
-
       <p aria-live="polite" className="mt-6 text-sm text-ink/75">
-        Showing {shown.length} {shown.length === 1 ? "item" : "items"}
-        {filter === "All" ? " from every category" : ` in ${filter}`}.
+        Showing {shown.length} {shown.length === 1 ? "item" : "items"}.
       </p>
 
       {/* GRID -------------------------------------------------------------- */}
-      <ul className="mt-10 columns-2 gap-3 md:columns-3 md:gap-4 xl:columns-4">
+      <ul className="mt-12 columns-1 sm:columns-2 md:columns-3 xl:columns-4 gap-4 md:gap-6">
         {shown.map((item, i) => (
-          <li key={item.id} className="mb-3 break-inside-avoid md:mb-4">
+          <li key={item.id} className="mb-4 md:mb-6 break-inside-avoid">
             <button
               type="button"
               onClick={(event) => {
                 triggerRef.current = event.currentTarget;
                 setIndex(i);
               }}
-              /* On a video tile the button's name has to say so; on a photograph
-                 the <img> alt is already the right name, so no aria-label. */
               aria-label={item.video ? `Play video: ${item.alt}` : undefined}
-              className="group relative block w-full overflow-hidden bg-sand/40"
+              className="group relative block w-full overflow-hidden rounded-xl bg-sand/20 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:shadow-[0_16px_40px_-12px_rgba(0,0,0,0.2)]"
             >
               <img
                 src={item.thumb}
                 alt={item.alt}
                 width={item.w}
                 height={item.h}
-                /* All lazy. The first four used to be eager because the grid
-                   was the top of its own /gallery route; it is now the last
-                   section of /community, so nothing here is ever above the
-                   fold and four eager requests are four wasted ones. */
                 loading="lazy"
                 decoding="async"
-                className="w-full opacity-90 transition-opacity duration-500 group-hover:opacity-100"
+                className="w-full h-auto transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
               />
+              
+              {/* Premium Hover Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100 pointer-events-none" />
+              
+              <div className="absolute inset-0 p-5 flex flex-col justify-end text-left opacity-0 translate-y-4 transition-all duration-500 ease-out group-hover:opacity-100 group-hover:translate-y-0 pointer-events-none">
+                <span className="text-sand/80 text-[0.65rem] font-bold tracking-[0.2em] uppercase mb-1.5 drop-shadow-md">
+                  {item.category}
+                </span>
+                <span className="text-linen text-sm md:text-base font-light leading-snug drop-shadow-md line-clamp-2">
+                  {item.caption}
+                </span>
+              </div>
+
               {item.video ? (
                 <span
                   aria-hidden
-                  className="label absolute bottom-0 left-0 right-0 flex items-center gap-2 bg-ink/70 px-3 py-2 text-[0.62rem] text-linen"
+                  className="absolute top-4 right-4 flex items-center justify-center w-8 h-8 rounded-full bg-linen/90 text-ink shadow-sm transition-transform duration-300 group-hover:scale-110"
                 >
-                  <svg viewBox="0 0 12 12" className="h-3 w-3 shrink-0" fill="currentColor">
+                  <svg viewBox="0 0 12 12" className="h-3 w-3 translate-x-[1px]" fill="currentColor">
                     <path d="M3 1.5 10 6l-7 4.5Z" />
                   </svg>
-                  Video
                 </span>
               ) : null}
             </button>
