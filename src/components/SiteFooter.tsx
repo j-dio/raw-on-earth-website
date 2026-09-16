@@ -36,10 +36,31 @@ const OFFERINGS = [
   { label: "Gallery", href: "/community#gallery" },
 ];
 
-/* Settled on the client call of 2026-09-06 - she asked for these herself. Text
-   only, never their logos, and never the longer business-card list, which is
-   not confirmed for publication. */
-const CLIENTS = "Volvo · JP Morgan · Amazon · Saironics";
+/* Her own client slide, supplied 2026-09-16, in her order. Text only, never
+   their logos - that was the condition on the 6 September call.
+
+   It supersedes the four names the call notes recorded: there is no Volvo and
+   no Saironics on her slide, and there are nine she had not mentioned. Her
+   list is the authority.
+
+   Stored as she wrote it, which is the client-copy rule. Two to raise with her
+   rather than fix here: "Zeroda" is almost certainly Zerodha, and "Sony Corp"
+   and "Kushals Corp" carry a suffix the others do not. */
+const CLIENTS = [
+  "Nykaa",
+  "Sonata",
+  "Zeroda",
+  "Amazon",
+  "Eurokids",
+  "Tektronix",
+  "MyGlamm",
+  "Sony Corp",
+  "JP Morgan",
+  "Kushals Corp",
+  "Rotaract JP Nagar",
+  "The Montessori School",
+  "IIM Bangalore (faculty)",
+];
 
 /* Drawn, one stroke weight, one 24-unit box - no glyph font and no emoji. */
 const ICONS = {
@@ -149,7 +170,9 @@ export default function SiteFooter() {
             <p className="mt-5 max-w-xs text-[13px] leading-[1.8] text-linen/70">
               Breathwork, movement and stillness taken into the working day.
             </p>
-            <p className="mt-3 max-w-xs text-[13px] leading-[1.8] text-sand/80">{CLIENTS}</p>
+            <p className="mt-4 max-w-xs text-[13px] leading-[1.9] text-sand/80">
+              {CLIENTS.join(" · ")}
+            </p>
             <Link href="/about" className={`${LINK} mt-2`}>
               About her practice
             </Link>
