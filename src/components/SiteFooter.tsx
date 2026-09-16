@@ -124,7 +124,7 @@ export default function SiteFooter() {
           <div className="md:col-span-2 lg:col-span-5 xl:col-span-4">
             <span aria-hidden className="brand-mark mark-wordmark block h-20 w-[145px] text-linen" />
             <span className="sr-only">{site.name}</span>
-            <p className="mt-5 max-w-sm font-display text-2xl italic leading-snug text-sand">
+            <p className="t-lead mt-5 max-w-sm text-sand">
               {/* verbatim client copy */}
               {site.strapline}
             </p>
@@ -194,8 +194,14 @@ export default function SiteFooter() {
               <SocialLink key={s.href} {...s} />
             ))}
           </div>
-          <p className="text-[11px] tracking-[0.14em] text-linen/60">
-            © {new Date().getFullYear()} RAW ON EARTH — REAL. AWAKENING. WELLBEING.
+          {/* Small tracked caps are Montserrat's job everywhere else on the
+              site; this line was Lato with the capitals typed into the string,
+              and the brand name hard-coded next to a file that reads site.ts for
+              everything else. Both fixed. The strapline stays until the client
+              settles it: she asked for "Real. Awakening. Wellbeing." to come off
+              the hero, and never said anything about the footer. */}
+          <p className="label label-sm uppercase text-linen/60">
+            © {new Date().getFullYear()} {site.name} — {site.tagline}
           </p>
         </div>
       </div>

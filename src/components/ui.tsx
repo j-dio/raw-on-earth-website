@@ -230,7 +230,7 @@ export function CtaBand({
       <div className="relative mx-auto max-w-3xl px-6 py-24 text-center md:px-10 md:py-32" data-reveal>
         <p className="eyebrow">{eyebrow}</p>
         <h2 className="t-h2 mt-6 text-moss">{title}</h2>
-        {body ? <p className="mx-auto mt-6 max-w-[52ch] leading-relaxed text-ink/80">{body}</p> : null}
+        {body ? <p className="t-body mx-auto mt-6 text-ink/80">{body}</p> : null}
         <div className="mt-10 flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center sm:gap-3">
           <Button href={primary.href} variant="solid" external={primary.external}>
             {primary.label}

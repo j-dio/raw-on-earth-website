@@ -381,14 +381,14 @@ export default function SiteHeader() {
                   {item.href ? (
                     <Link
                       href={item.href}
-                      className="flex items-baseline justify-between gap-4 py-3 font-display text-3xl text-linen transition-colors hover:text-sand"
+                      className="t-h3 flex items-baseline justify-between gap-4 py-3 text-linen transition-colors hover:text-sand"
                       style={rise}
                     >
                       {item.label}
                     </Link>
                   ) : (
                     <p
-                      className="flex items-baseline justify-between gap-4 py-3 font-display text-3xl text-linen"
+                      className="t-h3 flex items-baseline justify-between gap-4 py-3 text-linen"
                       style={rise}
                     >
                       {item.label}

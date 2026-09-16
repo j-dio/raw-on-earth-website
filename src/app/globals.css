@@ -175,6 +175,10 @@ body {
   .t-lead {
     font-family: var(--font-display);
     font-size: clamp(1.15rem, 2vw, 1.5rem);
+    /* 300, like every other display role. Left undeclared it fell back to
+       Cormorant's 400 and was the last thing on the site running a second
+       display weight. */
+    font-weight: 300;
     font-style: italic;
     line-height: 1.4;
     text-wrap: balance;
@@ -208,6 +212,17 @@ body {
        out at a glance. */
     letter-spacing: 0.14em;
     font-size: 0.875rem;
+  }
+
+  /* The one smaller label. It exists because callers were writing
+     `label text-[0.72rem]` and `label text-[0.75rem]` inline, and an em-based
+     tracking shrinks with the size it is applied to - so every ad-hoc size
+     override was silently retuning the letter-spacing as well. Tracking here is
+     raised to 0.163em so it still lands on the same ~2px the 14px label runs.
+     Two label sizes, both at 2px of tracking. Do not add a third inline. */
+  .label-sm {
+    letter-spacing: 0.163em;
+    font-size: 0.75rem;
   }
 }
 
@@ -275,6 +290,40 @@ body {
      effect vanishes. */
   z-index: 2;
   isolation: isolate;
+}
+
+/* Under lg the wellness block is one column, and the order the two columns
+   hold on a desktop is the wrong order on a phone: it puts 300 words of prose
+   on the screen straight after the hero, with the photograph below all of it.
+   `display: contents` dissolves the media column so its two children - the
+   picture and her closing line - become items of the same flex column as the
+   copy, and can be ordered independently. Picture, heading, prose, button,
+   closing line. From lg up the grid is untouched.
+
+   The media column carries `data-reveal`; a `display: contents` box cannot be
+   transformed, so on a phone that one reveal simply does not play and the
+   content is visible from the start - the safe direction to fail. */
+@media (max-width: 1023.98px) {
+  .wellness-grid {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .wellness-grid > .wellness-copy {
+    order: 2;
+  }
+
+  .wellness-grid > .wellness-media {
+    display: contents;
+  }
+
+  .wellness-grid > .wellness-media > img {
+    order: 1;
+  }
+
+  .wellness-grid > .wellness-media > p {
+    order: 3;
+  }
 }
 
 .wellness > * {

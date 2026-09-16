@@ -109,15 +109,19 @@ export default function Home() {
                   1280px: 53px, weight 500, 5px of tracking (0.094em). The
                   tracking is the point - it is what makes 53px read as grand
                   rather than merely large, and our old 88px with 0.06em was
-                  bigger and blunter. Weight steps back to 400 because theirs is
-                  white on a dark photograph and ours is moss on a pale one;
-                  light-on-dark needs the extra weight, dark-on-light does not.
+                  bigger and blunter.
+
+                  Weight is 300, the same as every other Cormorant on the site.
+                  It was 400 on the argument that dark-on-light needs less weight
+                  than the reference's white-on-photograph - true in isolation,
+                  but it left the page running two display weights, because the
+                  type roles in globals.css are all 300. One face, one weight.
 
                   Re-measure on a real phone, not with `chrome --window-size`:
                   Chrome on Windows will not open a window under 500px, so a
                   390px screenshot is a crop of a 500px page. Use scripts/shot.mjs. */}
               <h1
-                className="hero-in-title font-display text-[clamp(2.4rem,4.6vw,3.6rem)] font-normal uppercase leading-[1.1] tracking-[0.094em] text-moss"
+                className="hero-in-title font-display text-[clamp(2.4rem,4.6vw,3.6rem)] font-light uppercase leading-[1.1] tracking-[0.094em] text-moss"
                 style={{ "--d": "600ms" } as React.CSSProperties}
               >
                 Yoga <span className="font-light text-moss/40">|</span> Life
@@ -171,7 +175,7 @@ export default function Home() {
           {/* `lg:items-center`, not top-aligned: the two columns are different
               heights, and centred the difference splits either side of the copy
               instead of pooling under it as one blank corner of sand. */}
-          <div className="mx-auto grid max-w-[1280px] items-start gap-14 px-6 py-24 md:px-10 md:py-32 lg:grid-cols-2 lg:items-center lg:gap-20 lg:px-20 xl:px-32">
+          <div className="wellness-grid mx-auto grid max-w-[1280px] items-start gap-14 px-6 py-24 md:px-10 md:py-32 lg:grid-cols-2 lg:items-center lg:gap-20 lg:px-20 xl:px-32">
             <div className="wellness-copy" data-reveal>
               {/* VERBATIM client copy, the panel the 27 July notes call "Page 1 (t2)". Every
                   word below is hers, including the British "well-being" and
@@ -225,7 +229,7 @@ export default function Home() {
                   said twice, not two choices. */}
               <Link
                 href="/contact"
-                className="label mt-10 inline-flex min-h-11 items-center rounded-full bg-moss px-8 py-[0.95rem] text-[0.72rem] text-linen transition-colors duration-300 hover:bg-moss-deep"
+                className="label mt-10 inline-flex min-h-11 items-center rounded-full bg-moss px-8 py-[0.95rem] text-linen transition-colors duration-300 hover:bg-moss-deep"
               >
                 Book a session
               </Link>
@@ -235,18 +239,24 @@ export default function Home() {
             {/* No negative bottom margin here: her closing line sits at the
                 foot of this column now, and an overhang would let the next
                 section paint over it. */}
+            {/* Stacked, a phone got three paragraphs and no picture on the
+                screen straight after the hero - the measured drop-off point of
+                the visit. The photograph leads on a phone now, but her closing
+                line still closes: `.wellness-grid` under lg makes this column
+                `display: contents` so the picture and the line can be ordered
+                separately (globals.css). From lg up nothing changes - two
+                columns, picture beside the words, which is the brief's layout. */}
             <div className="wellness-media relative lg:-mt-8" data-reveal>
               {/* Plain <img>, not next/image: the optimiser is off for
                   Hostinger. Dimensions are on the tag so the column reserves
                   its height before the file lands.
 
                   A9, "zoom in where the photo has empty space top and bottom"
-                  (call, 00:58:25). It was shown at its native 2:3, and measured
-                  down the frame the subject only occupies 35%-70% of the
-                  height: above her is out-of-focus canopy, below her is nothing
-                  but blurred grass. A square crop takes 16.7% off each end,
-                  which puts her head at 27% and the mat at 80% - nothing of her
-                  is cut, and the frame stops being a tall box of empty lawn. */}
+                  (call, 00:58:25). The source is 1500x2666, so `aspect-square`
+                  plus `object-cover` crops 28% off each end and the subject
+                  stays centred. If a future photograph puts the subject off
+                  centre, re-crop the file rather than reaching for
+                  object-position: a CSS crop still ships the whole tall file. */}
               <img
                 src="/media/gallery/raji-28.webp"
                 width={1500}
@@ -261,7 +271,7 @@ export default function Home() {
                   asked for it under the photograph, and it is better there -
                   set as display type it reads as a caption on the image rather
                   than as a fourth paragraph nobody finishes. */}
-              <p className="mt-8 font-display text-3xl italic text-moss md:text-4xl">
+              <p className="t-statement mt-8 italic text-moss">
                 Move. Breathe. Become.
               </p>
             </div>
@@ -311,7 +321,7 @@ export default function Home() {
                 an invented headline. */}
             <div className="max-w-2xl" data-reveal>
               <h2 className="t-h2 text-moss">Offerings</h2>
-              <p className="mt-6 leading-relaxed text-ink/75">
+              <p className="t-body mt-6 text-ink/75">
                 Start where you are. Every offering below leads to the same place, at a
                 different door.
               </p>
@@ -339,7 +349,7 @@ export default function Home() {
               data-reveal
             >
               {pillars.map((pillar) => (
-                <li key={pillar.slug} className="label text-[0.75rem] text-moss">
+                <li key={pillar.slug} className="label label-sm text-moss">
                   {pillar.name}
                 </li>
               ))}
@@ -356,8 +366,8 @@ export default function Home() {
                     className="group flex h-full flex-col bg-linen p-8 transition-colors duration-500 hover:bg-moss hover:text-linen md:p-10"
                   >
                     <span>
-                      <span className="block font-display text-[1.75rem] leading-tight md:text-3xl">{o.title}</span>
-                      <span className="mt-3 block text-[0.92rem] leading-relaxed opacity-75">{o.body}</span>
+                      <span className="t-h3 block">{o.title}</span>
+                      <span className="mt-3 block leading-relaxed opacity-75">{o.body}</span>
                     </span>
                   </Link>
                 </li>
