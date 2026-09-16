@@ -95,11 +95,27 @@ export function SectionHead({
 }
 
 /* ---------------------------------------------------------------------------
-   LEAF RULE - the hero's divider, promoted to a shared mark. A hairline split
-   either side of the leaf from the business cards. Moss blade, gold rule: at
-   16px a gold blade loses its silhouette and reads as a dot (measured on the
-   hero before it was changed).
+   LEAF RULE - a mirrored laurel, not a hairline with a blob on it.
+
+   The old version was two gradient rules either side of one symmetric teardrop,
+   and it read as a widget rather than as drawing. This is the shape the printed
+   botanical dividers actually use: a stem curving out from the centre to a tip,
+   seven almond leaves alternating above and below it, each one shrinking and
+   swept toward the tip, then the whole half mirrored.
+
+   The geometry is generated, not hand-typed: leaf bases sample a cubic stem at
+   even t, and each leaf is a two-quadratic almond on the stem normal rotated
+   0.82rad toward the tip. Regenerate with scripts/leaf.mjs if the curve or the
+   leaf count changes - do not nudge the numbers by hand, they stop agreeing
+   with the stem.
+
+   Sizes are in viewBox units on a 240x28 frame, so it scales to whatever width
+   the caller gives it.
    --------------------------------------------------------------------------- */
+const LAUREL_STEM = "M120 14C154 14.6 196 13 232 9.5";
+const LAUREL_LEAVES =
+  "M130.4 14.1Q131 22.7 139.6 24Q139 15.4 130.4 14.1ZM144.2 14.1Q151.9 12.9 152.4 5.1Q144.7 6.3 144.2 14.1ZM158.4 13.8Q159.1 20.7 166 21.5Q165.3 14.7 158.4 13.8ZM172.9 13.4Q178.9 12.3 179.1 6.3Q173.2 7.4 172.9 13.4ZM187.6 12.7Q188.2 17.8 193.4 18.3Q192.7 13.2 187.6 12.7ZM202.2 11.9Q206.4 11 206.4 6.7Q202.2 7.6 202.2 11.9ZM216.6 10.9Q217.1 14.2 220.5 14.4Q220 11.1 216.6 10.9Z";
+
 export function LeafRule({
   className = "",
   tone = "gold",
@@ -107,19 +123,32 @@ export function LeafRule({
   className?: string;
   tone?: "gold" | "linen";
 }) {
-  const rule = tone === "gold" ? "to-gold/55" : "to-linen/40";
-  const blade = tone === "gold" ? "text-moss/75" : "text-sand";
-  const midrib = tone === "gold" ? "var(--color-linen)" : "var(--color-moss)";
+  /* On linen the leaves are moss and the stem is gold - a gold leaf at this
+     size loses its silhouette (measured on the hero). On a dark ground both go
+     sage, because gold on ink is muddy. */
+  const leaf = tone === "gold" ? "text-moss/85" : "text-sage";
+  const stem = tone === "gold" ? "var(--color-gold)" : "var(--color-sage)";
 
   return (
-    <div aria-hidden className={`flex items-center gap-3 ${className}`}>
-      <span className={`h-px flex-1 bg-gradient-to-r from-transparent ${rule}`} />
-      <svg viewBox="0 0 24 24" className={`h-4 w-4 shrink-0 ${blade}`} fill="none" aria-hidden>
-        <path d="M12 2.5C19.5 8 19.5 16 12 21.5 4.5 16 4.5 8 12 2.5Z" fill="currentColor" />
-        <path d="M12 21.5V4" stroke={midrib} strokeWidth="1.1" strokeLinecap="round" opacity="0.55" />
-      </svg>
-      <span className={`h-px flex-1 bg-gradient-to-l from-transparent ${rule}`} />
-    </div>
+    <svg
+      aria-hidden
+      viewBox="0 0 240 28"
+      className={`h-auto w-full ${leaf} ${className}`}
+      fill="currentColor"
+    >
+      {[false, true].map((flip) => (
+        <g key={String(flip)} transform={flip ? "translate(240,0) scale(-1,1)" : undefined}>
+          <path
+            d={LAUREL_STEM}
+            fill="none"
+            stroke={stem}
+            strokeWidth="0.9"
+            strokeLinecap="round"
+          />
+          <path d={LAUREL_LEAVES} />
+        </g>
+      ))}
+    </svg>
   );
 }
 
