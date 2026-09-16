@@ -47,27 +47,56 @@ export const site = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://rawonearth.com",
 } as const;
 
-export type NavItem = { label: string; href: string; children?: NavItem[] };
+export type NavItem = { label: string; href: string };
 
-/* Six top-level items, cut from nine on the client call of 2026-09-06: Journal
-   and Shop are gone, Services is now Mentorship, and Gallery moved inside the
-   Community page.
+/* A header item may be a group instead of a route, so its href is optional -
+   "Yoga & Meditation" is a label with a menu under it, not a page. */
+export type HeaderNavItem = { label: string; href?: string; children?: NavItem[] };
 
-   `children` renders as a dropdown (SiteHeader) so the top row stays short
-   without losing a destination - her own sketch at 00:39:48. Gallery is a
-   fragment on /community, not a route, so it is a child and never a top item. */
+/* Every route on the site, flat. This is what the sitemap and the footer read,
+   so it stays a plain list of real pages - a group with no URL of its own would
+   put a broken entry in both. The header's grouping is `headerNav` below.
+
+   Cut from nine on the client call of 2026-09-06: Journal and Shop are gone,
+   Services is now Mentorship, and Gallery moved inside the Community page. */
 export const nav: NavItem[] = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Mentorship", href: "/mentorship" },
   { label: "Workshops", href: "/workshops" },
+  { label: "Community", href: "/community" },
+  { label: "Contact", href: "/contact" },
+];
+
+/* How the header presents those routes, which is not the same shape.
+
+   Her sketch, in her own words on the call (00:39:48): "in the yoga and
+   meditation when I drop it down... we can have private classes, we can have
+   community, we can have gallery rather than having so many." So one group
+   carries three destinations and the top row loses two items.
+
+   Offer first, Contact last - the reference does the same, and its dropdown is
+   leftmost for the same reason: it is the thing being sold, not merely the item
+   that happens to have a menu.
+
+   Home is here for the mobile and iPad overlay only; the desktop row filters it
+   out, because the wordmark beside it already goes home.
+
+   NOTE: the row below says "Private Classes" because that is the phrase she
+   used, but the page it opens is still titled Mentorship - the name she asked
+   for in the same call. The label and the page disagree on purpose until she
+   settles which word she wants. */
+export const headerNav: HeaderNavItem[] = [
+  { label: "Home", href: "/" },
   {
-    label: "Community",
-    href: "/community",
+    label: "Yoga & Meditation",
     children: [
+      { label: "Private Classes", href: "/mentorship" },
       { label: "Community", href: "/community" },
       { label: "Gallery", href: "/community#gallery" },
     ],
   },
+  { label: "Workshops", href: "/workshops" },
+  { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
