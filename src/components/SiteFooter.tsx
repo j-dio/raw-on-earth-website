@@ -20,9 +20,21 @@ import { LeafRule } from "@/components/ui";
 
    The one thing that changed in substance: the columns no longer read `nav`.
    Repeating the header in smaller type is what made the old footer dead space.
-   They are grouped by what a reader wants at the bottom of a page - the offer,
-   the corporate work, and how to reach her - and between them they still link
-   every route, so nothing drops out of the crawlable path.
+   They are grouped by what a reader wants at the bottom of a page - the offer
+   and how to reach her - and between them they still link every route, so
+   nothing drops out of the crawlable path.
+
+   Three columns, not the reference's four. A fourth carrying her corporate
+   client list was built and removed on 2026-09-16: thirteen company names set
+   as running text turned the quietest band on the site into the busiest one.
+   The list is still hers and still cleared for publication - it wants a page
+   with room, not a footer column.
+
+   Three equal quarters would leave the last quarter empty, so the grid is
+   asymmetric instead: the brand takes five of twelve columns on the left, the
+   two lists sit in columns 8-9 and 10-12, and the gap between them is the
+   deliberate one. That keeps both edges of a 90%-wide band occupied, which is
+   what makes it read as full width rather than as a row that ran out.
 
    All facts read from src/data/site.ts, so the number here and the number in
    the JSON-LD cannot disagree. */
@@ -34,32 +46,6 @@ const OFFERINGS = [
   { label: "Workshops", href: "/workshops" },
   { label: "Community", href: "/community" },
   { label: "Gallery", href: "/community#gallery" },
-];
-
-/* Her own client slide, supplied 2026-09-16, in her order. Text only, never
-   their logos - that was the condition on the 6 September call.
-
-   It supersedes the four names the call notes recorded: there is no Volvo and
-   no Saironics on her slide, and there are nine she had not mentioned. Her
-   list is the authority.
-
-   Stored as she wrote it, which is the client-copy rule. Two to raise with her
-   rather than fix here: "Zeroda" is almost certainly Zerodha, and "Sony Corp"
-   and "Kushals Corp" carry a suffix the others do not. */
-const CLIENTS = [
-  "Nykaa",
-  "Sonata",
-  "Zeroda",
-  "Amazon",
-  "Eurokids",
-  "Tektronix",
-  "MyGlamm",
-  "Sony Corp",
-  "JP Morgan",
-  "Kushals Corp",
-  "Rotaract JP Nagar",
-  "The Montessori School",
-  "IIM Bangalore (faculty)",
 ];
 
 /* Drawn, one stroke weight, one 24-unit box - no glyph font and no emoji. */
@@ -134,8 +120,8 @@ export default function SiteFooter() {
       {/* 90% wide with no max-width is the reference's own row, and it is the
           thing that stops the footer looking like a boxed-in card. */}
       <div className="relative mx-auto w-[calc(100%-3rem)] pt-16 md:w-[90%] pb-10 md:pt-20">
-        <div className="grid gap-x-10 gap-y-14 md:grid-cols-2 lg:grid-cols-4">
-          <div className="md:col-span-2 lg:col-span-1">
+        <div className="grid gap-x-10 gap-y-14 md:grid-cols-2 lg:grid-cols-12">
+          <div className="md:col-span-2 lg:col-span-5 xl:col-span-4">
             <span aria-hidden className="brand-mark mark-wordmark block h-20 w-[145px] text-linen" />
             <span className="sr-only">{site.name}</span>
             <p className="mt-5 max-w-sm font-display text-2xl italic leading-snug text-sand">
@@ -148,9 +134,14 @@ export default function SiteFooter() {
               <br />
               Taught in person and online.
             </p>
+            {/* /about is linked from here now. It was in the corporate column,
+                and that column is gone. */}
+            <Link href="/about" className={`${LINK} mt-3`}>
+              About her practice
+            </Link>
           </div>
 
-          <nav aria-labelledby="ft-offer">
+          <nav aria-labelledby="ft-offer" className="lg:col-span-3 lg:col-start-7 xl:col-start-6">
             <h2 id="ft-offer" className={HEADING}>
               Yoga &amp; Meditation
             </h2>
@@ -165,20 +156,7 @@ export default function SiteFooter() {
             </ul>
           </nav>
 
-          <div>
-            <h2 className={HEADING}>Corporate Wellbeing</h2>
-            <p className="mt-5 max-w-xs text-[13px] leading-[1.8] text-linen/70">
-              Breathwork, movement and stillness taken into the working day.
-            </p>
-            <p className="mt-4 max-w-xs text-[13px] leading-[1.9] text-sand/80">
-              {CLIENTS.join(" · ")}
-            </p>
-            <Link href="/about" className={`${LINK} mt-2`}>
-              About her practice
-            </Link>
-          </div>
-
-          <div>
+          <div className="lg:col-span-3 lg:col-start-10">
             <h2 className={HEADING}>Find Her At</h2>
             <address className="mt-5 text-[13px] not-italic leading-[1.8] text-linen/70">
               {site.locality}
