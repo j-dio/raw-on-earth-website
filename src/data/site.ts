@@ -93,13 +93,10 @@ export const headerNav: HeaderNavItem[] = [
     children: [
       { label: "Mentorship", href: "/mentorship" },
       { label: "Community", href: "/community" },
-      /* Gallery belongs in this group, not the top row - the client asked for
-         fewer items in the row. A later change promoted it to the row; this put
-         it back. */
-      { label: "Gallery", href: "/gallery" },
     ],
   },
   { label: "Workshops", href: "/workshops" },
+  { label: "Gallery", href: "/gallery" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];

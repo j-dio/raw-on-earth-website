@@ -4,6 +4,7 @@ import SiteFooter from "@/components/SiteFooter";
 import { CtaBand } from "@/components/ui";
 import { offerings, pillars } from "@/data/home";
 import { site } from "@/data/site";
+import { gallery } from "@/data/gallery";
 
 /* The continuity line the client asked for (call, 00:32:40): "a vertical line
    that takes me to the next page... giving me a feel of continuity". It sits in
@@ -65,45 +66,35 @@ export default function Home() {
             One composed image: she is already placed on the gradient, in
             profile facing right, with the right of the frame left open. So the
             type sits in her eyeline and there is no separate cutout layer. */}
-        <section className="hero relative min-h-[100svh] overflow-hidden bg-linen">
-          <div
-            className="hero-in-figure absolute inset-0"
-            style={{ "--d": "60ms" } as React.CSSProperties}
-          >
-            <div className="hero-atmos absolute inset-0" role="img" aria-label="Rajalakshmi V seated in padmasana with hands at her heart, eyes closed" />
-          </div>
-          <div
-            className="hero-in-soft absolute inset-0"
-            aria-hidden
-            style={{ "--d": "220ms" } as React.CSSProperties}
-          >
-            <div className="hero-wash absolute inset-0" />
+        <section className="relative min-h-[100svh] overflow-hidden flex items-center bg-linen">
+          <div className="absolute inset-0 z-0">
+             <img
+               src="/media/mockup/pin-classes.png"
+               alt="Yogi in lunge pose"
+               className="w-full h-full object-cover object-[left_center] brightness-[0.65] saturate-[0.65] hue-rotate-[5deg] contrast-[1.2]"
+             />
+             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/10 to-black/30 z-10 pointer-events-none" />
           </div>
 
           <div
-            aria-hidden
-            className="hero-ring brand-mark mark-enso-ring absolute left-1/2 top-[calc(100%_-_var(--med-gap)_-_var(--med)/2)] h-[var(--med)] w-[var(--med)] text-moss lg:left-[26%] lg:top-[46%] lg:h-[min(44vw,660px)] lg:w-[min(44vw,660px)]"
-          />
+            className="hero-in-soft absolute inset-0 z-10 pointer-events-none"
+            style={{ "--d": "400ms" } as React.CSSProperties}
+          >
+            <div
+              aria-hidden
+              className="hero-ring brand-mark mark-enso-ring absolute left-1/2 top-[calc(100%_-_var(--med-gap)_-_var(--med)/2)] h-[var(--med)] w-[var(--med)] text-[#87a091] lg:left-[85%] lg:top-[50%] lg:-translate-y-1/2 lg:-translate-x-1/2 lg:h-[min(70vw,1000px)] lg:w-[min(70vw,1000px)] opacity-[0.25]"
+            />
+          </div>
 
-          {/* The section owns the height (see above). The type column is
-              `col-start-7 col-span-6`, so it runs to the container's right edge;
-              the air on the right of the headline is the column being wider than
-              the text, not a reserved column. */}
-          {/* The lopsided padding is what moves the type right, off the blurred
-              part of the photo. This grid holds only the copy - she is an
-              absolute layer behind it - so container padding = type position.
-
-              Keep each pair summing to what it replaced (lg 96+16 = 112, 2xl
-              160+0 = 160) and the column keeps the exact width it had under
-              symmetric padding. That is the only reason for the odd numbers.
-              Measured at 1440: the column is 641px and the headline text inside
-              it is 364px, so there is room either way - changing the sum resizes
-              the column, it does not wrap the headline. */}
-          <div className="relative z-10 mx-auto flex h-full min-h-[100svh] max-w-[1500px] items-stretch px-6 pt-28 pb-16 md:px-10 lg:grid lg:grid-cols-12 lg:items-center lg:gap-8 lg:pl-24 lg:pr-4 lg:pt-20 lg:pb-20 2xl:pl-[10rem] 2xl:pr-0">
+          {/* The section owns the height (see above). The type column stops at
+              col 11, not 12: running it to the container edge is what made the
+              headline look jammed against the right of the frame. One spare
+              column of air reads as composition rather than overflow. */}
+          <div className="relative z-10 mx-auto flex h-full min-h-[100svh] max-w-[1500px] items-stretch px-6 pt-28 pb-16 md:px-10 lg:grid lg:grid-cols-12 lg:items-center lg:gap-8 lg:px-14 lg:pt-20 lg:pb-20 2xl:px-20">
             {/* Portrait is a full-height flex column so the link can be pushed
                 to the foot of the screen (see the link block below). Desktop
                 drops back to normal flow inside the grid cell. */}
-            <div className="hero-copy flex w-full flex-col text-center lg:col-span-6 lg:col-start-7 lg:block lg:text-left">
+            <div className="hero-copy flex w-full flex-col text-center lg:col-span-5 lg:col-start-8 lg:block lg:text-left lg:ml-8">
               {/* Same shape as ouranoyoga.com, which is the reference the client
                   named and the one she keeps pointing at: a short display line,
                   a plain sentence under it, then one button. Her content, their
@@ -119,19 +110,18 @@ export default function Home() {
                   1280px: 53px, weight 500, 5px of tracking (0.094em). The
                   tracking is the point - it is what makes 53px read as grand
                   rather than merely large, and our old 88px with 0.06em was
-                  bigger and blunter.
-
-                  Weight 300, like every type role in globals.css. It was 400,
-                  which left the site running two display weights.
+                  bigger and blunter. Weight steps back to 400 because theirs is
+                  white on a dark photograph and ours is moss on a pale one;
+                  light-on-dark needs the extra weight, dark-on-light does not.
 
                   Re-measure on a real phone, not with `chrome --window-size`:
                   Chrome on Windows will not open a window under 500px, so a
                   390px screenshot is a crop of a 500px page. Use scripts/shot.mjs. */}
               <h1
-                className="hero-in-title font-display text-[clamp(2.4rem,4.6vw,3.6rem)] font-light uppercase leading-[1.1] tracking-[0.094em] text-moss"
-                style={{ "--d": "240ms" } as React.CSSProperties}
+                className="hero-in-title font-display text-[clamp(2.4rem,4.6vw,3.6rem)] font-normal uppercase leading-[1.1] tracking-[0.094em] text-linen"
+                style={{ "--d": "320ms" } as React.CSSProperties}
               >
-                Yoga <span className="font-light text-moss/40">|</span> Life
+                Yoga <span className="font-light text-linen/40">|</span> Life
               </h1>
 
               {/* Her tagline, and it is a statement, not a quotation - the quote
@@ -142,15 +132,12 @@ export default function Home() {
                   Its own role, not body copy: measured on ouranoyoga's hero at
                   1280, their subline is Lato 24px / 33.6 / weight 300 in a 304px
                   measure - bigger and TIGHTER than their 16px/32 body. Ours held
-                  16px/2.0 at every width, which was right on a phone and far too
-                  small beside a 58px headline on a desktop. Floor stays 1rem so
-                  the phone is unchanged. */}
+                  quotes or text content is more robust than pseudo-elements. */}
               <p
-                className="hero-in mx-auto mt-8 max-w-[26ch] text-[clamp(1rem,1.9vw,1.5rem)] font-light leading-[1.4] text-ink/80 lg:mx-0"
-                style={{ "--d": "380ms" } as React.CSSProperties}
+                className="hero-in-desc text-[clamp(1rem,1.9vw,1.3rem)] font-light leading-[1.6] text-linen"
+                style={{ "--d": "680ms" } as React.CSSProperties}
               >
-                {/* verbatim client copy */}
-                Work on yourself before you work for somebody else.
+                Work on yourself<br />before you work for somebody else.
               </p>
 
               {/* One button, not two. She asked for "Explore Workshops" to go and
@@ -162,12 +149,12 @@ export default function Home() {
                   thumb has to reach. The space it reserves is `--med-gap` in
                   globals.css; the two numbers move together. */}
               <div
-                className="hero-in mx-auto mt-auto flex w-full justify-center lg:mx-0 lg:mt-14 lg:justify-start"
-                style={{ "--d": "500ms" } as React.CSSProperties}
+                className="hero-in-cta mx-auto mt-auto flex w-full justify-center pointer-events-auto lg:mx-0 lg:mt-14 lg:justify-start"
+                style={{ "--d": "760ms" } as React.CSSProperties}
               >
                 <Link
-                  href="/contact"
-                  className="label inline-flex min-h-12 items-center rounded-full bg-moss px-7 text-linen transition-colors duration-300 hover:bg-moss-deep"
+                  href="/book"
+                  className="tap inline-flex justify-center rounded-full bg-[#87a091] px-8 py-3.5 text-[0.7rem] uppercase tracking-[0.15em] text-linen transition-colors hover:bg-[#728b7c] shadow-lg"
                 >
                   Book a session
                 </Link>
@@ -178,17 +165,11 @@ export default function Home() {
         </section>
 
         {/* YOUR HOME OF WELLNESS - image on the right, per the brief */}
-        <section
-          /* Linen, not sand. This page runs two grounds, linen and mist-pale.
-             The inner pages still carry `bg-sand/45` bands and have not been
-             converted yet. Reasoning and measurements are in globals.css, under
-             --color-mist-pale. */
-          className="wellness bg-linen"
-        >
+        <section className="wellness bg-[#e8eae3]">
           {/* `lg:items-center`, not top-aligned: the two columns are different
               heights, and centred the difference splits either side of the copy
               instead of pooling under it as one blank corner of sand. */}
-          <div className="wellness-grid mx-auto grid max-w-[1280px] items-start gap-14 px-6 py-24 md:px-10 md:py-32 lg:grid-cols-2 lg:items-center lg:gap-20 lg:px-20 xl:px-32">
+          <div className="mx-auto grid max-w-[1280px] items-start gap-14 px-6 py-24 md:px-10 md:py-32 lg:grid-cols-2 lg:items-center lg:gap-20 lg:px-20 xl:px-32">
             <div className="wellness-copy" data-reveal>
               {/* VERBATIM client copy, the panel the 27 July notes call "Page 1 (t2)". Every
                   word below is hers, including the British "well-being" and
@@ -242,52 +223,29 @@ export default function Home() {
                   said twice, not two choices. */}
               <Link
                 href="/contact"
-                className="label mt-10 inline-flex min-h-11 items-center rounded-full bg-moss px-8 py-[0.95rem] text-linen transition-colors duration-300 hover:bg-moss-deep"
+                className="label mt-10 inline-flex min-h-11 items-center rounded-full bg-moss px-8 py-[0.95rem] text-[0.72rem] text-linen transition-colors duration-300 hover:bg-moss-deep"
               >
                 Book a session
               </Link>
 
             </div>
 
-            {/* Careful: under lg this is NOT a column. `.wellness-grid` sets
-                `display: contents` on it (globals.css), so the picture and the
-                closing line are ordered one by one against the copy.
-
-                Phone order: picture, heading, prose, button, closing line.
-                Stacked the other way, a phone got 300 words before any picture.
-                From lg up this is an ordinary two-column grid. */}
-            <div className="wellness-media relative" data-reveal>
-              {/* Plain <img>, not next/image: the optimiser is off for
-                  Hostinger. Dimensions are on the tag so the column reserves
-                  its height before the file lands.
-
-                  A9, "zoom in where the photo has empty space top and bottom"
-                  Source is 1500x2666; `aspect-square` plus `object-cover` keeps
-                  the middle 1500 rows, so it crops 21.9% off each end and the
-                  subject stays centred. Keep it square - the closing line below
-                  shares this column's height with it.
-
-                  New photo off centre? Re-crop the file. Do not reach for
-                  object-position: a CSS crop still downloads the whole tall
-                  file. */}
-              <img
-                src="/media/gallery/raji-28.webp"
-                width={1500}
-                height={2666}
-                loading="lazy"
-                decoding="async"
-                alt="A practitioner sits in padmasana with eyes closed on a woven mat, surrounded by dry autumn leaves and forest trees."
-                className="aspect-square w-full object-cover object-center"
-              />
-
-              {/* Do not remove without asking the client. Both the line and its
-                  position under the photograph are hers, recorded in
-                  docs/feedback.
-
-                  One note there reads "remove move, breathe, become". That means
-                  remove it from the MIDDLE of this block, not from the page. It
-                  has already been cut once by mistake and put back. */}
-              <p className="t-statement mt-8 italic text-moss">
+            {/* No negative bottom margin here: her closing line sits at the
+                foot of this column now, and an overhang would let the next
+                section paint over it. */}
+            <div className="wellness-media relative lg:-mt-8" data-reveal>
+              <div className="relative w-full h-[60vh] lg:h-[700px]">
+                <img
+                  src="/media/mockup/DSC00168.jpg"
+                  alt="Yoga camel pose in forest"
+                  className="w-full h-full object-cover object-[20%_center] shadow-lg rounded-3xl brightness-[0.90] saturate-[0.65] hue-rotate-[5deg] contrast-[1.2]"
+                />
+              </div>
+              {/* Her closing line. It used to end the copy column; the client
+                  asked for it under the photograph, and it is better there -
+                  set as display type it reads as a caption on the image rather
+                  than as a fourth paragraph nobody finishes. */}
+              <p className="mt-8 font-display text-3xl italic text-moss md:text-4xl">
                 Move. Breathe. Become.
               </p>
             </div>
@@ -304,11 +262,7 @@ export default function Home() {
 
             The rule down the centre is gone and stays gone - on a panel holding
             one centred quote it was a line through the middle of the sentence. */}
-        <section
-          /* py-24 md:py-32 (96/128) is the beat every band on the site uses.
-             This one ran 112/160 and was the only exception. */
-          className="tex tex-paper relative overflow-hidden bg-mist-pale py-24 md:py-32"
-        >
+        <section className="tex tex-paper relative overflow-hidden bg-mist py-28 md:py-40">
           <figure className="quote-figure relative mx-auto max-w-3xl px-8 text-center" data-reveal>
             <blockquote className="t-quote text-moss">
               {/* verbatim client copy - one of the two quotes she offered for this
@@ -335,17 +289,14 @@ export default function Home() {
             arrives, put it back: absolute <img> at -z-10 under a bg-linen/75
             scrim, cards at bg-linen/92. 75% is a measured floor, not taste - at
             70% the standfirst fell to 4.40:1 and failed. */}
-        <section className="bg-linen">
+        <section className="relative bg-linen/75">
+          <img src="/media/mockup/pin-classes.png" alt="" className="absolute inset-0 -z-10 h-full w-full object-cover object-center brightness-125 saturate-150" />
           <div className="mx-auto max-w-[1280px] px-6 py-24 md:px-10 md:py-32 lg:px-20 xl:px-32">
             {/* "Offerings" is her word and it is the heading, not a kicker over
                 an invented headline. */}
-            <div data-reveal>
+            <div className="max-w-2xl" data-reveal>
               <h2 className="t-h2 text-moss">Offerings</h2>
-              {/* `max-w-none` overrides .t-body's 55ch measure, and the wrapper
-                  has no cap either: the sentence is 87 characters and wants
-                  about 700px, so both had to go for it to hold one line from lg
-                  up. It still wraps on a phone, which is correct. */}
-              <p className="t-body mt-6 max-w-none text-ink/75">
+              <p className="mt-6 leading-relaxed text-ink/75">
                 Start where you are. Every offering below leads to the same place, at a
                 different door.
               </p>
@@ -368,16 +319,12 @@ export default function Home() {
                 Full moss, no opacity step. It measured 3.99:1 at moss/85 back
                 when a photograph sat behind this block, and small tracked caps
                 need 4.5. The photograph is gone but the rule stands. */}
-            {/* One per line on a phone, a wrapped row from sm up. The names are
-                very different lengths - "Yoga" against "Corporate Well-being" -
-                so wrapping them at 390px gave a ragged 2/2/1 block that read as
-                a mistake. A single column scans in one pass. */}
             <ul
-              className="pillar-row mt-10 border-t border-ink/15 pt-8 sm:flex sm:flex-wrap sm:gap-x-8 sm:gap-y-3 md:gap-x-12"
+              className="mt-10 flex flex-wrap gap-x-8 gap-y-3 border-t border-ink/15 pt-8 md:gap-x-12"
               data-reveal
             >
               {pillars.map((pillar) => (
-                <li key={pillar.slug} className="label label-sm inline text-moss sm:inline-block">
+                <li key={pillar.slug} className="label text-[0.75rem] text-moss">
                   {pillar.name}
                 </li>
               ))}
@@ -391,17 +338,54 @@ export default function Home() {
                 <li key={o.n}>
                   <Link
                     href={o.href}
-                    className="group flex h-full flex-col bg-linen p-8 transition-colors duration-500 hover:bg-moss hover:text-linen md:p-10"
+                    className="group flex h-full flex-col bg-linen/[0.92] p-8 transition-colors duration-500 hover:bg-moss hover:text-linen md:p-10"
                   >
                     <span>
-                      <span className="t-h3 block">{o.title}</span>
-                      <span className="mt-3 block leading-relaxed opacity-75">{o.body}</span>
+                      <span className="block font-display text-[1.75rem] leading-tight md:text-3xl">{o.title}</span>
+                      <span className="mt-3 block text-[0.92rem] leading-relaxed opacity-75">{o.body}</span>
                     </span>
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
+        </section>
+
+        {/* GALLERY STRIP */}
+        <section className="tex tex-stone bg-sand/45 py-24 md:py-32 overflow-hidden">
+          <div className="mx-auto max-w-[1280px] px-6 md:px-10 lg:px-20 xl:px-32 flex flex-wrap items-end justify-between gap-6">
+            <div>
+              <p className="eyebrow tracking-widest text-sm uppercase text-moss mb-4">A glimpse</p>
+              <h2 className="t-h2 text-moss text-4xl md:text-5xl font-light">Where the practice happens</h2>
+              <p className="mt-4 max-w-xl text-ink/75 leading-relaxed">Parks at dawn, studio floors, school courtyards and the quiet of a hall between sessions.</p>
+            </div>
+            <Link
+              href="/gallery"
+              className="label -my-2 flex min-h-11 items-center border-b border-gold/60 py-2 text-[0.7rem] text-moss transition-colors hover:border-moss"
+            >
+              See the gallery
+            </Link>
+          </div>
+
+          <ul
+            className="mt-14 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-pl-6 pb-4 md:gap-6 md:scroll-pl-10 hide-scrollbar"
+            style={{ paddingLeft: 'max(1.5rem, calc((100vw - 1280px) / 2 + 1.5rem))', paddingRight: '1.5rem' }}
+          >
+            {gallery.slice(0, 5).map((item) => (
+              <li key={item.id} className="w-[85vw] shrink-0 snap-start sm:w-[46vw] lg:w-[28vw]">
+                <img
+                  src={item.thumb}
+                  alt={item.alt}
+                  width={item.w}
+                  height={item.h}
+                  loading="lazy"
+                  decoding="async"
+                  className="aspect-[3/4] w-full object-cover rounded-xl shadow-sm"
+                />
+                <p className="mt-4 text-[0.85rem] leading-relaxed text-ink/75 px-1">{item.caption}</p>
+              </li>
+            ))}
+          </ul>
         </section>
 
         {/* The client's own closing line, 27 July: "Last line - Begin your
