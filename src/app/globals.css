@@ -37,13 +37,18 @@
      12.72:1. The footer is the one exception and stays dark, because a foot is
      an ending, not a switch the reader falls through mid-page. */
   --color-mist: #DDE5D2;
-  /* Half mist, half linen, solid - NOT `bg-mist/60`. A translucent ground lets
-     the `.tex` texture through at full strength and reads darker, not paler:
-     measured 192 luminance against mist's own 226. This is for the big bands,
-     where the step from linen matters; true mist stays for small panels.
-     Linen 245 to mist-pale 236 is a 9-point step, which is the step
-     ouranoyoga.com runs between its two grounds (255 to 245, measured
-     2026-09-17). */
+  /* Ground for full-width bands. Use this, not `mist`, on anything that fills
+     the page width; true `mist` is for small panels.
+
+     Must stay a SOLID colour. `bg-mist/60` looks equivalent and is not: a
+     translucent ground lets the .tex texture through at full strength and
+     renders DARKER, not paler - measured 192 luminance against mist's own 226.
+
+     Why it exists: the site runs two grounds, linen (245 luminance) and this
+     (236) - a 9-point step. It used to run linen, sand and mist with steps up to
+     26 points, which made the page read as a stack of panels. The reference site
+     runs two grounds 10 points apart and no scroll motion at all, so the fix for
+     "it does not feel continuous" is palette and rhythm, not animation. */
   --color-mist-pale: #EAEDE0;
   --color-sage: #AEB89C;
   --color-linen: #F7F5EE;
@@ -183,9 +188,8 @@ body {
   .t-lead {
     font-family: var(--font-display);
     font-size: clamp(1.15rem, 2vw, 1.5rem);
-    /* 300, like every other display role. Left undeclared it fell back to
-       Cormorant's 400 and was the last thing on the site running a second
-       display weight. */
+    /* Keep this. Undeclared it falls back to Cormorant's 400 and the site ends
+       up running two display weights. */
     font-weight: 300;
     font-style: italic;
     line-height: 1.4;
@@ -222,12 +226,13 @@ body {
     font-size: 0.875rem;
   }
 
-  /* The one smaller label. It exists because callers were writing
-     `label text-[0.72rem]` and `label text-[0.75rem]` inline, and an em-based
-     tracking shrinks with the size it is applied to - so every ad-hoc size
-     override was silently retuning the letter-spacing as well. Tracking here is
-     raised to 0.163em so it still lands on the same ~2px the 14px label runs.
-     Two label sizes, both at 2px of tracking. Do not add a third inline. */
+  /* The one smaller label. Two label sizes exist, `.label` and `.label-sm`, and
+     that is all - do NOT set a label's size inline.
+
+     Reason: `.label` tracks in `em`, so `label text-[0.72rem]` silently retunes
+     the letter-spacing too. Callers were doing that at 0.70, 0.72 and 0.74rem.
+     The 0.163em here is chosen so this size lands on the same ~2px of tracking
+     the 14px label runs. */
   .label-sm {
     letter-spacing: 0.163em;
     font-size: 0.75rem;
@@ -300,17 +305,17 @@ body {
   isolation: isolate;
 }
 
-/* Under lg the wellness block is one column, and the order the two columns
-   hold on a desktop is the wrong order on a phone: it puts 300 words of prose
-   on the screen straight after the hero, with the photograph below all of it.
-   `display: contents` dissolves the media column so its two children - the
-   picture and her closing line - become items of the same flex column as the
-   copy, and can be ordered independently. Picture, heading, prose, button,
-   closing line. From lg up the grid is untouched.
+/* Phone order for the wellness block: picture, heading, prose, button, closing
+   line. Desktop is untouched - this whole rule is below lg.
 
-   The media column carries `data-reveal`; a `display: contents` box cannot be
-   transformed, so on a phone that one reveal simply does not play and the
-   content is visible from the start - the safe direction to fail. */
+   How: `display: contents` dissolves `.wellness-media`, so its two children (the
+   picture and the closing line) become items of the same flex column as the
+   copy and can be ordered separately. Without it the copy ran first and a phone
+   got 300 words before any picture.
+
+   Side effect, accepted: `.wellness-media` carries `data-reveal`, and a
+   `display: contents` box cannot be transformed, so that one reveal does not
+   play on a phone. The content is simply visible from the start. */
 @media (max-width: 1023.98px) {
   .wellness-grid {
     display: flex;
@@ -726,16 +731,16 @@ body {
    enough ground, and keeps the gradient's midtones off the text. Verified
    against the rendered pixels, not assumed. */
 @media (min-width: 1024px) {
-  /* Desktop is close enough in aspect to fill the frame properly.
+  /* Desktop fills the frame with `cover`.
 
-     Kept at `cover`, deliberately. The scene file is 1024x1024, so on any
-     landscape viewport cover renders it at exactly the viewport width: there is
-     no horizontal overflow, which means background-position-x does nothing and
-     the picture cannot be nudged sideways without enlarging it first. A 118%
-     size did move it 98px left and put her inside the enso ring, but it also
-     scaled her up, which is not wanted. If the picture has to move sideways
-     again, re-export the scene with the cream ground extended on its right
-     rather than zooming the one we have. */
+     Do not try to nudge this sideways with background-position. The scene file
+     is 1024x1024, so cover renders it at exactly the viewport width on any
+     landscape screen - there is no horizontal overflow to move into, and
+     background-position-x does nothing. Sizing it above 100% does move it, but
+     it scales her up with it (tried at 118%, rejected).
+
+     To move the picture sideways: re-export the scene with its cream ground
+     extended on the right. */
   .hero-atmos {
     background: url("/hero/hero-scene.jpg") center / cover no-repeat;
     -webkit-mask-image: none;

@@ -89,19 +89,13 @@ export default function Home() {
               col 11, not 12: running it to the container edge is what made the
               headline look jammed against the right of the frame. One spare
               column of air reads as composition rather than overflow. */}
-          {/* The hero grid holds only the copy - she is an absolute layer behind it -
-              so the container's own padding IS the type's position. From lg up
-              the left and right padding are deliberately lopsided: 96/16 at lg
-              and xl against the old 56/56, 160/0 at 2xl against 80/80. Each pair
-              sums to what it replaced, so the column keeps its width and the
-              headline stays on one line at 641-654px - it fills the column
-              almost exactly, so any pair that does not sum will wrap it. Change
-              them as a pair.
+          {/* Change lg:pl-24 / lg:pr-4 as a PAIR - they must sum to 112px, and
+              2xl:pl-[10rem] / 2xl:pr-0 to 160px. Break the sum and the headline
+              wraps to two lines: it is 641px wide in a 648px column at 1440.
 
-              That is 40px right below 1536 and 80px from 1536 up, where the
-              container is capped at 1500 and centred, so a zero right padding
-              still leaves 200px of air beside the type on a 1912 screen. The
-              tablet range was judged right at 40px and is left alone. */}
+              The lopsided padding is what moves the type right, off the blurred
+              part of the photo. This grid holds only the copy (she is an
+              absolute layer behind it), so container padding = type position. */}
           <div className="relative z-10 mx-auto flex h-full min-h-[100svh] max-w-[1500px] items-stretch px-6 pt-28 pb-16 md:px-10 lg:grid lg:grid-cols-12 lg:items-center lg:gap-8 lg:pl-24 lg:pr-4 lg:pt-20 lg:pb-20 2xl:pl-[10rem] 2xl:pr-0">
             {/* Portrait is a full-height flex column so the link can be pushed
                 to the foot of the screen (see the link block below). Desktop
@@ -124,11 +118,8 @@ export default function Home() {
                   rather than merely large, and our old 88px with 0.06em was
                   bigger and blunter.
 
-                  Weight is 300, the same as every other Cormorant on the site.
-                  It was 400 on the argument that dark-on-light needs less weight
-                  than the reference's white-on-photograph - true in isolation,
-                  but it left the page running two display weights, because the
-                  type roles in globals.css are all 300. One face, one weight.
+                  Weight 300, like every type role in globals.css. It was 400,
+                  which left the site running two display weights.
 
                   Re-measure on a real phone, not with `chrome --window-size`:
                   Chrome on Windows will not open a window under 500px, so a
@@ -185,13 +176,9 @@ export default function Home() {
 
         {/* YOUR HOME OF WELLNESS - image on the right, per the brief */}
         <section
-          /* Linen, not sand. Measured on ouranoyoga.com 2026-09-17, which is the
-             site she keeps naming: its whole page runs on two grounds, #FFFFFF
-             and #F5F5F5 - a four-point step - and nothing moves on scroll. Our
-             page ran linen, sand, mist, linen, mist, which is four changes of
-             ground and steps of up to 26 points of luminance. That, not the
-             hardness of the edges, is what made it read as a stack of panels.
-             Dropping sand takes the page to two grounds and one change. */
+          /* Linen, not sand. The site runs two grounds only: linen and
+             mist-pale. Reasoning and measurements are in globals.css, under
+             --color-mist-pale. */
           className="wellness bg-linen"
         >
           {/* `lg:items-center`, not top-aligned: the two columns are different
@@ -258,30 +245,27 @@ export default function Home() {
 
             </div>
 
-            {/* Stacked, a phone got three paragraphs and no picture on the
-                screen straight after the hero - the measured drop-off point of
-                the visit. The photograph leads on a phone: `.wellness-grid`
-                under lg makes this column `display: contents`, so its children
-                are ordered against the copy directly (globals.css). From lg up
-                nothing changes - two columns, picture beside the words, which is
-                the brief's layout.
+            {/* Careful: under lg this is NOT a column. `.wellness-grid` sets
+                `display: contents` on it (globals.css), so the picture and the
+                closing line are ordered one by one against the copy.
 
-                Her closing line sits under the picture in this column, so on a
-                phone it lands after the copy rather than before the heading -
-                the child ordering below is what keeps that true. */}
+                Phone order: picture, heading, prose, button, closing line.
+                Stacked the other way, a phone got 300 words before any picture.
+                From lg up this is an ordinary two-column grid. */}
             <div className="wellness-media relative" data-reveal>
               {/* Plain <img>, not next/image: the optimiser is off for
                   Hostinger. Dimensions are on the tag so the column reserves
                   its height before the file lands.
 
                   A9, "zoom in where the photo has empty space top and bottom"
-                  (call, 00:58:25). The source is 1500x2666, so `aspect-square`
-                  plus `object-cover` crops 28% off each end and the subject
-                  stays centred. Square, not taller: her closing line sits under
-                  this picture and the two share the column's height. If a future
-                  photograph puts the subject off centre, re-crop the file rather
-                  than reaching for object-position: a CSS crop still ships the
-                  whole tall file. */}
+                  Source is 1500x2666; `aspect-square` plus
+                  `object-cover` crops 28% off each end and the subject stays
+                  centred. Keep it square - the closing line below shares this
+                  column's height with it.
+
+                  New photo off centre? Re-crop the file. Do not reach for
+                  object-position: a CSS crop still downloads the whole tall
+                  file. */}
               <img
                 src="/media/gallery/raji-28.webp"
                 width={1500}
@@ -292,21 +276,13 @@ export default function Home() {
                 className="aspect-square w-full object-cover object-center"
               />
 
-              {/* Her closing line, and her own placement for it. Two records
-                  from 6 September say the same thing: the raw notes read "Move
-                  breathe and become, below the photo", and at 00:33:42 she puts
-                  it at the transition into the next section - "in this place
-                  maybe we can write move breathe and become" - which is the seam
-                  the continuity rule below straddles.
+              {/* Do not remove without asking the client. Both the line and its
+                  position under the photograph are hers, recorded in
+                  docs/feedback.
 
-                  The same notes also say "remove move, breathe, become" one line
-                  earlier. That is not a contradiction: it comes off the middle
-                  of the wellness block, where it used to be a fourth paragraph,
-                  and goes under the photograph. Set as display type it reads as
-                  a caption on the image rather than as copy nobody finishes.
-
-                  Cut on 2026-09-17 and restored the same day once the transcript
-                  was checked. Do not remove it again without her. */}
+                  One note there reads "remove move, breathe, become". That means
+                  remove it from the MIDDLE of this block, not from the page. It
+                  has already been cut once by mistake and put back. */}
               <p className="t-statement mt-8 italic text-moss">
                 Move. Breathe. Become.
               </p>
@@ -325,10 +301,8 @@ export default function Home() {
             The rule down the centre is gone and stays gone - on a panel holding
             one centred quote it was a line through the middle of the sentence. */}
         <section
-          /* Same rhythm as every other band: 96/128. It ran 112/160, which was
-             the only band on a different beat. The reference runs 75.875px top
-             and bottom on nearly every section - one number, repeated - and the
-             evenness is half of why it reads as one page. */
+          /* py-24 md:py-32 (96/128) is the beat every band on the site uses.
+             This one ran 112/160 and was the only exception. */
           className="tex tex-paper relative overflow-hidden bg-mist-pale py-24 md:py-32"
         >
           <figure className="quote-figure relative mx-auto max-w-3xl px-8 text-center" data-reveal>

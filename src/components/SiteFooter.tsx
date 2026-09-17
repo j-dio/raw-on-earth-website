@@ -183,16 +183,13 @@ export default function SiteFooter() {
         </div>
       </div>
 
-      {/* The laurel is the footer's divider. It used to sit inside the brand
-          column, under the strapline, where it was a 220px squiggle breaking one
-          column of text in half - decoration with no job, and the only element
-          on the page whose alignment had to be argued about.
+      {/* The laurel is the footer's divider - it replaced a plain hairline that
+          used to sit here, so do not add one back above it.
 
-          Here it does the work the hairline was doing, so the hairline is gone:
-          two rules stacked 30px apart is one rule too many. Centred, because it
-          spans the whole footer rather than belonging to a column, and capped at
-          260px so the leaves keep their silhouette instead of stretching across
-          1440px. Same placement on every page - the footer is shared. */}
+          Centred because it spans the footer rather than belonging to a column;
+          capped at 260px so the leaves keep their silhouette instead of
+          stretching to 1440px. It used to sit inside the brand column, where it
+          was a 220px squiggle cutting one column of text in half. */}
       <div className="mx-auto w-[calc(100%-3rem)] pb-9 md:w-[90%]">
         <LeafRule className="mx-auto max-w-[260px]" tone="linen" />
       </div>
@@ -207,12 +204,13 @@ export default function SiteFooter() {
               <SocialLink key={s.href} {...s} />
             ))}
           </div>
-          {/* Small tracked caps are Montserrat's job everywhere else on the
-              site; this line was Lato with the capitals typed into the string,
-              and the brand name hard-coded next to a file that reads site.ts for
-              everything else. Both fixed. The strapline stays until the client
-              settles it: she asked for "Real. Awakening. Wellbeing." to come off
-              the hero, and never said anything about the footer. */}
+          {/* Open with the client: the strapline here was cut from the hero at
+              her request, and the footer was never discussed. It stays until she
+              settles it.
+
+              The line was Lato with the capitals typed into the string and the
+              brand name hard-coded; both fixed - small tracked caps are the
+              label face's job, and the strings come from site.ts. */}
           <p className="label label-sm uppercase text-linen/60">
             © {new Date().getFullYear()} {site.name} — {site.tagline}
           </p>

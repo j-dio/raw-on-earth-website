@@ -14,10 +14,9 @@ import { testimonials } from "@/data/home";
    is emotional, not informational: a visitor should finish this page wanting
    in.
 
-   Order. The gallery grid was folded into the foot of this page on 2026-09-15
-   (client call 00:38:42, confirmed 00:46:22) and moved back out to its own
-   /gallery route on 2026-09-16 with the gallery redesign. The section order she
-   asked for in that same call is kept, because it was never about the gallery:
+   Order. The gallery grid used to sit at the foot of this page and now has its
+   own /gallery route. The section order below stays as it is - the client asked
+   for it in its own right, not because of where the gallery sat:
 
      1. Masthead        four practitioners under a banyan. Adults, so no
                         consent question, and it is the one frame in the
@@ -29,14 +28,12 @@ import { testimonials } from "@/data/home";
      5. How to join
      6. CtaBand
 
-   The horizontal photo strip that used to tease /gallery from here has not come
-   back. It was the same photographs twice, which is the "too much to choose
-   from" complaint the redesign is answering.
+   Do not bring back the horizontal photo strip that used to tease /gallery from
+   here. It showed the same photographs twice.
 
-   OPEN WITH THE CLIENT: on the 6 September call she asked for the gallery to
-   live at the end of this page - "under community in the last we can have
-   gallery" (00:38:42), agreed at 00:46:22. The route is separate again. Raise
-   it through Priyanka rather than moving it a third time.
+   OPEN WITH THE CLIENT: she asked for the gallery at the end of THIS page, and
+   it is a separate route again. See docs/feedback for her exact words. Raise it
+   through the intermediary rather than moving it a third time.
 
    Grounds: linen -> mist -> sand -> linen, closing on the CtaBand. One mild
    green (mist), not a page that keeps falling into a dark panel (client,
