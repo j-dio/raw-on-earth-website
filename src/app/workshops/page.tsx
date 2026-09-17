@@ -91,40 +91,66 @@ export default function WorkshopsPage() {
         <PageHero
           eyebrow="Workshops"
           title="Classes, workshops and immersions"
-          /* Rewritten 2026-09-17 to the reference's voice. It read "An hour a
-             week, a day given over to breath, or a weekend away from a screen.
-             Same practice, different amounts of time." - a riddle with no verb
-             and no reader in it.
+          /* Rewritten 2026-09-17, twice. It read "An hour a week, a day given
+             over to breath, or a weekend away from a screen. Same practice,
+             different amounts of time." - a riddle with no verb and no reader
+             in it. The first rewrite opened "Join a weekly class, spend a day
+             on breath and stillness..." and read like a list of instructions.
 
-             ouranoyoga.com opens its own events page "Join our regular events
-             where you can explore new styles... Immerse yourself in our
-             masterclasses. Treat yourself to our nourishing day retreats." So:
-             a verb first, "you" in the sentence, and no word a tired person has
-             to decode. */
-          standfirst="Join a weekly class, spend a day on breath and stillness, or come away for a weekend. However much time you have, the teaching is the same."
-          /* `workshops.webp` is now a 21:9 crop of `kids-30`, replacing the
-             monk conducting a blessing ceremony - a real photograph from her
-             practice, but not a class, and this page is the one that has to
-             show what turning up looks like.
+             ouranoyoga.com/mentoring sets its standfirst as a fragment of
+             parallel clauses that all land on the reader: "Mentoring to guide,
+             nurture, and support you." That is the shape copied here - three
+             clauses, one sentence, every one of them ending on what it does
+             FOR you, and not a verb aimed at you. */
+          standfirst="Classes to steady you, workshops to take you deeper, and retreats to take you away."
+          /* `workshops.webp` is a 21:9 crop of `kids-32` - her crouched among
+             a yard of school children, steadying one of them.
 
-             Crop is `1500:643:0:90` of the 1500x1000 original, chosen by
-             looking: at y=20 the frame is mostly sky, at y=160 her forehead is
-             cut. At 90 her whole face is in and the children read clearly.
+             It replaced a monk conducting a blessing ceremony: a real
+             photograph from her practice, but not a class, on the one page
+             that has to show what turning up looks like.
+
+             kids-30 was tried first and did not survive the band. It is a 3:2
+             frame of her standing, so at 21:9 she filled the whole height and
+             the children were cut away below - "doesn't show the image as a
+             whole", which is exactly right. kids-32 is the same session shot
+             WIDE: the scene spreads horizontally, so a 21:9 window holds all
+             of it and nothing has to be invented to make it fit.
+
+             Cropped to 16:9 (1500:844:0:80), NOT the 21:9 the other heroes
+             use, and the reason is the small screens rather than the large
+             one. PageHero runs a 16:9 box below `lg` and 21:9 above it, so a
+             21:9 master hits `object-cover` on a phone and it trims the SIDES:
+             measured at 390px the band shows 449px of a 1500px frame - 70% of
+             the picture gone, and on this photograph the sides are where the
+             children are. Tablet lost 34% the same way.
+
+             A 16:9 master inverts that. The phone box is 16:9 exactly, so
+             nothing is cropped at all; desktop trims height instead, 27% at
+             1440 and 32% at 1920, out of sky and empty mat. y=80 keeps her
+             head and the front row.
+
+             (CLAUDE.md says the /media/hero files are pre-cropped to 21:9 "so
+             object-cover only has to trim the sides on a phone rather than
+             discard two thirds of the picture". Measured, it discards two
+             thirds anyway. That is true of every page and wants looking at
+             properly, not just here.)
+
              1500px wide against the other heroes' 2400, so it upscales about
-             1.13x at the 1700px container - visible only if someone goes
-             looking. Ask her for the full-resolution original.
+             1.13x at the 1700px container. Ask her for the full-resolution
+             original.
 
              GATE BEFORE LAUNCH: this frame shows identifiable children's
              faces, and "whether the 27 children's faces may be published" is
              still on the open list in docs/CLIENT-BRIEF.md. It is fine on a
              dev server; it is not fine on a live domain until she answers.
-             If the answer is no, swap this back to a frame without children -
-             `/media/hero/gallery.webp` is a class mid-session and is unused. */
+             If the answer is no, `/media/hero/gallery.webp` is a class
+             mid-session and is unused. */
           figure={{
             src: "/media/hero/workshops.webp",
-            alt: "The founder leans over a row of school children folding forward on mats in an outdoor yard, a wire fence and trees behind them.",
+            alt: "The founder crouches among a yard full of school children, steadying one of them in a seated forward fold, a wire fence and trees behind.",
             width: 1500,
-            height: 643,
+            height: 844,
           }}
         />
 
