@@ -1,24 +1,45 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import JsonLd from "@/components/JsonLd";
 import ClassFinder from "@/components/ClassFinder";
-import { Section, SectionHead, LeafRule, Button, CtaBand } from "@/components/ui";
+import { Section, SectionHead, Button, CtaBand, CONTAINER } from "@/components/ui";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
-import { stats } from "@/data/home";
-import { workshops, pastFormats, kindLabels, modeLabels } from "@/data/workshops";
+import {
+  workshops,
+  pastFormats,
+  corporateClients,
+  kindLabels,
+  SAMPLE_SCHEDULE,
+} from "@/data/workshops";
 import { site } from "@/data/site";
 
 /* Workshops.
 
-   Redesigned 2026-09-17: gallery-style hero with background photo, then the
-   content is organised in a clean card grid layout (matching the home-page
-   Offerings block) instead of scattered image-text pairs.
+   The design brief asks this page for "upcoming and past workshops, retreat
+   calendar, corporate workshops, school workshops, with description, date,
+   duration, location and registration". The 27 July notes add regular classes,
+   one-to-one, and the online / offline dropdown. There is no Events tab; this
+   page is it.
 
-   The awkward fact this page is built around: NOT ONE date, price, venue or
-   registration link has been supplied. So the page never prints one. Every
-   card says "Dates announced soon" and every CTA goes to the contact page. */
+   Reworked 2026-09-17 into the diary her brief asks for. What stood here was a
+   second copy of the services catalogue - the same corporate, schools, retreats
+   and one-to-one that /mentorship already sets out by audience. Her brief draws
+   the line clearly: Services is WHAT she offers, Workshops is WHEN it runs. The
+   catalogue is linked once now, not repeated.
+
+   The awkward fact this page is built around: NOT ONE real date, price, venue
+   or registration link has ever been supplied. `SAMPLE_SCHEDULE` in
+   src/data/workshops.ts fills the timetable and the cards so the page can be
+   designed and reviewed as a finished thing, and the page prints a visible
+   notice saying so while it is on. Turn it off before this reaches the client;
+   with it off every row falls back to "Dates announced soon" and nothing on
+   the page claims a date. Every CTA goes to the contact page either way.
+
+   Registration links carry the slug: /contact?about=<slug>, so an enquiry
+   arrives with context. The contact page may not read `about` yet; if it does
+   not, nothing breaks - the visitor simply lands on the form. Whoever builds
+   /contact should pick the param up and pre-fill the message. */
 
 export const metadata: Metadata = pageMeta({
   title: "Workshops",
@@ -27,275 +48,340 @@ export const metadata: Metadata = pageMeta({
   path: "/workshops",
 });
 
-const counts = stats.slice(0, 3);
-const digits = (v: string) => Number(v.replace(/[^\d]/g, ""));
-const suffix = (v: string) => v.replace(/[\d,]/g, "");
-
+/* Each offering appears in exactly ONE section. The finder used to be fed all
+   eleven, which meant a visitor scrolled past the same seven rows three times
+   in three near-identical list shapes. It now carries the recurring commitments
+   only - which is what its own heading promises - and the longer formats and
+   the organisational work keep their own treatment further down. */
 const current = workshops.filter((w) => w.status !== "past");
 const classes = workshops.filter(
   (w) => w.kind === "regular-class" || w.kind === "one-to-one",
 );
-const immersions = workshops.filter((w) => w.kind === "workshop" || w.kind === "retreat");
-const forOrganisations = workshops.filter((w) => w.kind === "corporate" || w.kind === "schools");
+/* The diary: the one-off formats, soonest first. A dated entry outranks an
+   undated one so the page opens on something a visitor can actually put in a
+   calendar, rather than on whichever object happens to be first in the file. */
+const upcoming = workshops
+  .filter((w) => (w.kind === "workshop" || w.kind === "retreat") && w.status !== "past")
+  .sort((a, b) => (a.date ?? "9999").localeCompare(b.date ?? "9999"));
 
-/* The five practice pillars, displayed as a tracked row above the offerings
-   grid — same treatment as the home page. */
-const pillarNames = ["Yoga", "Mindfulness", "Corporate Well-being", "Conscious Living", "Chanting for Kids"];
-
-/* Offerings cards for the grid. Each card maps to a kind of workshop
-   and links to the relevant section or contact page. No images. */
-const offeringCards = [
-  {
-    n: "01",
-    title: "Weekly Classes",
-    body: "Classical Hatha and Ashtanga Vinyasa. Small groups, watched closely, taught at the pace of a body that is listening.",
-    href: "#find-a-class",
-  },
-  {
-    n: "02",
-    title: "Private Sessions",
-    body: "One-to-one teaching built around your body, your history and your week. Online and in person.",
-    href: "#find-a-class",
-  },
-  {
-    n: "03",
-    title: "Day Workshops",
-    body: "A full day given to breath, held posture and the quiet in between. Run a few times a year.",
-    href: "#immersions",
-  },
-  {
-    n: "04",
-    title: "Immersions & Retreats",
-    body: "Weekend practice, nature retreats and residential stays. The group is kept small on purpose.",
-    href: "#immersions",
-  },
-  {
-    n: "05",
-    title: "Corporate Well-being",
-    body: "Programmes for teams under load. Desk yoga, resilience, leadership mindfulness — on site or online.",
-    href: "#organisations",
-  },
-  {
-    n: "06",
-    title: "Schools & Children",
-    body: "Sound, rhythm and stillness, offered to children and staff in a form they take to easily.",
-    href: "#organisations",
-  },
-];
+/* Dates are printed two ways from one ISO string, so a card can never disagree
+   with itself. `formatDots` is the reference's own device - 18 . 10 . 2026 on
+   half an em of tracking - and `formatLong` is the line a person reads.
+   en-GB and a fixed UTC timezone: the site is British-spelled throughout, and
+   without the timezone a build machine west of Greenwich renders yesterday. */
+const DOTS = { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "UTC" } as const;
+const LONG = { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "UTC" } as const;
+const formatDots = (iso: string) =>
+  new Intl.DateTimeFormat("en-GB", DOTS).format(new Date(iso)).replace(/\//g, " . ");
+const formatLong = (iso: string) => new Intl.DateTimeFormat("en-GB", LONG).format(new Date(iso));
 
 export default function WorkshopsPage() {
   return (
     <>
       <SiteHeader />
       <main id="main">
+        {/* MASTHEAD - the co-developer's full-bleed treatment, carried over
+            from her branch and used on /mentorship too: the photograph is the
+            ground, the type sits on it, and a linen gradient carries the
+            section into the linen below so the band does not read as a panel.
 
-        {/* HERO — gallery-style: image as full background, text overlaid */}
-        <div className="relative bg-linen text-moss overflow-hidden flex flex-col items-center justify-center">
-          {/* Background image */}
+            It replaces PageHero on this route ONLY. Everything PageHero gave
+            this page is kept by hand: the CONTAINER frame (identical classes,
+            so the H1 still lines up with every Section heading below it - a
+            148px drift was measured and fixed on 2026-09-17), the eyebrow that
+            doubles as the visible breadcrumb, the single H1, and the
+            page-hero-in / page-hero-title entry delays.
+
+            PageHero's own comment argues against type over photography,
+            because the palette's light greens fail contrast over an
+            uncontrolled image. That is why the scrim below is heavy and why
+            the type is moss rather than linen. MEASURE before lightening it.
+
+            THE PHOTOGRAPH IS AN OPEN QUESTION. `workshops.webp` is a crop of
+            her teaching a yard of school children, and CLIENT-BRIEF.md has an
+            unanswered question about publishing their faces. Main removed this
+            masthead figure and that is what closed the question. Putting it
+            back re-opens it, so it needs her yes before this page is
+            published. */}
+        {/* NOT `.page-hero`, deliberately. globals.css carries
+            `.page-hero > *:not(.brand-mark) { position: relative }` to lift
+            masthead content above the enso that used to sit behind it. That
+            rule beats Tailwind's `absolute` on the image layer below, so with
+            the class on, the photograph dropped OUT of the background and
+            stacked above the type: the section measured 1352px tall with the
+            H1 at y=1029, under an 810px picture. The entry animations are
+            `.page-hero-in` / `.page-hero-title` on the children and work on
+            their own. */}
+        <section className="relative overflow-hidden bg-linen text-moss">
           <div className="absolute inset-0 z-0">
             <img
               src="/media/hero/workshops.webp"
-              alt="A monk in maroon robes shares a blessing ritual with a man and a woman over a small bowl, in a bright room with yoga mats stacked in the background."
+              alt="The founder leads a yard of school children through a standing pose, rows of them on mats in front of her."
               loading="eager"
               decoding="async"
-              className="w-full h-full object-cover"
+              className="h-full w-full object-cover"
             />
-            {/* Gradient overlay matching gallery / mentorship hero */}
-            <div className="absolute inset-0 bg-gradient-to-b from-linen/60 via-linen/80 to-linen" />
+            <div className="absolute inset-0 bg-gradient-to-b from-linen/75 via-linen/85 to-linen" />
           </div>
 
-          {/* Text overlaid on top */}
-          <div className="relative z-10 max-w-[1280px] mx-auto w-full text-left px-6 pt-40 pb-24 md:px-10 lg:px-20 xl:px-32 md:pt-52 md:pb-32">
-            <div className="flex items-center gap-4 mb-6">
-              <span className="w-6 h-px bg-moss/40" />
-              <p className="eyebrow tracking-widest text-sm uppercase">Workshops</p>
-            </div>
-            <h1 className="font-display text-[4rem] md:text-[6rem] lg:text-[7rem] font-light leading-tight text-moss mb-8">
-              Classes, workshops<br />and immersions
-            </h1>
-            <p className="t-body text-ink/80 max-w-md text-lg md:text-xl font-light leading-relaxed">
-              An hour a week, a day given over to breath, or a weekend away from a screen. Same practice, different amounts of time.
-            </p>
-          </div>
-        </div>
-
-        {/* OFFERINGS GRID — matching home-page layout: pillar labels, then
-            a 3-column card grid with hairline gutters. No images. */}
-        <section className="relative bg-linen/75">
-          <div className="mx-auto max-w-[1280px] px-6 py-24 md:px-10 md:py-32 lg:px-20 xl:px-32">
-            <div className="max-w-2xl" data-reveal>
-              <p className="eyebrow">What to expect</p>
-              <h2 className="t-h2 mt-5 text-moss">Small groups, watched closely</h2>
-              <p className="mt-6 leading-relaxed text-ink/75">
-                Start where you are. Every offering below leads to the same place, at a different door.
+          <div className={`${CONTAINER} relative z-10 pt-36 pb-14 md:pt-44 md:pb-20`}>
+            <div className="max-w-4xl">
+              <p
+                className="eyebrow page-hero-in"
+                style={{ "--d": "80ms" } as React.CSSProperties}
+              >
+                Workshops
+              </p>
+              <h1
+                className="page-hero-title t-h1 mt-6 text-moss"
+                style={{ "--d": "160ms" } as React.CSSProperties}
+              >
+                Classes, workshops and immersions
+              </h1>
+              {/* Main's standfirst, kept. Her branch still carried the sentence
+                  main rewrote twice - "An hour a week, a day given over to
+                  breath..." - which has no verb and no reader in it. */}
+              <p
+                className="page-hero-in t-lead mt-8 max-w-[46ch] text-ink/75"
+                style={{ "--d": "320ms" } as React.CSSProperties}
+              >
+                Classes to steady you, workshops to take you deeper, and retreats to take you
+                away.
               </p>
             </div>
-
-            {/* Five pillar names as a tracked row */}
-            <ul
-              className="mt-10 flex flex-wrap gap-x-8 gap-y-3 border-t border-ink/15 pt-8 md:gap-x-12"
-              data-reveal
-            >
-              {pillarNames.map((name) => (
-                <li key={name} className="label text-[0.75rem] text-moss">
-                  {name}
-                </li>
-              ))}
-            </ul>
-
-            {/* Card grid — 3 columns, hairline gaps, same as home offerings */}
-            <ul className="offer-grid mt-16 grid gap-px bg-ink/15 sm:grid-cols-2 lg:grid-cols-3">
-              {offeringCards.map((o) => (
-                <li key={o.n}>
-                  <a
-                    href={o.href}
-                    className="group flex h-full flex-col bg-linen/[0.92] p-8 transition-colors duration-500 hover:bg-moss hover:text-linen md:p-10"
-                  >
-                    <span>
-                      <span className="block font-display text-[1.75rem] leading-tight md:text-3xl">{o.title}</span>
-                      <span className="mt-3 block text-[0.92rem] leading-relaxed opacity-75">{o.body}</span>
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
           </div>
         </section>
 
-        {/* INTRO — what a session with her is actually like, and verified numbers */}
-        <Section className="bg-linen py-24 md:py-32">
-          <div className="max-w-3xl">
-            <SectionHead
-              eyebrow="What to expect"
-              title="Nothing here is a video you follow along with"
-              standfirst="Numbers are kept low enough that alignment is corrected rather than assumed, and a session ends with rest, not with a rush for the door."
-            />
-            <div className="mt-10 max-w-[58ch] space-y-6 leading-[1.75] text-ink/80">
-              <p>
-                Sessions are taught in Classical Hatha and Ashtanga Vinyasa, with pranayama and
-                meditation carrying the same weight as the movement. Beginners are welcome in
-                every format; so is a body that is stiff, tired, or coming back after a long gap.
-              </p>
-              <p>
-                Bring a mat if you have one, wear something you can breathe in, and eat lightly
-                beforehand. Everything else is arranged with you once you have written in.
-              </p>
-            </div>
 
-            <ul
-              className="mt-14 grid grid-cols-3 gap-6 border-t border-ink/15 pt-10"
-              data-reveal-stagger
-            >
-              {counts.map((s) => (
-                <li key={s.label}>
-                  <p
-                    className="font-display text-[clamp(2.2rem,5vw,3.4rem)] font-light leading-none text-moss"
-                    data-count={digits(s.value)}
-                    data-count-suffix={suffix(s.value)}
-                  >
-                    {s.value}
-                  </p>
-                  <p className="label mt-4 text-[0.66rem] text-ink/70">{s.label}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </Section>
+        {/* The "What you will practise" section stood here and is removed.
 
-        {/* CLASS FINDER — online / offline dropdown + type filter */}
+            It had already been cut back once, from a version that promised
+            small groups, watched alignment and a mat to bring - none of which
+            she has ever told us. What was left was true but it was three
+            blocks of prose between the masthead and the timetable, which is
+            the thing a visitor came for.
+
+            One sentence out of it was worth keeping and is now the standfirst
+            below: Classical Hatha and Ashtanga Vinyasa with pranayama and
+            meditation, which is the only place this page names what she
+            actually teaches, and is sourced from her own credentials.
+
+            The full copy is in git and in the project memory note
+            `raw-on-earth-workshops-intro-copy`, because it is the best version
+            that section has had and she may want it back. */}
+
+        {/* THE WORKING PART OF THE PAGE - the online / offline dropdown the
+            client asked for, plus a type filter. Given room and its own ground. */}
         <Section id="find-a-class" className="tex tex-stone bg-sand/45 py-24 md:py-32">
           <SectionHead
             eyebrow="Regular classes and one-to-one"
             title="Find a class"
-            standfirst="Weekly group classes and private sessions, taught online and in JP Nagar. Filter by how you want to attend."
+            standfirst="Classical Hatha and Ashtanga Vinyasa, with pranayama and meditation carrying the same weight as the movement. Taught online and in JP Nagar, Bangalore — choose how you want to attend and write in for a place."
           />
           <div className="mt-14" data-reveal>
             <ClassFinder items={classes} />
           </div>
         </Section>
 
-        {/* WORKSHOPS AND IMMERSIONS — numbered list, no images */}
-        <Section id="immersions" className="bg-linen py-24 md:py-32">
+        {/* UPCOMING - the calendar the brief actually asks this page for.
+
+            Her brief: "Display upcoming and past workshops, retreat calendar,
+            corporate workshops, school workshops, with description, date,
+            duration, location and registration." That is a diary. What stood
+            here instead was a second copy of the services catalogue - the same
+            one-to-one, corporate, retreats and schools that /mentorship already
+            lists by audience, which is the split her brief draws: Services is
+            WHAT she offers, Workshops is WHEN it happens. The catalogue is gone
+            from this page and linked to once, below.
+
+            The card shape is measured off ouranoyoga.com/events/ (1440px), the
+            only page on the reference that does this job: a full-width picture
+            with the event name over it in Cormorant at 60px/weight 500/3px of
+            tracking, the date under it in Lato at 16px on EIGHT pixels of
+            tracking - half an em, and the thing that makes a date read as a
+            date at a glance - then the description and Where / When / Cost as
+            labelled lines in a column under the picture, and one button.
+
+            Ours keeps that and drops their centring below the image, because
+            everything else on this site sets prose on the left rule. */}
+        <Section className="bg-linen py-24 md:py-32">
           <SectionHead
-            eyebrow="Workshops and immersions"
-            title="When an hour is not enough"
-            standfirst="Longer formats, run a few times a year. The retreat calendar is set with each venue, so dates are confirmed with everyone who has registered interest."
+            eyebrow="Upcoming"
+            title="What is coming up"
+            standfirst="Take a whole day, or come away for a weekend. These run a few times a year and numbers are small, so your place is held as soon as you write in."
           />
 
-          <ul className="mt-16 max-w-3xl" data-reveal-stagger>
-            {immersions.map((w, i) => (
-              <li key={w.slug} className="border-t border-ink/15 py-10 first:border-t-0 first:pt-0">
-                <p className="label text-[0.66rem] text-moss">
-                  {String(i + 1).padStart(2, "0")} &middot; {kindLabels[w.kind]}
-                </p>
-                <h3 className="mt-4 font-display text-[1.6rem] font-light leading-tight text-moss md:text-[2rem]">
-                  {w.title}
-                </h3>
-                <p className="mt-4 max-w-[54ch] leading-relaxed text-ink/80">{w.description}</p>
-                <dl className="mt-6 grid grid-cols-2 gap-x-8 gap-y-4 text-sm text-ink/70 sm:grid-cols-3 sm:gap-x-10">
-                  <div>
-                    <dt className="label text-[0.6rem] text-ink/70">Duration</dt>
-                    <dd className="mt-1">{w.duration}</dd>
+          {SAMPLE_SCHEDULE ? (
+            /* Visible on purpose while SAMPLE_SCHEDULE is on. The data file
+               explains the rule: a plausible-looking invented event is the
+               worst kind of lie, because somebody turns up for it. This says
+               so on the page rather than only in a comment. */
+            <p className="label mt-8 inline-block border border-moss/30 px-4 py-3 text-[0.62rem] leading-relaxed text-moss">
+              Sample dates, for layout only &mdash; real dates to be confirmed
+            </p>
+          ) : null}
+
+          <ul className="mt-14 space-y-20 md:space-y-28" data-reveal-stagger>
+            {upcoming.map((w) => (
+              <li key={w.slug}>
+                {w.image ? (
+                  /* Rounded and lifted, from her branch. Geometry only - the
+                     scrim below stays at the measured 60% and the type stays
+                     linen, because those are contrast numbers, not taste.
+                     No hover transform: these bands are not links. */
+                  <div className="relative overflow-hidden rounded-3xl shadow-sm">
+                    <img
+                      src={w.image.src}
+                      alt={w.image.alt}
+                      width={1500}
+                      height={1000}
+                      loading="lazy"
+                      decoding="async"
+                      className="aspect-[16/10] w-full object-cover md:aspect-[21/9]"
+                    />
+                    {/* A flat scrim at 60%, not a gradient, and the number is
+                        measured rather than chosen. A gradient failed first:
+                        over `meditation-08`, a hall of pale concrete, the type
+                        sat on the light middle of the ramp.
+
+                        Sampled off the rendered page at 1440x900, reading the
+                        brightest background pixel beside the type - at 45% the
+                        title came back 3.24:1, which passes for large text but
+                        leaves the 11px date under it short of the 4.5:1 small
+                        text needs. At 60%: title 4.86:1 and 5.16:1, date
+                        5.48:1 and 5.56:1, and 7.01:1 over the outdoor frame.
+
+                        The scrim also means the photographs are left alone
+                        rather than darkened in the file - the palette's light
+                        greens fail 4.5:1 over an uncontrolled image, so the
+                        type carries its own ground. */}
+                    <div className="absolute inset-0 rounded-3xl bg-ink/60" />
+                    <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
+                      {/* The format as a label, the NAME as the heading. That
+                          is the reference's own division - its bands read "TEA
+                          CEREMONY", not "Day workshop: tea ceremony" - and it
+                          is why the titles in the data file are short names
+                          now. Set as a sentence, "Day workshop: breath and
+                          stillness" wrapped to four lines at 72px and ran out
+                          of the bottom of a 21:9 band.
+
+                          `.t-h3` rather than `.t-h2`, uppercased and tracked
+                          here to match the masthead treatment at a size that
+                          fits the frame: the reference sets its event names at
+                          60px and `.t-h2` tops out at 72px. */}
+                      <p className="label text-[0.62rem] text-linen/75">{kindLabels[w.kind]}</p>
+                      <h3 className="t-h3 mt-3 max-w-[16ch] uppercase tracking-[0.055em] text-linen">
+                        {w.title}
+                      </h3>
+                      {w.date ? (
+                        /* 0.5em of tracking, which is the reference's own
+                           number: 16px Lato on 8px of letter-spacing. It is
+                           what makes `18 . 10 . 2026` read as a date at a
+                           glance rather than as a line of small type. */
+                        <p className="label mt-6 text-[0.7rem] tracking-[0.5em] text-linen">
+                          {formatDots(w.date)}
+                        </p>
+                      ) : null}
+                    </div>
                   </div>
-                  <div>
-                    <dt className="label text-[0.6rem] text-ink/70">Location</dt>
-                    <dd className="mt-1">{w.location}</dd>
-                  </div>
-                  <div>
-                    <dt className="label text-[0.6rem] text-ink/70">Dates</dt>
-                    <dd className="mt-1">Announced soon</dd>
-                  </div>
-                </dl>
-                <Link
-                  href={`/contact?about=${w.slug}`}
-                  className="mt-5 inline-flex min-h-11 items-center text-moss"
-                >
-                  <span className="label border-b border-moss/40 pb-1 text-[0.7rem] transition-colors duration-300 hover:border-moss">
-                    Register interest
-                  </span>
-                  <span className="sr-only"> in {w.title}</span>
-                </Link>
+                ) : null}
+
+                <div className="mt-8 grid gap-8 lg:grid-cols-12 lg:gap-16">
+                  <p className="leading-[1.9] text-ink/80 lg:col-span-7">{w.description}</p>
+
+                  <dl className="space-y-4 lg:col-span-4 lg:col-start-9">
+                    <div>
+                      <dt className="label text-[0.6rem] text-ink/60">When</dt>
+                      <dd className="mt-1 text-ink/85">
+                        {w.date ? formatLong(w.date) : "Announced soon"}
+                        {w.duration ? ` · ${w.duration}` : ""}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="label text-[0.6rem] text-ink/60">Where</dt>
+                      <dd className="mt-1 text-ink/85">{w.location}</dd>
+                    </div>
+                    {/* Printed only when there is one. No invented fee. */}
+                    {w.price ? (
+                      <div>
+                        <dt className="label text-[0.6rem] text-ink/60">Cost</dt>
+                        <dd className="mt-1 text-ink/85">{w.price}</dd>
+                      </div>
+                    ) : null}
+                    <div className="pt-2">
+                      <Button href={`/contact?about=${w.slug}`} variant="solid">
+                        Hold me a place
+                      </Button>
+                      <span className="sr-only"> at {w.title}</span>
+                    </div>
+                  </dl>
+                </div>
               </li>
             ))}
           </ul>
         </Section>
 
-        {/* FOR ORGANISATIONS AND SCHOOLS */}
-        <section id="organisations" className="bg-mist-pale text-ink">
-          <Section className="py-24 md:py-32">
-            <div className="max-w-3xl">
-              <SectionHead
-                eyebrow="For organisations and schools"
-                title="Work that happens on your premises"
-                standfirst="Programmes for teams under load, and sessions for children and teaching staff. Run over weeks where that suits, or as a single session for a wellness day."
-              />
-              <ul className="mt-10 space-y-4" data-reveal-stagger>
-                {forOrganisations.map((w) => (
-                  <li key={w.slug} className="border-t border-ink/15 pt-4">
-                    <h3 className="font-display text-[1.35rem] font-light leading-tight text-moss">
-                      {w.title}
-                    </h3>
-                    <p className="mt-2 max-w-[52ch] leading-relaxed text-ink/75">{w.summary}</p>
-                    <p className="label mt-3 text-[0.62rem] text-moss/70">
-                      {w.duration} &middot; {modeLabels[w.mode]}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-              <LeafRule className="mt-12 max-w-[240px]" />
-              <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-                <Button href="/mentorship" variant="solid">
-                  See the full programmes
-                </Button>
-                <Button href={site.whatsapp} variant="ghost" external>
-                  Ask on WhatsApp
-                </Button>
-              </div>
+        {/* THE CATALOGUE LIVES ON /mentorship. One line and a link, rather than
+            the two sections that used to stand here re-listing corporate work,
+            schools, retreats and one-to-one - all four of which /mentorship
+            already sets out by audience, in the five sections her brief names.
+            Her split, kept: what she offers there, when it runs here. */}
+        <Section className="bg-mist-pale py-20 md:py-24">
+          <div className="grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-16">
+            <p className="t-h3 text-moss lg:col-span-7">
+              Corporate programmes, schools, retreats and one-to-one teaching are set out in
+              full on the mentorship page.
+            </p>
+            <div className="lg:col-span-4 lg:col-start-9">
+              <Button href="/mentorship" variant="ghost">
+                See every offering
+              </Button>
             </div>
-          </Section>
-        </section>
+          </div>
+        </Section>
 
-        {/* PAST WORK — quiet, small, no photographs */}
+        {/* CORPORATE CREDENTIALS. Moved here from /about on 2026-09-17.
+
+            She asked for the companies herself and left us the placement -
+            "these companies have to be projected somewhere. You think about
+            it. I'll leave it to you" (00:55:45). Her own 27 July brief answers
+            it: Tab 3 is "Events (regular, one to one) + Gallery ... Photos -
+            online session / offline / 1-2 corporate pics". So the credential
+            sits directly under the organisations section it is evidence for,
+            rather than in the middle of her life story.
+
+            Thirteen names, from the slide she sent on 2026-09-16. They are set
+            as a hairline grid rather than as a centred run of text: thirteen
+            company names as running type is what made an earlier attempt at
+            this the busiest thing on the site. A grid gives each one its own
+            cell and the row stays quiet.
+
+            Text only, never their logos, and no context invented around them.
+            The list and the two open spellings are in src/data/workshops.ts. */}
+        <Section className="bg-linen pt-24 md:pt-32">
+          <SectionHead
+            eyebrow="Corporate work"
+            title="Taken into the workplace"
+            standfirst="Programmes and sessions have been run for teams at:"
+          />
+          <ul
+            className="mt-14 grid grid-cols-2 gap-px bg-ink/15 lg:grid-cols-3"
+            data-reveal-stagger
+          >
+            {corporateClients.map((name) => (
+              <li
+                key={name}
+                className="flex items-center bg-linen px-4 py-5 font-display text-[1.05rem] font-light leading-snug text-moss sm:px-6 sm:py-6 sm:text-[1.15rem] md:px-8 md:py-7 md:text-[1.35rem]"
+              >
+                {name}
+              </li>
+            ))}
+          </ul>
+        </Section>
+
+        {/* PAST WORK - quiet, small, no photographs. Formats, not invented
+            events: 35+ workshops have been run and not one title or date
+            reached us. */}
         <Section className="bg-linen py-16 md:py-20">
           <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-4">
@@ -305,6 +391,9 @@ export default function WorkshopsPage() {
                 venues are not listed here.
               </p>
             </div>
+            {/* Stacked on a phone. Justified rows only wrapped when a title and
+                its note happened to fit together, so one row in seven sat side
+                by side and the other six did not. */}
             <ul className="lg:col-span-8">
               {pastFormats.map((p) => (
                 <li
@@ -326,6 +415,13 @@ export default function WorkshopsPage() {
       </main>
       <SiteFooter />
 
+      {/* An ItemList, NOT schema.org Event objects.
+
+          Event requires a startDate. We have none, for any of these, and an
+          invented one is not a white lie in structured data: Google puts it in
+          the results, people plan around it, and it is wrong. An ItemList
+          describes the same offerings truthfully and needs no date. Swap in
+          real Event objects the day she sends the real calendar - not before. */}
       <JsonLd
         data={[
           breadcrumbLd([{ name: "Workshops", path: "/workshops" }]),
