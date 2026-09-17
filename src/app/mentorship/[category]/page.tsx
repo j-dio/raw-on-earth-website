@@ -88,8 +88,12 @@ const GROUP_IMAGES: Record<string, { src: string; alt: string }> = {
     alt: "A teacher spots a laughing student attempting crow pose on a black mat inside a thatched pavilion.",
   },
   schools: {
-    src: "/media/gallery/kids-15.webp",
-    alt: "Rows of children practise a standing pose together on colourful mats in a courtyard guided by an instructor.",
+    /* Client-supplied 2026-09-18. A full-height 3:4 of the 6000x4000 source
+       could not escape the school roof, which took the top 60% and pushed the
+       class into the bottom edge, so this is a 2250x3000 window from the foot
+       of the frame, centred on the teacher. */
+    src: "/media/gallery/kids-41.webp",
+    alt: "A teacher rests a hand on a pupil's back to guide a standing forward fold, a row of children bending beside him outside a tiled school building.",
   },
   "online-programmes": {
     src: "/media/gallery/raji-13.webp",
@@ -99,7 +103,14 @@ const GROUP_IMAGES: Record<string, { src: string; alt: string }> = {
 
 /* One image per service — chosen for contextual fit, not just availability.
    Each caption below records WHY this image was chosen for that service. */
-const SERVICE_IMAGES: Record<string, { src: string; alt: string }> = {
+/* `aspect` and `position` are per-image escape hatches, and both are earned.
+   A 3:4 portrait slot suits a photograph of a person; it does not suit every
+   photograph. Write the class LITERALLY here - Tailwind scans this file, so a
+   value assembled at runtime would never be generated. */
+const SERVICE_IMAGES: Record<
+  string,
+  { src: string; alt: string; aspect?: string; position?: string }
+> = {
   /* Private Yoga — one-to-one teaching, close adjustment */
   "private-yoga":
     { src: "/media/gallery/teaching-02.webp", alt: "A teacher adjusts a student's hips during a wheel pose on a mat — one-to-one instruction." },
@@ -121,12 +132,20 @@ const SERVICE_IMAGES: Record<string, { src: string; alt: string }> = {
     { src: "/media/gallery/teaching-07.webp", alt: "A teacher leads a standing group class with palms pressed together, students lined up on mats inside a long thatched hall." },
 
   /* Stress Management — group sitting together, collective calm */
+  /* Same photograph, framed 2026-09-18. It is 1500x846, so a 3:4 slot shows
+     only 42% of its width and a centred crop cut the seated woman in half and
+     filled the rest with empty floor. 79% puts her and the pair behind her in
+     the frame. Change the file, not this number, if it needs more room. */
   "stress-management":
-    { src: "/media/gallery/meditation-05.webp", alt: "A woman in a pink t-shirt sits in lotus position on a pink mat with other participants meditating behind her." },
+    { src: "/media/gallery/meditation-05.webp", position: "object-[79%_center]", alt: "A woman sits cross-legged on a pink mat with her eyes closed, other participants meditating on mats behind her." },
 
   /* Desk Yoga — forward fold, stretching the body that sits all day */
+  /* Client-supplied 2026-09-18, an online session. A 2x3 video grid is the one
+     picture on this page that a 3:4 slot destroys: the tiles sit in a 1049x885
+     box, so a portrait crop cuts a face off BOTH columns. It keeps its own 6:5
+     and the dark surround is cropped away rather than shipped. */
   "desk-yoga":
-    { src: "/media/gallery/raji-16.webp", alt: "The founder folds into a standing forward bend with one hand resting on her lower back, framed by tall park trees." },
+    { src: "/media/gallery/corporate-01.webp", aspect: "aspect-[6/5]", alt: "Six people on a video call, each with their palms pressed together at the chest at the end of an online session." },
 
   /* Leadership Mindfulness — commanding stillness, professional portrait */
   "leadership-mindfulness":
@@ -153,16 +172,21 @@ const SERVICE_IMAGES: Record<string, { src: string; alt: string }> = {
     { src: "/media/gallery/community-02.webp", alt: "A large crowd of yoga practitioners raises their arms and cheers outdoors under trees." },
 
   /* Yoga in the Classroom — community blessing, bringing people together */
+  /* Client-supplied 2026-09-18, replacing a monk's blessing ritual that had
+     nothing to do with a classroom. */
   "yoga-in-the-classroom":
-    { src: "/media/gallery/community-10.webp", alt: "A monk in maroon robes shares a blessing ritual with a man and a woman over a small bowl." },
+    { src: "/media/gallery/kids-40.webp", alt: "A teacher stands with her arms open in front of rows of schoolchildren in white shirts, each standing on a coloured mat in an outdoor court." },
 
   /* Chanting for Children — community gathering outdoors, collective sound */
+  /* Client-supplied 2026-09-18. Already exactly 3:4, so it is uncropped. */
   "chanting-for-children":
-    { src: "/media/gallery/community-02.webp", alt: "A large crowd of practitioners cheers together outdoors under trees, arms raised in collective celebration." },
+    { src: "/media/gallery/kids-42.webp", alt: "A teacher kneels to guide a small boy's palms into a prayer position while a line of children practise behind him." },
 
   /* Teacher and Staff Sessions — community of educators gathered together */
+  /* Client-supplied 2026-09-18. Cropped left of centre off the foreground
+     foot, which owned the frame on a centred crop. */
   "teacher-and-staff-sessions":
-    { src: "/media/gallery/community-03.webp", alt: "A close gathering of practitioners seated together outdoors in shared practice and reflection." },
+    { src: "/media/gallery/teaching-09.webp", alt: "An adult class in a seated forward fold, hands clasped around one foot, on mats in a bright indoor hall." },
 
   /* Live Online Classes — teacher actively leading, class in session */
   "live-online-classes":
@@ -343,7 +367,7 @@ export default async function MentorshipCategoryPage({ params }: { params: Promi
                                     alt={svcImg.alt}
                                     loading="lazy"
                                     decoding="async"
-                                    className="aspect-[3/4] w-full object-cover rounded-xl"
+                                    className={`w-full object-cover rounded-xl ${svcImg.aspect ?? "aspect-[3/4]"} ${svcImg.position ?? ""}`}
                                   />
                                 </div>
                               )}
