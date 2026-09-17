@@ -30,7 +30,7 @@ const AUDIENCE_CONFIG: Record<
     title: "For yourself",
     eyebrow: "Individual & Online",
     intro:
-      "Work that starts with one body and one set of habits. Taught online or in person, at whatever hour fits the life you actually have.",
+      "One-to-one teaching, built around what your own practice needs. Taught online or in person, at a time arranged with you.",
     groupSlugs: ["individual", "online-programmes"],
     heroImg: {
       src: "/media/gallery/raji-11.webp",
@@ -41,7 +41,7 @@ const AUDIENCE_CONFIG: Record<
     title: "For your team",
     eyebrow: "Corporate",
     intro:
-      "Programmes for teams under load, run for organisations across technology, finance, retail and education. Held on site in your own rooms, or online for people working apart.",
+      "Programmes for teams at work, run for organisations across technology, finance, retail and education. Held on site in your own rooms, or online for people working apart.",
     groupSlugs: ["corporate"],
     heroImg: {
       src: "/media/gallery/teaching-07.webp",
@@ -52,7 +52,7 @@ const AUDIENCE_CONFIG: Record<
     title: "For a group you gather",
     eyebrow: "Retreats & Schools",
     intro:
-      "A school, a studio, a circle of friends. Time away, or a practice brought into a room you already have.",
+      "A retreat arranged for a group that already exists: a team, a studio, a family, a circle of friends. Or sessions for children and the adults who teach them, taught in the space your school already has.",
     groupSlugs: ["retreats", "schools"],
     heroImg: {
       src: "/media/gallery/kids-14.webp",
@@ -380,7 +380,9 @@ export default async function MentorshipCategoryPage({ params }: { params: Promi
 
         <CtaBand
           title="Begin where you are"
-          body="Tell us which of these sounds like you, or describe the week you are having and let Raji suggest one."
+          /* There is no booking system on this site and none is specified,
+             so this says how it actually starts. Kept from main. */
+          body="There is no booking system here. Write, or send a message on WhatsApp, and she will answer you directly."
           primary={{ href: "/contact", label: "Start a conversation" }}
           secondary={{ href: "/workshops", label: "See Workshops" }}
         />
