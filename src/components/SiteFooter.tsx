@@ -42,10 +42,10 @@ import { LeafRule } from "@/components/ui";
 const OFFERINGS = [
   /* Her sketch's wording, same as the header group. The page behind "Private
      Classes" is still /mentorship - see the naming note in CLAUDE.md. */
-  { label: "Private Classes", href: "/mentorship" },
+  { label: "Mentoring", href: "/mentorship" },
   { label: "Workshops", href: "/workshops" },
   { label: "Community", href: "/community" },
-  { label: "Gallery", href: "/community#gallery" },
+  { label: "Gallery", href: "/gallery" },
 ];
 
 /* Drawn, one stroke weight, one 24-unit box - no glyph font and no emoji. */
@@ -124,11 +124,10 @@ export default function SiteFooter() {
           <div className="md:col-span-2 lg:col-span-5 xl:col-span-4">
             <span aria-hidden className="brand-mark mark-wordmark block h-20 w-[145px] text-linen" />
             <span className="sr-only">{site.name}</span>
-            <p className="mt-5 max-w-sm font-display text-2xl italic leading-snug text-sand">
+            <p className="t-lead mt-5 max-w-sm text-sand">
               {/* verbatim client copy */}
               {site.strapline}
             </p>
-            <LeafRule className="mt-7 max-w-[220px]" tone="linen" />
             <p className="mt-7 text-[13px] leading-[1.8] text-linen/70">
               {site.founder} &mdash; {site.founderTitle}.
               <br />
@@ -184,18 +183,36 @@ export default function SiteFooter() {
         </div>
       </div>
 
-      {/* Second band, hairline rule above it - the reference's shape exactly,
-          icons on the left. The copyright moves right on desktop because our
-          band is full width and would otherwise leave three empty quarters. */}
-      <div className="relative border-t border-linen/15">
+      {/* The laurel is the footer's divider - it replaced a plain hairline that
+          used to sit here, so do not add one back above it.
+
+          Centred because it spans the footer rather than belonging to a column;
+          capped at 260px so the leaves keep their silhouette instead of
+          stretching to 1440px. It used to sit inside the brand column, where it
+          was a 220px squiggle cutting one column of text in half. */}
+      <div className="mx-auto w-[calc(100%-3rem)] pb-9 md:w-[90%]">
+        <LeafRule className="mx-auto max-w-[260px]" tone="linen" />
+      </div>
+
+      {/* Second band - the reference's shape exactly, icons on the left. The
+          copyright moves right on desktop because our band is full width and
+          would otherwise leave three empty quarters. */}
+      <div className="relative">
         <div className="mx-auto flex w-[calc(100%-3rem)] flex-col md:w-[90%] gap-6 py-7 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex gap-3">
             {SOCIAL.map((s) => (
               <SocialLink key={s.href} {...s} />
             ))}
           </div>
-          <p className="text-[11px] tracking-[0.14em] text-linen/60">
-            © {new Date().getFullYear()} RAW ON EARTH — REAL. AWAKENING. WELLBEING.
+          {/* Open with the client: the strapline here was cut from the hero at
+              her request, and the footer was never discussed. It stays until she
+              settles it.
+
+              The line was Lato with the capitals typed into the string and the
+              brand name hard-coded; both fixed - small tracked caps are the
+              label face's job, and the strings come from site.ts. */}
+          <p className="label label-sm uppercase text-linen/60">
+            © {new Date().getFullYear()} {site.name} — {site.tagline}
           </p>
         </div>
       </div>

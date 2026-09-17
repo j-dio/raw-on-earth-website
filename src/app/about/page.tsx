@@ -90,7 +90,7 @@ export default function AboutPage() {
             (00:46:22) and asked for "just a mild green tone" (00:47:13), so
             the ground is mist and every child that assumed a dark ground was
             re-toned with it. */}
-        <section className="relative overflow-hidden bg-mist py-24 md:py-32">
+        <section className="relative overflow-hidden bg-mist-pale py-24 md:py-32">
           <figure className="relative mx-auto max-w-3xl px-6 text-center md:px-10" data-reveal>
             <figcaption className="eyebrow">{belief.intro}</figcaption>
             {/* verbatim client copy */}

@@ -37,6 +37,23 @@
      12.72:1. The footer is the one exception and stays dark, because a foot is
      an ending, not a switch the reader falls through mid-page. */
   --color-mist: #DDE5D2;
+  /* Ground for full-width bands. Use this, not `mist`, on anything that fills
+     the page width; true `mist` is for small panels.
+
+     Must stay a SOLID colour. `bg-mist/60` looks equivalent and is not: a
+     translucent ground lets the .tex texture through at full strength and
+     renders DARKER, not paler - measured 192 luminance against mist's own 226.
+
+     Why it exists: the landing page runs two grounds, linen (245 luminance) and
+     this (236) - a 9-point step. It used to run linen, sand and mist with steps
+     up to 26 points, which made the page read as a stack of panels. The
+     reference site runs two grounds 10 points apart and no scroll motion at all,
+     so the fix for "it does not feel continuous" is palette and rhythm, not
+     animation.
+
+     Not finished: six `bg-sand/45` bands remain on About, Community, Contact,
+     Mentorship and Workshops. Convert them the next time those pages are open. */
+  --color-mist-pale: #EAEDE0;
   --color-sage: #AEB89C;
   --color-linen: #F7F5EE;
   --color-sand: #E7DFD0;
@@ -175,6 +192,9 @@ body {
   .t-lead {
     font-family: var(--font-display);
     font-size: clamp(1.15rem, 2vw, 1.5rem);
+    /* Keep this. Undeclared it falls back to Cormorant's 400 and the site ends
+       up running two display weights. */
+    font-weight: 300;
     font-style: italic;
     line-height: 1.4;
     text-wrap: balance;
@@ -208,6 +228,21 @@ body {
        out at a glance. */
     letter-spacing: 0.14em;
     font-size: 0.875rem;
+  }
+
+  /* The one smaller label. Use `.label` or `.label-sm`; do not set a label's
+     size inline.
+
+     Reason: `.label` tracks in `em`, so `label text-[0.72rem]` silently retunes
+     the letter-spacing too. The 0.163em here is chosen so this size lands on the
+     same ~2px of tracking the 14px label runs.
+
+     The landing page, the header and the footer follow this. About, Community,
+     Contact, Mentorship and Workshops still set about twenty label sizes inline
+     - convert them the next time those pages are open. */
+  .label-sm {
+    letter-spacing: 0.163em;
+    font-size: 0.75rem;
   }
 }
 
@@ -275,6 +310,45 @@ body {
      effect vanishes. */
   z-index: 2;
   isolation: isolate;
+}
+
+/* Phone order for the wellness block: picture, heading, prose, button, closing
+   line. Desktop is untouched - this whole rule is below lg.
+
+   How: `display: contents` dissolves `.wellness-media`, so its two children (the
+   picture and the closing line) become items of the same flex column as the
+   copy and can be ordered separately. Without it the copy ran first and a phone
+   got 300 words before any picture.
+
+   Side effect, accepted: `.wellness-media` carries `data-reveal`, and a
+   `display: contents` box cannot be transformed, so that one reveal does not
+   play on a phone. The content is simply visible from the start. */
+@media (max-width: 1023.98px) {
+  .wellness-grid {
+    display: flex;
+    flex-direction: column;
+    /* The element carries Tailwind's `items-start`. Under `grid` that only set
+       the block axis and children still filled the column; as a flex column it
+       means `align-items: flex-start`, which shrink-wraps the copy - measured
+       590px of text under a 673px photograph at 768. Stretch puts it back. */
+    align-items: stretch;
+  }
+
+  .wellness-grid > .wellness-copy {
+    order: 2;
+  }
+
+  .wellness-grid > .wellness-media {
+    display: contents;
+  }
+
+  .wellness-grid > .wellness-media > img {
+    order: 1;
+  }
+
+  .wellness-grid > .wellness-media > p {
+    order: 3;
+  }
 }
 
 .wellness > * {
@@ -669,7 +743,16 @@ body {
    enough ground, and keeps the gradient's midtones off the text. Verified
    against the rendered pixels, not assumed. */
 @media (min-width: 1024px) {
-  /* Desktop is close enough in aspect to fill the frame properly. */
+  /* Desktop fills the frame with `cover`.
+
+     Do not try to nudge this sideways with background-position. The scene file
+     is 1024x1024, so cover renders it at exactly the viewport width on any
+     landscape screen - there is no horizontal overflow to move into, and
+     background-position-x does nothing. Sizing it above 100% does move it, but
+     it scales her up with it (tried at 118%, rejected).
+
+     To move the picture sideways: re-export the scene with its cream ground
+     extended on the right. */
   .hero-atmos {
     background: url("/hero/hero-scene.jpg") center / cover no-repeat;
     -webkit-mask-image: none;
@@ -788,6 +871,10 @@ body {
    `isolation: isolate` keeps the blend inside its own section - without it
    soft-light reaches through to whatever is painted behind the section.
    --------------------------------------------------------------------------- */
+.bg-mist-pale {
+  background-color: var(--color-mist-pale);
+}
+
 .tex {
   position: relative;
   isolation: isolate;

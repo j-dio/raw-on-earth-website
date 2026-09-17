@@ -83,21 +83,23 @@ export const nav: NavItem[] = [
    Home is here for the mobile and iPad overlay only; the desktop row filters it
    out, because the wordmark beside it already goes home.
 
-   NOTE: the row below says "Private Classes" because that is the phrase she
-   used, but the page it opens is still titled Mentorship - the name she asked
-   for in the same call. The label and the page disagree on purpose until she
-   settles which word she wants. */
+   OPEN WITH THE CLIENT: the menu says "Mentoring", the route and page say
+   "Mentorship". Both are her words. Ask which one wins; do not rename the route
+   to close the gap yourself. */
 export const headerNav: HeaderNavItem[] = [
   { label: "Home", href: "/" },
   {
     label: "Yoga & Meditation",
     children: [
-      { label: "Private Classes", href: "/mentorship" },
+      { label: "Mentoring", href: "/mentorship" },
       { label: "Community", href: "/community" },
+      /* Gallery belongs in this group, not the top row - the client asked for
+         fewer items in the row. A later change promoted it to the row; this put
+         it back. */
+      { label: "Gallery", href: "/gallery" },
     ],
   },
   { label: "Workshops", href: "/workshops" },
-  { label: "Gallery", href: "/gallery" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];

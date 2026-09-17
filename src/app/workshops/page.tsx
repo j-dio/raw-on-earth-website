@@ -217,7 +217,7 @@ export default function WorkshopsPage() {
             walnut, and a page that runs pale, drops into a dark brown band and
             comes back is the switching the client asked us to stop (call,
             00:46:22). Moss 8.19:1 on mist, ink 12.72:1. */}
-        <section className="bg-mist text-ink">
+        <section className="bg-mist-pale text-ink">
           <Section className="py-24 md:py-32">
             <div className="grid gap-14 lg:grid-cols-12 lg:gap-16 lg:items-center">
               <div className="lg:col-span-6">
