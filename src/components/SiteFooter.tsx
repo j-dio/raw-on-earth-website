@@ -42,7 +42,7 @@ import { LeafRule } from "@/components/ui";
 const OFFERINGS = [
   /* Her sketch's wording, same as the header group. The page behind "Private
      Classes" is still /mentorship - see the naming note in CLAUDE.md. */
-  { label: "Private Classes", href: "/mentorship" },
+  { label: "Mentoring", href: "/mentorship" },
   { label: "Workshops", href: "/workshops" },
   { label: "Community", href: "/community" },
   { label: "Gallery", href: "/gallery" },
@@ -128,7 +128,7 @@ export default function SiteFooter() {
               {/* verbatim client copy */}
               {site.strapline}
             </p>
-            <LeafRule className="mt-7 max-w-[220px]" tone="linen" />
+            <LeafRule className="mt-7 max-w-[220px] mx-auto md:mx-0" tone="linen" />
             <p className="mt-7 text-[13px] leading-[1.8] text-linen/70">
               {site.founder} &mdash; {site.founderTitle}.
               <br />
