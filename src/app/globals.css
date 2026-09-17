@@ -720,24 +720,16 @@ body {
 @media (min-width: 1024px) {
   /* Desktop is close enough in aspect to fill the frame properly.
 
-     The scene is 1024x1024 square, so `cover` on any landscape viewport scales
-     it to exactly the viewport width - there is no horizontal overflow and
-     `background-position-x` does nothing. 112% buys that overflow back, and the
-     position then moves the picture left inside it.
-
-     Why left: the photograph has the cream ground outpainted onto its right,
-     and at `center` that cream edge fell under the headline, so the type sat on
-     the blurred transition rather than on clean ground. Moving the scene left
-     takes the transition with it. It also brings her body onto the enso ring,
-     which is pinned at 26% and was sitting off her.
-
-     Measured at 1440x900: the picture renders 1699px wide, 88% puts it 98px
-     left of centre, which is what it takes to clear the headline - at 48px the
-     transition still reached the Y of YOGA. At 1024x768 the same rule gives
-     70px. Her head stays inside the frame at both. Re-measure if the scene file
-     changes aspect. */
+     Kept at `cover`, deliberately. The scene file is 1024x1024, so on any
+     landscape viewport cover renders it at exactly the viewport width: there is
+     no horizontal overflow, which means background-position-x does nothing and
+     the picture cannot be nudged sideways without enlarging it first. A 118%
+     size did move it 98px left and put her inside the enso ring, but it also
+     scaled her up, which is not wanted. If the picture has to move sideways
+     again, re-export the scene with the cream ground extended on its right
+     rather than zooming the one we have. */
   .hero-atmos {
-    background: url("/hero/hero-scene.jpg") 88% center / 118% auto no-repeat;
+    background: url("/hero/hero-scene.jpg") center / cover no-repeat;
     -webkit-mask-image: none;
     mask-image: none;
   }

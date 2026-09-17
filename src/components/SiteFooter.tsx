@@ -128,7 +128,6 @@ export default function SiteFooter() {
               {/* verbatim client copy */}
               {site.strapline}
             </p>
-            <LeafRule className="mt-7 max-w-[220px] mx-auto md:mx-0" tone="linen" />
             <p className="mt-7 text-[13px] leading-[1.8] text-linen/70">
               {site.founder} &mdash; {site.founderTitle}.
               <br />
@@ -184,10 +183,24 @@ export default function SiteFooter() {
         </div>
       </div>
 
-      {/* Second band, hairline rule above it - the reference's shape exactly,
-          icons on the left. The copyright moves right on desktop because our
-          band is full width and would otherwise leave three empty quarters. */}
-      <div className="relative border-t border-linen/15">
+      {/* The laurel is the footer's divider. It used to sit inside the brand
+          column, under the strapline, where it was a 220px squiggle breaking one
+          column of text in half - decoration with no job, and the only element
+          on the page whose alignment had to be argued about.
+
+          Here it does the work the hairline was doing, so the hairline is gone:
+          two rules stacked 30px apart is one rule too many. Centred, because it
+          spans the whole footer rather than belonging to a column, and capped at
+          260px so the leaves keep their silhouette instead of stretching across
+          1440px. Same placement on every page - the footer is shared. */}
+      <div className="mx-auto w-[calc(100%-3rem)] pb-9 md:w-[90%]">
+        <LeafRule className="mx-auto max-w-[260px]" tone="linen" />
+      </div>
+
+      {/* Second band - the reference's shape exactly, icons on the left. The
+          copyright moves right on desktop because our band is full width and
+          would otherwise leave three empty quarters. */}
+      <div className="relative">
         <div className="mx-auto flex w-[calc(100%-3rem)] flex-col md:w-[90%] gap-6 py-7 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex gap-3">
             {SOCIAL.map((s) => (
