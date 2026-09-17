@@ -10,26 +10,11 @@ next-env.d.ts
 # Client brief and internal notes - not published
 docs/
 CLAUDE.md
-
-# Claude Code, all of it. The skills under .claude/skills/ were tracked at
-# first because CLAUDE.md calls them "project scope, so they travel with the
-# repo" - but CLAUDE.md is itself ignored (above), so that instruction never
-# reached the repo either. They are installed from
-# https://github.com/tamdogood/builder-essential-skills and re-installable in
-# one command, so 28 files of vendored tooling docs were sitting in a client
-# site's history for no benefit.
 .claude/
 
-# Raw client source assets - PNG-in-SVG wrappers straight from the client.
-# The extracted, trimmed exports live in public/brand/ and public/hero/.
 Photos/
-# Scratch: image conversion scripts, the vision-pass catalogue and the page
-# spec the parallel build agents worked from. Regenerable, not part of the site.
 .work/
 .shots/
 .next-qa
 
-# Design-critique snapshots written by the impeccable skill. A dated record of
-# one run each, useful while iterating and meaningless to anyone reading the
-# site later.
 .impeccable/
