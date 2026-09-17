@@ -60,14 +60,6 @@ const faqs: { q: string; a: string }[] = [
 /* Her details, in the order a person actually reaches for them. The footer
    carries the same facts; this page states them in full because a contact page
    that makes you scroll to the footer for a phone number has failed. */
-const details: { label: string; value: string; href?: string; external?: boolean }[] = [
-  { label: "Phone", value: site.phone, href: site.phoneHref },
-  { label: "WhatsApp", value: "Message on WhatsApp", href: site.whatsapp, external: true },
-  { label: "Email", value: site.email, href: site.emailHref },
-  { label: "Instagram", value: "@raw_on_earth", href: site.social.instagram, external: true },
-  { label: "LinkedIn", value: site.founder, href: site.social.linkedin, external: true },
-  { label: "Where", value: `${site.locality} – taught in person and online` },
-];
 
 export default function ContactPage() {
   return (
@@ -91,8 +83,18 @@ export default function ContactPage() {
             enquiry" on the fold line at y=644. pt-10/pt-14 lands the heading at
             about y=570 and the first field in view. */}
         <Section className="pb-24 pt-10 md:pb-32 md:pt-14">
-          <div className="grid gap-16 lg:grid-cols-12 lg:gap-20">
-            <div className="lg:col-span-7" data-reveal>
+          {/* One column, centred, and the form is all of it. It used to sit in
+              seven of twelve columns beside a "reach her directly" list - phone,
+              email, WhatsApp and Instagram - which is the same four things the
+              footer carries on every page, plus a photograph to fill the space
+              that duplication made.
+
+              Centred rather than left-aligned: `Section` indents to 208px at
+              1440 and the masthead above starts at 60px, so a left-aligned
+              column here lands 148px right of the heading and reads as a
+              mistake. Centred, it reads as a choice. */}
+          <div className="mx-auto max-w-2xl">
+            <div data-reveal>
               <h2 className="font-display text-[1.6rem] font-light leading-tight text-moss md:text-[2rem]">
                 Send an enquiry
               </h2>
@@ -106,93 +108,42 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <aside className="lg:col-span-5" data-reveal>
-              <h2 className="font-display text-[1.6rem] font-light leading-tight text-moss md:text-[2rem]">
-                Or reach her directly
-              </h2>
-
-              <dl className="mt-10 border-t border-ink/15">
-                {details.map((d) => (
-                  <div key={d.label} className="flex flex-col gap-1 border-b border-ink/15 py-5 sm:flex-row sm:gap-6">
-                    <dt className="label w-32 shrink-0 text-[0.68rem] text-moss">{d.label}</dt>
-                    <dd className="leading-relaxed text-ink/80">
-                      {d.href ? (
-                        <a
-                          href={d.href}
-                          {...(d.external ? { target: "_blank", rel: "noreferrer noopener" } : {})}
-                          className="underline decoration-ink/25 underline-offset-4 transition-colors duration-300 hover:decoration-moss"
-                        >
-                          {d.value}
-                        </a>
-                      ) : (
-                        d.value
-                      )}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-
-              {/* Portrait on a phone, where it stacks under the details and has
-                  the room. Landscape from lg up, and cropped from the top so the
-                  face survives: at 4/5 this column ran about 560px past the
-                  bottom of the form and left a hole beside it. */}
-              <img
-                src="/media/thumb/raji-24.webp"
-                width={760}
-                height={1138}
-                loading="lazy"
-                decoding="async"
-                alt="The founder sits in meditation with palms joined at her chest, eyes closed, on a mat in soft evening park light."
-                className="mt-12 aspect-[4/5] w-full object-cover lg:aspect-[3/2] lg:object-top"
-              />
-            </aside>
           </div>
         </Section>
 
         {/* FAQ - native <details>, so it is keyboard and screen-reader correct
-            with no JavaScript and works on the first paint. */}
-        <section className="tex tex-stone bg-sand/45">
-          <Section as="div" className="py-24 md:py-32">
-            <div className="grid gap-16 lg:grid-cols-12 lg:gap-20">
-              <div className="lg:col-span-5" data-reveal>
-                <img
-                  src="/media/thumb/raji-14.webp"
-                  width={760}
-                  height={1138}
-                  loading="lazy"
-                  decoding="async"
-                  alt="The founder folds forward into child's pose on a mat in a grassy park, hair falling to the ground."
-                  className="aspect-[3/4] w-full object-cover"
-                />
-              </div>
+            with no JavaScript and works on the first paint.
 
-              <div className="lg:col-span-7">
-                <SectionHead
-                  eyebrow="Before you write"
-                  title="Questions people ask first"
-                  standfirst="If your question is not here, the form is the right place for it."
-                />
+            One column on linen, the same width as the form above it. It used to
+            run beside a photograph on a sand ground: the picture was decoration
+            and the extra ground was a fourth change of colour on a page that
+            only needs one. */}
+        <Section className="pb-24 md:pb-32">
+          <div className="mx-auto max-w-2xl" data-reveal>
+            <SectionHead
+              eyebrow="Before you write"
+              title="Questions people ask first"
+              standfirst="If your question is not here, the form is the right place for it."
+            />
 
-                <div className="mt-12 border-t border-ink/15">
-                  {faqs.map((f) => (
-                    <details key={f.q} className="group border-b border-ink/15">
-                      <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-6 font-display text-[1.3rem] leading-snug text-moss md:text-[1.5rem] [&::-webkit-details-marker]:hidden">
-                        {f.q}
-                        <span
-                          aria-hidden
-                          className="mt-2 shrink-0 text-ink/70 transition-transform duration-300 group-open:rotate-45"
-                        >
-                          +
-                        </span>
-                      </summary>
-                      <p className="max-w-[58ch] pb-7 leading-relaxed text-ink/80">{f.a}</p>
-                    </details>
-                  ))}
-                </div>
-              </div>
+            <div className="mt-12 border-t border-ink/15">
+              {faqs.map((f) => (
+                <details key={f.q} className="group border-b border-ink/15">
+                  <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-6 font-display text-[1.3rem] leading-snug text-moss md:text-[1.5rem] [&::-webkit-details-marker]:hidden">
+                    {f.q}
+                    <span
+                      aria-hidden
+                      className="mt-2 shrink-0 text-ink/70 transition-transform duration-300 group-open:rotate-45"
+                    >
+                      +
+                    </span>
+                  </summary>
+                  <p className="pb-7 leading-relaxed text-ink/80">{f.a}</p>
+                </details>
+              ))}
             </div>
-          </Section>
-        </section>
+          </div>
+        </Section>
 
         <CtaBand
           eyebrow="Begin your journey inward"

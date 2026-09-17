@@ -1,4 +1,3 @@
-import { LeafRule } from "@/components/ui";
 
 /* The masthead every inner page opens on. Home has its own full-bleed hero;
    the other eight share this one so the site reads as a single publication.
@@ -51,10 +50,6 @@ export default function PageHero({
           ) : null}
         </div>
 
-        <LeafRule
-          className="page-hero-in mt-14 max-w-[240px] md:mt-20"
-          // eslint-disable-next-line react/jsx-no-duplicate-props
-        />
       </div>
 
       {figure ? (
