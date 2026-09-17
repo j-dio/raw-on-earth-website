@@ -68,31 +68,6 @@ function Meta({ service }: { service: Service }) {
 const [individual, corporate, retreats, schools, online] = serviceGroups;
 
 
-const howItWorks = [
-  {
-    n: "01",
-    title: "Say hello",
-    body: "Write, or send a message on WhatsApp. Tell her roughly what you are after and where you are starting from.",
-  },
-  {
-    n: "02",
-    title: "A short conversation",
-    /* No duration and no price here on purpose. Nobody has quoted either, and
-       an invented "twenty minutes, no charge" is a commercial promise the site
-       would be making on her behalf. */
-    body: "A conversation before anything is booked. What you want, what your body is doing, what your week actually looks like.",
-  },
-  {
-    n: "03",
-    title: "A plan",
-    body: "Raji comes back with what she would teach and how often. If a different teacher or a different practice would suit you better, she says so.",
-  },
-  {
-    n: "04",
-    title: "Practise",
-    body: "You begin. The plan gets adjusted as you go, because a body in week eight is not the body that started.",
-  },
-];
 
 /* OfferCatalog built FROM the data array, so the schema cannot drift from the
    page. No prices and no rating: nobody has quoted a price and there are no
@@ -464,48 +439,36 @@ export default function MentorshipPage() {
           </ul>
         </Section>
 
-        {/* HOW IT WORKS - four steps, no booking widget, because there is no
-            booking system on this site. */}
-        <Section className="bg-linen py-24 md:py-32">
-          <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
-            <div className="lg:col-span-7">
-              <SectionHead
-                eyebrow="How it works"
-                title="Four steps, and none of them is a form"
-                standfirst="There is no booking system here on purpose. A class is a person teaching a person, so it starts with a conversation."
-              />
-              <ol className="mt-12 space-y-10" data-reveal-stagger>
-                {howItWorks.map((step) => (
-                  <li key={step.n} className="grid gap-2 sm:grid-cols-12 sm:gap-8">
-                    <p className="label text-[0.62rem] text-moss/85 sm:col-span-2">{step.n}</p>
-                    <div className="sm:col-span-10">
-                      <h3 className="font-display text-[1.35rem] font-light leading-tight text-moss md:text-[1.6rem]">
-                        {step.title}
-                      </h3>
-                      <p className="mt-2 max-w-[54ch] leading-relaxed text-ink/80">{step.body}</p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            </div>
+        {/* "How it works" stood here and is removed.
 
-            <div className="lg:col-span-5" data-reveal>
-              <img
-                src="/media/gallery/raji-13.webp"
-                alt="The founder arches back in a kneeling lunge with one leg extended, head tilted skyward in a grassy park."
-                width={1500}
-                height={2246}
-                loading="lazy"
-                decoding="async"
-                className="aspect-[3/4] w-full object-cover"
-              />
-            </div>
-          </div>
-        </Section>
+            Four numbered steps describing an onboarding process nobody has
+            described to us. Searched for it in all three sources - her brief,
+            the 6 September transcript, the handover - under "how it works",
+            "steps", "process", "consultation", "questionnaire", "discovery",
+            "first session". Nothing.
+
+            Three of the four steps were claims about her conduct rather than
+            about this site: that there is a conversation before anything is
+            booked, that she comes back with what she would teach and how
+            often, and that she says so if another teacher would suit you
+            better. The last of those is a promise we made on her behalf.
+
+            One true thing in it is kept below, in the closing band: there is
+            no booking system, so writing in is how this starts. That is a
+            fact about the build and her own instruction - "for now we'll just
+            keep it extremely simple" (00:50:46).
+
+            This is the fourth section of invented operational copy cut on
+            2026-09-17, after the Workshops intro, the Retreats card and Group
+            Yoga. Same instinct each time: a gap filled with something
+            plausible. Leave the gap. */}
 
         <CtaBand
           title="Begin where you are"
-          body="Tell us which of these sounds like you, or describe the week you are having and let Raji suggest one."
+          /* There is no booking system on this site and none is specified,
+             so this says how it actually starts. It replaced the four-step
+             "How it works" section above, which invented the rest. */
+          body="There is no booking system here. Write, or send a message on WhatsApp, and she will answer you directly."
           primary={{ href: "/contact", label: "Start a conversation" }}
           secondary={{ href: "/workshops", label: "See Workshops" }}
         />
