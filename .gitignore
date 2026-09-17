@@ -28,3 +28,8 @@ Photos/
 .work/
 .shots/
 .next-qa
+
+# Design-critique snapshots written by the impeccable skill. A dated record of
+# one run each, useful while iterating and meaningless to anyone reading the
+# site later.
+.impeccable/
