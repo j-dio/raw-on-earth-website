@@ -38,6 +38,10 @@ cost half a session once. `scripts/shot.mjs` drives Chrome over the DevTools
 Protocol and sets the real CSS viewport instead. No dependencies, it uses the
 WebSocket built into Node 22+.
 
+## Screens and devices
+
+Windows and Mac display scaling mean two identical laptops report different page widths, so the same change can look right on one and wrong on the other. [SCREENS-AND-DEVICES.md](SCREENS-AND-DEVICES.md) lists the widths worth testing, the proportions the home hero holds, how to measure contrast without fooling yourself, and the traps in this repo's photographs.
+
 ## Where things are
 
 ```
