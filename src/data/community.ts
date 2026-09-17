@@ -55,7 +55,7 @@ export const strands: Strand[] = [
       src: "/media/thumb/community-02.webp",
       alt: "A large joyful group of practitioners celebrating together outdoors in front of a retreat centre, arms raised and smiling.",
       width: 760,
-      height: 1017,
+      height: 946,
     },
   },
   {
@@ -107,7 +107,7 @@ export const strands: Strand[] = [
       src: "/media/thumb/kids-39.webp",
       alt: "A teacher leads a session with schoolchildren on colourful yoga mats in an open outdoor courtyard.",
       width: 760,
-      height: 1352,
+      height: 1628,
     },
   },
   {
