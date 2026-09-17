@@ -109,7 +109,12 @@ export default function MentorshipPage() {
               className="w-full h-full object-cover"
             />
             {/* Gradient overlay matching gallery hero */}
-            <div className="absolute inset-0 bg-gradient-to-b from-linen/60 via-linen/80 to-linen" />
+            {/* Top stop raised 60 -> 75 on 2026-09-18. The header sits in this
+                band, and at 60% the photograph came through light enough that
+                moss "Yoga & Meditation" measured 3.68:1 against the worst pixel
+                behind it - under the 4.5 small text needs. /workshops already
+                runs 75 and measures 5.91:1 there. */}
+            <div className="absolute inset-0 bg-gradient-to-b from-linen/75 via-linen/85 to-linen" />
           </div>
 
           {/* Text overlaid on top — same structure as gallery */}

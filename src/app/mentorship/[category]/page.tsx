@@ -227,6 +227,19 @@ export default async function MentorshipCategoryPage({ params }: { params: Promi
             className="absolute inset-0 h-full w-full object-cover object-center opacity-50"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/40 to-transparent" />
+          {/* Second scrim, for the header band only. Added 2026-09-18.
+
+              The gradient above runs bottom-up and reaches `transparent` at the
+              TOP, which is precisely where the fixed header sits. The 50% photo
+              over ink left that strip mid-tone, so the header's light type
+              measured 3.15-3.96:1 on for-your-team and for-a-group - both under
+              the 4.5 small text needs, and it is a different number on every
+              route because it depends on the photograph.
+
+              160px covers the 96px unscrolled bar with room to fall off before
+              the breadcrumb. Re-measure with scripts/shot.mjs if the bar height
+              or these photographs change. */}
+          <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-ink/80 via-ink/40 to-transparent" />
           <div className="relative mx-auto w-full max-w-[1280px] px-6 pb-16 md:px-10 lg:px-20 xl:px-32">
             {/* Breadcrumb */}
             <nav

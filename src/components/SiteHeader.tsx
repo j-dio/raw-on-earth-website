@@ -205,20 +205,33 @@ export default function SiteHeader() {
     };
   }, [open]);
 
-  /* Pages whose hero is LIGHT (linen/pale gradient) need the header to start
-     in its dark (moss/ink) state rather than the default linen state, so the
-     wordmark and nav links are readable from the first pixel.
+  /* Light type is for a DARK ground, and only two grounds on this site are
+     dark: the full-screen mobile overlay, and the home hero.
 
-     The rule: if the hero background is pale, the header must be dark.
-     If the hero background is dark/photo, the header can be light (linen). */
-  const lightHeroPage = ["/community", "/gallery", "/mentorship", "/workshops"].some((p) =>
-    pathname === p || pathname.startsWith(p + "/")
-  );
+     `open || !scrolled` was applied on every route, which put white links and
+     a white wordmark over the inner pages' linen masthead - invisible until
+     you scrolled. The inner masthead is light by design; CLAUDE.md says so in
+     bold, and says a dark-hero assumption found anywhere is a leftover.
 
-  // On light-hero pages the header is always dark unless the mobile menu is open.
-  // On all other pages it is light at the top (over the dark photo hero).
-  const light = open ? true : lightHeroPage ? false : !scrolled;
-  const logoLight = open ? true : lightHeroPage ? false : !scrolled;
+     So the unscrolled half of this is gated on the home page. Everything else
+     behaves as it did before the hero redesign: ink type, and light only while
+     the overlay is open. */
+  /* Added 2026-09-18 with the branch merge. The list above was true while the
+     home hero was the only dark ground on the site. The three Mentorship
+     category routes brought a second one: their masthead is `bg-ink` under a
+     photograph at 50% opacity, so the dark type main sets everywhere else
+     landed dark-on-dark. Measured at 1440x900, unscrolled, against the worst
+     backdrop pixel behind each item: wordmark 1.01:1, "Yoga & Meditation"
+     1.00:1, About 1.20:1, Contact 1.11:1. Invisible, not merely low.
+
+     Matched on the prefix rather than a list of slugs because the route is
+     `/mentorship/[category]` and a new audience is a data change, not a new
+     file - a hardcoded list would silently miss it. The `/mentorship` index
+     itself is light and must NOT match, hence the trailing slash. */
+  const overDarkMasthead =
+    (pathname === "/" || pathname.startsWith("/mentorship/")) && !scrolled;
+  const light = open || overDarkMasthead;
+  const logoLight = open || overDarkMasthead;
 
   const desktopNav = headerNav.filter((item) => item.href !== "/");
   const showCta = pathname !== "/" || scrolled;
@@ -231,6 +244,31 @@ export default function SiteHeader() {
           : "bg-transparent"
       }`}
     >
+      {/* A scrim for the light type, and only while it is light and unscrolled.
+
+          Light type always sits over a PHOTOGRAPH here, and a photograph has no
+          fixed luminance - so the contrast of the nav is a property of the
+          image, not of the palette, and it changes with every new crop. On the
+          home hero it measured 3.67:1 for "Yoga & Meditation" and 4.22:1 for
+          About at 1440x900, both under the 4.5 small text needs, against a
+          mid-tone patch of rgb(131,127,115).
+
+          35% of ink, held near 22% through the middle of a 160px band, then
+          falling off. A 128px band easing straight to transparent was tried
+          first and left the nav row itself at 4.45:1 - the bar sits at y=30-66
+          and the ramp had already given most of its density away by there. It also means any future
+          photographic masthead is covered without another measurement.
+
+          NOT applied when scrolled: the bar then paints solid linen and the
+          type is dark. NOT applied when the overlay is open: that ground is
+          already ink. */}
+      {light && !open ? (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-ink/35 via-ink/22 to-transparent"
+        />
+      ) : null}
+
       {/* Full-bleed, not a 1400px box: the row reads better with the whole
           viewport between the wordmark and the links. The bar also shrinks on
           scroll so it stops competing with the hero headline. */}
