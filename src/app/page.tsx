@@ -368,8 +368,12 @@ export default function Home() {
                 Full moss, no opacity step. It measured 3.99:1 at moss/85 back
                 when a photograph sat behind this block, and small tracked caps
                 need 4.5. The photograph is gone but the rule stands. */}
+            {/* One per line on a phone, a wrapped row from sm up. The names are
+                very different lengths - "Yoga" against "Corporate Well-being" -
+                so wrapping them at 390px gave a ragged 2/2/1 block that read as
+                a mistake. A single column scans in one pass. */}
             <ul
-              className="mt-10 flex flex-wrap gap-x-8 gap-y-3 border-t border-ink/15 pt-8 md:gap-x-12"
+              className="mt-10 grid gap-y-4 border-t border-ink/15 pt-8 sm:flex sm:flex-wrap sm:gap-x-8 sm:gap-y-3 md:gap-x-12"
               data-reveal
             >
               {pillars.map((pillar) => (
