@@ -63,6 +63,26 @@ export default function Home() {
 
       <main id="main">
         {/* HERO
+
+            2XL ONLY, added 2026-09-17. Everything below 1536px is untouched -
+            deliberately, because the design was approved on a narrower screen
+            and must not move there.
+
+            The problem: Windows display scaling changes the CSS viewport at
+            100% browser zoom. 150% on a 1920 panel reports about 1280; 100%
+            reports 1912. Every size in this block is fluid but capped low, so
+            it stops growing around 1250px and a 1912px screen gets the same
+            pixels in a frame half again as big. Measured: the heading is 4.5%
+            of the viewport at 1280 and 3.0% at 1912, and the ring falls from
+            70% of the width to 52%.
+
+            The vw terms were right; the ceilings were too low for a 1920
+            screen. Rather than raise them outright - which would have changed
+            the heading above 1252px, the standfirst above 1095px and the ring
+            above 1429px, all of which a 1280px screen can see - the higher
+            ceilings are attached to `2xl` (1536px). Below that, every value is
+            exactly what it was.
+
             One composed image: she is already placed on the gradient, in
             profile facing right, with the right of the frame left open. So the
             type sits in her eyeline and there is no separate cutout layer. */}
@@ -85,7 +105,7 @@ export default function Home() {
           >
             <div
               aria-hidden
-              className="hero-ring brand-mark mark-enso-ring absolute left-1/2 top-[calc(100%_-_var(--med-gap)_-_var(--med)/2)] h-[var(--med)] w-[var(--med)] text-[#87a091] lg:left-[85%] lg:top-[50%] lg:-translate-y-1/2 lg:-translate-x-1/2 lg:h-[min(70vw,1000px)] lg:w-[min(70vw,1000px)] opacity-[0.25]"
+              className="hero-ring brand-mark mark-enso-ring absolute left-1/2 top-[calc(100%_-_var(--med-gap)_-_var(--med)/2)] h-[var(--med)] w-[var(--med)] text-[#87a091] lg:left-[85%] lg:top-[50%] lg:-translate-y-1/2 lg:-translate-x-1/2 lg:h-[min(70vw,1000px)] lg:w-[min(70vw,1000px)] 2xl:h-[min(70vw,1400px)] 2xl:w-[min(70vw,1400px)] opacity-[0.25]"
             />
           </div>
 
@@ -93,7 +113,7 @@ export default function Home() {
               col 11, not 12: running it to the container edge is what made the
               headline look jammed against the right of the frame. One spare
               column of air reads as composition rather than overflow. */}
-          <div className="relative z-10 mx-auto flex h-full min-h-[100svh] max-w-[1500px] items-stretch px-6 pt-28 pb-16 md:px-10 lg:grid lg:grid-cols-12 lg:items-center lg:gap-8 lg:px-14 lg:pt-20 lg:pb-20 2xl:px-20">
+          <div className="relative z-10 mx-auto flex h-full min-h-[100svh] max-w-[1500px] items-stretch 2xl:max-w-[1800px] px-6 pt-28 pb-16 md:px-10 lg:grid lg:grid-cols-12 lg:items-center lg:gap-8 lg:px-14 lg:pt-20 lg:pb-20 2xl:px-20">
             {/* Portrait is a full-height flex column so the link can be pushed
                 to the foot of the screen (see the link block below). Desktop
                 drops back to normal flow inside the grid cell. */}
@@ -121,7 +141,7 @@ export default function Home() {
                   Chrome on Windows will not open a window under 500px, so a
                   390px screenshot is a crop of a 500px page. Use scripts/shot.mjs. */}
               <h1
-                className="hero-in-title font-display text-[clamp(2.4rem,4.6vw,3.6rem)] font-normal uppercase leading-[1.1] tracking-[0.094em] text-linen"
+                className="hero-in-title font-display text-[clamp(2.4rem,4.6vw,3.6rem)] 2xl:text-[clamp(3.6rem,4.6vw,5.5rem)] font-normal uppercase leading-[1.1] tracking-[0.094em] text-linen"
                 style={{ "--d": "320ms" } as React.CSSProperties}
               >
                 Yoga <span className="font-light text-linen/40">|</span> Life
@@ -137,7 +157,7 @@ export default function Home() {
                   measure - bigger and TIGHTER than their 16px/32 body. Ours held
                   quotes or text content is more robust than pseudo-elements. */}
               <p
-                className="hero-in-desc text-[clamp(1rem,1.9vw,1.3rem)] font-light leading-[1.6] text-linen"
+                className="hero-in-desc text-[clamp(1rem,1.9vw,1.3rem)] 2xl:text-[clamp(1.3rem,1.9vw,2.3rem)] font-light leading-[1.6] text-linen"
                 style={{ "--d": "680ms" } as React.CSSProperties}
               >
                 Work on yourself<br />before you work for somebody else.
