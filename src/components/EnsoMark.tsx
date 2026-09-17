@@ -28,7 +28,7 @@ export default function EnsoMark({ className = "" }: { className?: string }) {
   return (
     <div
       aria-hidden
-      className={`hero-ring brand-mark mark-enso-ring absolute left-1/2 top-[calc(100%_-_var(--med-gap)_-_var(--med)/2)] h-[var(--med)] w-[var(--med)] text-[#87a091] opacity-[0.25] lg:left-[85%] lg:top-[50%] lg:h-[min(70vw,1000px)] lg:w-[min(70vw,1000px)] lg:-translate-x-1/2 lg:-translate-y-1/2 2xl:h-[min(70vw,1400px)] 2xl:w-[min(70vw,1400px)] ${className}`}
+      className={`hero-ring brand-mark mark-enso-ring absolute left-1/2 top-[calc(100%_-_var(--med-gap)_-_var(--med)/2)] h-[var(--med)] w-[var(--med)] text-[#87a091] opacity-[0.25] lg:left-[85%] lg:top-[50%] lg:h-[min(70vw,1500px)] lg:w-[min(70vw,1500px)] lg:-translate-x-1/2 lg:-translate-y-1/2 ${className}`}
     />
   );
 }
