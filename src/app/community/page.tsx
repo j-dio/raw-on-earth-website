@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import PageHero from "@/components/PageHero";
 import JsonLd from "@/components/JsonLd";
 import { Section, SectionHead, Button, CtaBand } from "@/components/ui";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
@@ -10,35 +9,20 @@ import { site } from "@/data/site";
 import { strands } from "@/data/community";
 import { testimonials } from "@/data/home";
 
-/* Community. The design brief's theme is "Grow Together" and its success test
-   is emotional, not informational: a visitor should finish this page wanting
-   in.
+/* Community. "Grow Together" theme.
 
-   Order. The gallery grid used to sit at the foot of this page and now has its
-   own /gallery route. The section order below stays as it is - the client asked
-   for it in its own right, not because of where the gallery sat:
-
-     1. Masthead        four practitioners under a banyan. Adults, so no
-                        consent question, and it is the one frame in the
-                        library that reads as a group rather than a class.
-     2. The strands     the seven things the brief names, as one mosaic.
-     3. Stories         renders NOTHING while the testimonials are placeholder.
-                        See the note above `stories`.
+   Section order:
+     1. Hero           gallery-style: full-bleed group photo, linen gradient
+                       overlay, large display heading in moss — same visual
+                       language as /gallery.
+     2. The strands    seven photo cards in a 3-column grid. Each card shows
+                       the photograph at ~70 % opacity behind a light linen
+                       frosted ground, so the image reads without obscuring
+                       the text. Title and cadence line are in moss/ink.
+     3. Stories        hidden while testimonials are placeholder.
      4. Retreats
      5. How to join
-     6. CtaBand
-
-   Do not bring back the horizontal photo strip that used to tease /gallery from
-   here. It showed the same photographs twice.
-
-   Settled: the gallery keeps its own route, and this page hands off to it with
-   a line and a link where the grid used to sit. She had asked for the grid
-   itself at the end of this page - see docs/feedback - so mention the hand-off
-   next time rather than moving the grid a third time.
-
-   Grounds: linen -> mist -> sand -> linen, closing on the CtaBand. One mild
-   green (mist), not a page that keeps falling into a dark panel (client,
-   00:47:13). */
+     6. CtaBand                                                            */
 
 export const metadata: Metadata = pageMeta({
   title: "Community",
@@ -47,67 +31,59 @@ export const metadata: Metadata = pageMeta({
   path: "/community",
 });
 
-/* Layout, not content, so it lives here rather than in the data file.
-
-   The spans MUST tile the grid exactly, on both the two-column and the
-   six-column arrangement. The `<ul>` is `bg-ink/15` showing through a 1px gap,
-   so any track the items fail to fill does not read as white space - it reads
-   as a grey rectangle. An earlier set of spans summed to 3.5 rows and printed
-   two of them.
-
-   Six-column rows: 2+4, 2+2+2, 3+3. Two-column rows: three pairs, then the
-   last strand across both. Photographed strands sit with photographed
-   neighbours (src/data/community.ts is ordered to match) so a text-only panel
-   is never stretched to the height of an image beside it.
-
-   Move a strand in the data file and the spans here have to move with it. */
-const SPAN: Record<string, string> = {
-  "nature-walks": "lg:col-span-2",
-  "volunteer-work": "lg:col-span-4",
-  "running-club": "lg:col-span-2",
-  "book-club": "lg:col-span-2",
-  donations: "lg:col-span-2",
-  retreats: "lg:col-span-3",
-  /* Seventh of seven: full width at two columns, or the row is half empty. */
-  "community-events": "sm:col-span-2 lg:col-span-3",
-};
-
-/* PLACEHOLDER - `testimonials` in src/data/home.ts is three stub objects
-   waiting on the client, each of whose quote literally reads "Placeholder
-   testimonial. Awaiting the real quotes from the client."
-
-   WHAT FLIPS THE SECTION ON: replace those stub quotes in src/data/home.ts
-   with the real ones. This filter then goes non-empty and the whole block
-   below renders. Nothing else has to change here.
-
-   Until then the section renders nothing at all - not a heading, not a
-   waiting state. A heading over three admissions that there is nothing under
-   it is worse than no section. */
 const stories = testimonials.filter((t) => !t.quote.startsWith("Placeholder"));
 
-/* Only the categories that hold photographs are offered. The data file
-   declares all nine the brief names; the client has still sent no Corporate
-   and no Retreats frames, so those two carry a count of 0. They reappear on
-   their own the day the pictures arrive. A filter button that opens on an
-   empty grid is worse than no button. */
 export default function CommunityPage() {
   return (
     <>
       <SiteHeader />
       <main id="main">
-        <PageHero
-          eyebrow="Community"
-          title="Grow together"
-          standfirst="A practice is easier to keep when somebody else is expecting you. This is the part of Raw On Earth that happens off the mat."
-          figure={{
-            src: "/media/hero/community.webp",
-            alt: "Four practitioners kneel on mats in child's pose and cat-cow stretches under a sprawling banyan tree in a park.",
-            width: 2400,
-            height: 1030,
-          }}
-        />
 
-        {/* THE STRANDS */}
+        {/* ── HERO — gallery style ─────────────────────────────────────────
+            Park/greenery photograph (community-03: group on mats under a
+            banyan tree) at opacity-80 with a linen gradient overlay.
+            Same construction as GallerySection.tsx.                     */}
+        <div className="relative bg-linen text-moss overflow-hidden flex flex-col items-center justify-center">
+          {/* Background image — lush green park shot */}
+          <div className="absolute inset-0 z-0">
+            <img
+              src="/media/gallery/community-03.webp"
+              alt="A small group of practitioners doing yoga on colourful mats in an open park under a massive spreading banyan tree."
+              loading="eager"
+              decoding="async"
+              className="w-full h-full object-cover object-center"
+            />
+            {/* Linen gradient — same as gallery hero. Heavier at the top so
+                the header bar area reads clearly even before scroll.      */}
+            <div className="absolute inset-0 bg-gradient-to-b from-linen/80 via-linen/75 to-linen" />
+          </div>
+
+          {/* Text — same structure and spacing as gallery hero */}
+          <div className="relative z-10 max-w-[1280px] mx-auto w-full text-left px-6 pt-40 pb-24 md:px-10 lg:px-20 xl:px-32 md:pt-52 md:pb-32">
+            <div className="flex items-center gap-4 mb-6">
+              <span className="w-6 h-px bg-moss/40" />
+              <p className="eyebrow tracking-widest text-sm uppercase">Community</p>
+            </div>
+            <h1 className="font-display text-[4rem] md:text-[6rem] lg:text-[7rem] font-light leading-tight text-moss mb-8">
+              Grow together
+            </h1>
+            <p className="t-body text-ink/80 max-w-md text-lg md:text-xl font-light leading-relaxed">
+              A practice is easier to keep when somebody else is expecting
+              you. This is the part of Raw On Earth that happens off the mat.
+            </p>
+          </div>
+        </div>
+
+        {/* ── THE STRANDS — 7 photo cards, light treatment ────────────────
+            Each card shows the photograph behind a light linen/sand frosted
+            overlay so the image is visible but the dark moss/ink text on top
+            is easy to read. The card surface reads as pale, the photograph
+            shows through as texture and mood.
+
+            Layout: 3 columns on large screens, 2 on medium, 1 on mobile.
+            The 7th card spans full width so the last row is never half-empty.
+            Hover lifts the card slightly and dims the overlay a little so the
+            photo brightens underneath.                                    */}
         <Section className="py-24 md:py-32">
           <SectionHead
             eyebrow="Grow together"
@@ -115,47 +91,78 @@ export default function CommunityPage() {
             standfirst="None of these are classes. Nobody signs up, nobody registers, and nobody minds if you miss three in a row and come back."
           />
 
-          {/* gap-px over a dark parent draws the hairline grid - the same
-              construction the Offerings block on Home uses, so the two pages
-              share a mark rather than inventing two. Rows size to their own
-              content: forcing them equal (auto-rows-fr) left a text-only panel
-              carrying ~280px of nothing above its cadence line. */}
           <ul
-            className="mt-16 grid gap-px bg-ink/15 sm:grid-cols-2 lg:grid-cols-6"
+            className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
             data-reveal-stagger
           >
-            {strands.map((s) => (
-              <li key={s.slug} id={s.slug} className={`flex flex-col bg-linen ${SPAN[s.slug] ?? ""}`}>
-                {s.image ? (
-                  <img
-                    src={s.image.src}
-                    alt={s.image.alt}
-                    width={s.image.width}
-                    height={s.image.height}
-                    loading="lazy"
-                    decoding="async"
-                    className="h-56 w-full object-cover lg:h-64"
-                  />
-                ) : null}
-                <div className="flex flex-1 flex-col p-8 md:p-10">
-                  <h3 className="t-h3 text-moss">{s.name}</h3>
-                  <p className="mt-4 max-w-[46ch] flex-1 leading-relaxed text-ink/80">{s.summary}</p>
-                  {/* Cadence, set apart from the description because it is the
-                      line a reader scans for. It says where a date will appear,
-                      not what the date is - see the PLACEHOLDER note in the
-                      data file. */}
-                  <p className="mt-6 border-t border-ink/15 pt-4 text-[0.82rem] leading-relaxed text-ink/70">
-                    {s.cadence}
-                  </p>
-                </div>
-              </li>
-            ))}
+            {strands.map((s, i) => {
+              const isLast = i === strands.length - 1;
+              return (
+                <li
+                  key={s.slug}
+                  id={s.slug}
+                  className={`group relative overflow-hidden rounded-2xl shadow-sm transition-shadow duration-300 hover:shadow-md${
+                    isLast ? " sm:col-span-2 lg:col-span-3" : ""
+                  }`}
+                >
+                  {/* Photo — shown at reduced opacity so it reads as a
+                      textured wash beneath the light frosted overlay     */}
+                  {s.image && (
+                    <img
+                      src={s.image.src}
+                      alt={s.image.alt}
+                      width={s.image.width}
+                      height={s.image.height}
+                      loading="lazy"
+                      decoding="async"
+                      className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
+                  )}
+
+                  {/* Light linen/sand frosted overlay — sits above the photo
+                      and below the text. Opacity eases back a little on hover
+                      so the image brightens subtly without losing readability.
+                      Bottom-to-top gradient keeps the cadence line legible.  */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-linen/82 via-linen/78 to-sand/80 transition-opacity duration-500 group-hover:opacity-90" />
+
+                  {/* Card text — moss headings, ink body, all on the pale ground */}
+                  <div
+                    className={`relative flex flex-col p-8 md:p-10${
+                      isLast
+                        ? " min-h-[300px] lg:flex-row lg:items-start lg:gap-16 lg:min-h-[320px]"
+                        : " min-h-[340px]"
+                    }`}
+                  >
+                    {/* Main block */}
+                    <div className={`flex flex-col h-full${isLast ? " lg:max-w-2xl" : ""}`}>
+                      <h3 className="font-display text-[1.65rem] font-light leading-tight text-moss md:text-[2rem]">
+                        {s.name}
+                      </h3>
+                      <p className="mt-3 max-w-[50ch] flex-1 text-[0.92rem] leading-relaxed text-ink/80">
+                        {s.summary}
+                      </p>
+                      <p className="mt-6 border-t border-ink/15 pt-4 text-[0.76rem] uppercase tracking-widest text-ink/55">
+                        {s.cadence}
+                      </p>
+                    </div>
+
+                    {/* Wide last card: subtle number badge */}
+                    {isLast && (
+                      <span
+                        aria-hidden
+                        className="hidden lg:block shrink-0 self-end font-display text-[6rem] font-light leading-none text-moss/8 select-none"
+                      >
+                        07
+                      </span>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         </Section>
 
-        {/* STUDENT STORIES - the whole section is behind the guard, so while
-            the quotes are placeholder this page renders no trace of it. See
-            the note above `stories` for what turns it on. */}
+        {/* STUDENT STORIES — hidden while testimonials are placeholder */}
         {stories.length > 0 ? (
           <Section className="tex tex-stone bg-sand/45 py-24 md:py-32">
             <SectionHead
@@ -180,10 +187,7 @@ export default function CommunityPage() {
           </Section>
         ) : null}
 
-        {/* RETREAT MEMORIES - the quiet block. Was a full-bleed moss panel with
-            linen type; it is mist now, because the client could not tell
-            whether the site was pale green or dark green (00:46:22). Every
-            child that assumed a dark ground was re-toned with it. */}
+        {/* RETREAT MEMORIES */}
         <section className="bg-mist-pale py-24 md:py-32">
           <div className="mx-auto grid max-w-[1400px] items-center gap-14 px-6 md:px-10 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
             <div data-reveal>
@@ -209,10 +213,6 @@ export default function CommunityPage() {
             </div>
 
             <div className="relative" data-reveal>
-              {/* A9 - the source frame carries ~19% of rafters above the room
-                  and ~14% of bare floor below it. Square crop held low
-                  (object-position 58%) drops both without touching either
-                  face. */}
               <img
                 src="/media/gallery/teaching-04.webp"
                 alt="A teacher assists a student into a supported bow pose on a purple mat inside a wooden, thatch-roofed pavilion."
@@ -222,11 +222,6 @@ export default function CommunityPage() {
                 decoding="async"
                 className="aspect-square w-full object-cover object-[50%_58%]"
               />
-              {/* The small frame overlaps the large one from below left, the
-                  offset pair the reference site uses. Hidden below sm: at phone
-                  width it lands on top of the main image rather than beside it,
-                  and the container has no room to hold it clear. The border is
-                  the section ground, so it reads as a cut-out, not a frame. */}
               <img
                 src="/media/thumb/community-06.webp"
                 alt="Two Buddhist monks in maroon robes stand with two guests beside a golden Buddha statue in a bright, minimal room."
@@ -244,8 +239,6 @@ export default function CommunityPage() {
         <Section className="tex tex-stone bg-sand/45 py-24 md:py-32">
           <div className="mx-auto max-w-3xl text-center" data-reveal>
             <p className="eyebrow">How to join</p>
-            {/* The one data-lines heading on this page. Plain text child only -
-                the attribute replaces the element's content. */}
             <h2 data-lines className="t-h2 mt-5 text-moss">
               You turn up. That is the whole process.
             </h2>
@@ -297,11 +290,7 @@ export default function CommunityPage() {
           </ul>
         </Section>
 
-        {/* The gallery used to be the end of this page and now has its own
-            route. This is the hand-off, in the place the grid used to sit: a
-            reader who has got this far is browsing, which is exactly who the
-            photographs are for. One line and one link, not a photo strip - a
-            strip here showed the same pictures twice. */}
+        {/* Gallery hand-off */}
         <Section className="pb-24 pt-4 text-center md:pb-32 md:pt-6">
           <p className="t-statement mx-auto max-w-[24ch] text-moss">
             The practice, as it actually looks.
@@ -323,9 +312,6 @@ export default function CommunityPage() {
       <JsonLd
         data={[
           breadcrumbLd([{ name: "Community", path: "/community" }]),
-          /* An ItemList of the strands, and nothing else. No Event objects -
-             not one date exists. No AggregateRating and no member count -
-             nobody has counted, and a schema is not the place to guess. */
           {
             "@context": "https://schema.org",
             "@type": "ItemList",

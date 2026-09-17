@@ -111,11 +111,11 @@ export default function Home() {
               col 11, not 12: running it to the container edge is what made the
               headline look jammed against the right of the frame. One spare
               column of air reads as composition rather than overflow. */}
-          <div className="relative z-10 mx-auto flex h-full min-h-[100svh] max-w-[1500px] items-stretch 2xl:max-w-[1800px] px-6 pt-28 pb-16 md:px-10 lg:grid lg:grid-cols-12 lg:items-center lg:gap-8 lg:px-14 lg:pt-20 lg:pb-20 2xl:px-20">
+          <div className="relative z-10 mx-auto flex h-full min-h-[100svh] max-w-[1500px] items-stretch px-6 pt-28 pb-16 md:px-10 lg:grid lg:max-w-none lg:grid-cols-12 lg:items-center lg:gap-[2.5vw] lg:px-[4.375vw] lg:pt-20 lg:pb-20">
             {/* Portrait is a full-height flex column so the link can be pushed
                 to the foot of the screen (see the link block below). Desktop
                 drops back to normal flow inside the grid cell. */}
-            <div className="hero-copy flex w-full flex-col text-center lg:col-span-5 lg:col-start-8 lg:block lg:text-left lg:ml-8">
+            <div className="hero-copy flex w-full flex-col text-center lg:col-span-5 lg:col-start-8 lg:block lg:text-left lg:ml-[2.5vw]">
               {/* Same shape as ouranoyoga.com, which is the reference the client
                   named and the one she keeps pointing at: a short display line,
                   a plain sentence under it, then one button. Her content, their
@@ -139,7 +139,7 @@ export default function Home() {
                   Chrome on Windows will not open a window under 500px, so a
                   390px screenshot is a crop of a 500px page. Use scripts/shot.mjs. */}
               <h1
-                className="hero-in-title font-display text-[clamp(2.4rem,4.6vw,3.6rem)] 2xl:text-[clamp(3.6rem,4.6vw,5.5rem)] font-normal uppercase leading-[1.1] tracking-[0.094em] text-linen"
+                className="hero-in-title font-display text-[clamp(2.4rem,4.6vw,3.6rem)] lg:text-[clamp(2.9rem,4.5vw,6rem)] font-normal uppercase leading-[1.1] tracking-[0.094em] text-linen"
                 style={{ "--d": "320ms" } as React.CSSProperties}
               >
                 Yoga <span className="font-light text-linen/40">|</span> Life
@@ -155,7 +155,7 @@ export default function Home() {
                   measure - bigger and TIGHTER than their 16px/32 body. Ours held
                   quotes or text content is more robust than pseudo-elements. */}
               <p
-                className="hero-in-desc text-[clamp(1rem,1.9vw,1.3rem)] 2xl:text-[clamp(1.3rem,1.9vw,2.3rem)] font-light leading-[1.6] text-linen"
+                className="hero-in-desc text-[clamp(1rem,1.9vw,1.3rem)] lg:text-[clamp(1.15rem,1.625vw,2.17rem)] font-light leading-[1.6] text-linen"
                 style={{ "--d": "680ms" } as React.CSSProperties}
               >
                 Work on yourself<br />before you work for somebody else.
@@ -173,8 +173,24 @@ export default function Home() {
                 className="hero-in-cta mx-auto mt-auto flex w-full justify-center pointer-events-auto lg:mx-0 lg:mt-14 lg:justify-start"
                 style={{ "--d": "760ms" } as React.CSSProperties}
               >
+                {/* /contact, not /book. The branch pointed this at /book,
+                    which is not a route on this site and returned 404 - on the
+                    landing page's only call to action.
+
+                    It is not a missing page either, it is a missing SYSTEM:
+                    CLIENT-BRIEF.md "Not now" records no booking system for
+                    three to four months (00:50:46), with CTAs pointing at the
+                    contact form or WhatsApp, and real workshop dates arriving
+                    after the build (00:57:25). /workshops would not do: it
+                    carries no date, price or registration link, so it looks
+                    like the button worked and then strands the reader.
+
+                    When real dates do arrive, the place for booking is a CTA
+                    on each dated event, not this one - this button means
+                    "start with her", which is the contact form. And the brief
+                    says integrate, never build. */}
                 <Link
-                  href="/book"
+                  href="/contact"
                   className="tap inline-flex justify-center rounded-full bg-[#87a091] px-8 py-3.5 text-[0.7rem] uppercase tracking-[0.15em] text-linen transition-colors hover:bg-[#728b7c] shadow-lg"
                 >
                   Book a session

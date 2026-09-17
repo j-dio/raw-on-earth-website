@@ -52,10 +52,10 @@ export const strands: Strand[] = [
     summary:
       "A slow walk, usually early, usually somewhere green. No pace to keep up with and nothing to sign up for. People talk for the first half and go quiet for the second.",
     image: {
-      src: "/media/thumb/raji-05.webp",
-      alt: "The founder stands at the base of a towering tree, hand resting on its bark, looking up into the canopy.",
+      src: "/media/thumb/community-02.webp",
+      alt: "A large joyful group of practitioners celebrating together outdoors in front of a retreat centre, arms raised and smiling.",
       width: 760,
-      height: 1628,
+      height: 946,
     },
   },
   {
@@ -77,6 +77,12 @@ export const strands: Strand[] = [
     cadence: "Meeting points shared on WhatsApp",
     summary:
       "Running as a breathing practice rather than a race. Every distance is welcome and nobody is left behind at the turn.",
+    image: {
+      src: "/media/thumb/community-03.webp",
+      alt: "A small group of practitioners doing yoga together on mats in a park under a large spreading tree.",
+      width: 760,
+      height: 428,
+    },
   },
   {
     slug: "book-club",
@@ -84,6 +90,12 @@ export const strands: Strand[] = [
     cadence: "One book at a time. The next title is announced on Instagram",
     summary:
       "One book, read slowly, discussed in a room where nobody has to have finished it. Philosophy, psychology, and the occasional novel that earns its place.",
+    image: {
+      src: "/media/thumb/meditation-01.webp",
+      alt: "A yoga practitioner reading a book about Ashtanga, seated cross-legged in a quiet indoor setting.",
+      width: 760,
+      height: 1352,
+    },
   },
   {
     slug: "donations",
@@ -91,6 +103,12 @@ export const strands: Strand[] = [
     cadence: "Open all year. Ask which cause is being supported now",
     summary:
       "Community sessions are funded by the people who can afford to give. If you would like to contribute, write and ask what is needed - it is more often mats and time than money.",
+    image: {
+      src: "/media/thumb/kids-39.webp",
+      alt: "A teacher leads a session with schoolchildren on colourful yoga mats in an open outdoor courtyard.",
+      width: 760,
+      height: 1628,
+    },
   },
   {
     slug: "retreats",

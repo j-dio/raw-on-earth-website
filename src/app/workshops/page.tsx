@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import PageHero from "@/components/PageHero";
 import JsonLd from "@/components/JsonLd";
 import ClassFinder from "@/components/ClassFinder";
-import { Section, SectionHead, Button, CtaBand } from "@/components/ui";
+import { Section, SectionHead, Button, CtaBand, CONTAINER } from "@/components/ui";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import {
   workshops,
@@ -81,46 +80,77 @@ export default function WorkshopsPage() {
     <>
       <SiteHeader />
       <main id="main">
-        <PageHero
-          eyebrow="Workshops"
-          title="Classes, workshops and immersions"
-          /* Rewritten 2026-09-17, twice. It read "An hour a week, a day given
-             over to breath, or a weekend away from a screen. Same practice,
-             different amounts of time." - a riddle with no verb and no reader
-             in it. The first rewrite opened "Join a weekly class, spend a day
-             on breath and stillness..." and read like a list of instructions.
+        {/* MASTHEAD - the co-developer's full-bleed treatment, carried over
+            from her branch and used on /mentorship too: the photograph is the
+            ground, the type sits on it, and a linen gradient carries the
+            section into the linen below so the band does not read as a panel.
 
-             ouranoyoga.com/mentoring sets its standfirst as a fragment of
-             parallel clauses that all land on the reader: "Mentoring to guide,
-             nurture, and support you." That is the shape copied here - three
-             clauses, one sentence, every one of them ending on what it does
-             FOR you, and not a verb aimed at you. */
-          standfirst="Classes to steady you, workshops to take you deeper, and retreats to take you away."
-          /* NO masthead figure, and that is the point rather than an
-             omission.
+            It replaces PageHero on this route ONLY. Everything PageHero gave
+            this page is kept by hand: the CONTAINER frame (identical classes,
+            so the H1 still lines up with every Section heading below it - a
+            148px drift was measured and fixed on 2026-09-17), the eyebrow that
+            doubles as the visible breadcrumb, the single H1, and the
+            page-hero-in / page-hero-title entry delays.
 
-             The reference's own events page carries none: heading, a short
-             intro, a rule, then straight into the event bands, and every
-             photograph on it belongs to an event. This page had four big
-             pictures and the top one was doing the same job as the three
-             below it - a wide band of people on mats - so it competed with
-             the events instead of introducing them. /about and /contact made
-             the same call already.
+            PageHero's own comment argues against type over photography,
+            because the palette's light greens fail contrast over an
+            uncontrolled image. That is why the scrim below is heavy and why
+            the type is moss rather than linen. MEASURE before lightening it.
 
-             The type stays. The H1 lives in PageHero and a page without one
-             has no top-level heading at all; the eyebrow is the visible half
-             of the trail `breadcrumbLd` emits; and every inner page opening
-             the same way is what makes six pages read as one site.
+            THE PHOTOGRAPH IS AN OPEN QUESTION. `workshops.webp` is a crop of
+            her teaching a yard of school children, and CLIENT-BRIEF.md has an
+            unanswered question about publishing their faces. Main removed this
+            masthead figure and that is what closed the question. Putting it
+            back re-opens it, so it needs her yes before this page is
+            published. */}
+        {/* NOT `.page-hero`, deliberately. globals.css carries
+            `.page-hero > *:not(.brand-mark) { position: relative }` to lift
+            masthead content above the enso that used to sit behind it. That
+            rule beats Tailwind's `absolute` on the image layer below, so with
+            the class on, the photograph dropped OUT of the background and
+            stacked above the type: the section measured 1352px tall with the
+            H1 at y=1029, under an 810px picture. The entry animations are
+            `.page-hero-in` / `.page-hero-title` on the children and work on
+            their own. */}
+        <section className="relative overflow-hidden bg-linen text-moss">
+          <div className="absolute inset-0 z-0">
+            <img
+              src="/media/hero/workshops.webp"
+              alt="The founder leads a yard of school children through a standing pose, rows of them on mats in front of her."
+              loading="eager"
+              decoding="async"
+              className="h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-linen/75 via-linen/85 to-linen" />
+          </div>
 
-             The frame that stood here was a 16:9 crop of `kids-32`, her
-             teaching a yard of school children. It is still at
-             /media/hero/workshops.webp, and it was also the only photograph
-             of children on this page - so the open question in
-             CLIENT-BRIEF.md about publishing their faces no longer gates
-             this page. Read the git history before putting any masthead
-             picture back: the 21:9 masters this folder holds lose two thirds
-             of their width to `object-cover` on a phone. */
-        />
+          <div className={`${CONTAINER} relative z-10 pt-36 pb-14 md:pt-44 md:pb-20`}>
+            <div className="max-w-4xl">
+              <p
+                className="eyebrow page-hero-in"
+                style={{ "--d": "80ms" } as React.CSSProperties}
+              >
+                Workshops
+              </p>
+              <h1
+                className="page-hero-title t-h1 mt-6 text-moss"
+                style={{ "--d": "160ms" } as React.CSSProperties}
+              >
+                Classes, workshops and immersions
+              </h1>
+              {/* Main's standfirst, kept. Her branch still carried the sentence
+                  main rewrote twice - "An hour a week, a day given over to
+                  breath..." - which has no verb and no reader in it. */}
+              <p
+                className="page-hero-in t-lead mt-8 max-w-[46ch] text-ink/75"
+                style={{ "--d": "320ms" } as React.CSSProperties}
+              >
+                Classes to steady you, workshops to take you deeper, and retreats to take you
+                away.
+              </p>
+            </div>
+          </div>
+        </section>
 
 
         {/* The "What you will practise" section stood here and is removed.
@@ -195,7 +225,11 @@ export default function WorkshopsPage() {
             {upcoming.map((w) => (
               <li key={w.slug}>
                 {w.image ? (
-                  <div className="relative overflow-hidden">
+                  /* Rounded and lifted, from her branch. Geometry only - the
+                     scrim below stays at the measured 60% and the type stays
+                     linen, because those are contrast numbers, not taste.
+                     No hover transform: these bands are not links. */
+                  <div className="relative overflow-hidden rounded-3xl shadow-sm">
                     <img
                       src={w.image.src}
                       alt={w.image.alt}
@@ -221,7 +255,7 @@ export default function WorkshopsPage() {
                         rather than darkened in the file - the palette's light
                         greens fail 4.5:1 over an uncontrolled image, so the
                         type carries its own ground. */}
-                    <div className="absolute inset-0 bg-ink/60" />
+                    <div className="absolute inset-0 rounded-3xl bg-ink/60" />
                     <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
                       {/* The format as a label, the NAME as the heading. That
                           is the reference's own division - its bands read "TEA
