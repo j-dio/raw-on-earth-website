@@ -42,7 +42,7 @@ import { LeafRule } from "@/components/ui";
 const OFFERINGS = [
   /* Her sketch's wording, same as the header group. The page behind "Private
      Classes" is still /mentorship - see the naming note in CLAUDE.md. */
-  { label: "Mentoring", href: "/mentorship" },
+  { label: "Mentorship", href: "/mentorship" },
   { label: "Workshops", href: "/workshops" },
   { label: "Community", href: "/community" },
   { label: "Gallery", href: "/gallery" },

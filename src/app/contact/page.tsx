@@ -9,21 +9,23 @@ import { Section, SectionHead, CtaBand } from "@/components/ui";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { site } from "@/data/site";
 
-/* Contact. One form, plus the footer details in full. The call of 2026-09-06
-   cut the form to three fields - "name, email address, your message" - so the
-   design brief's phone and Instagram fields are gone. There is no booking
-   system on this site and none is specified, so nothing here embeds a
-   scheduler or a calendar.
+/* Contact. The form is the page.
 
-   No masthead photograph. Every other inner page opens on one, but this page's
-   job is a form, and a 21:9 plate pushes the first input below the fold on a
-   laptop. The two reserved photographs are used further down where their
-   portrait crop is not fighting the layout. */
+   Three fields, single-line, no boxes - the client's own instruction, recorded
+   in docs/feedback. There is no booking system on this site and none is
+   specified, so nothing here embeds a scheduler or a calendar.
+
+   Her phone, email, WhatsApp and Instagram are NOT repeated here. The footer
+   carries all four on every page, and a second copy beside the form was what
+   made this page need a filler photograph to balance it.
+
+   No photographs at all, and no masthead plate: a 21:9 image pushes the first
+   input below the fold on a laptop, and the page's job is the form. */
 
 export const metadata: Metadata = pageMeta({
   title: "Contact",
   description:
-    "Write to Rajalakshmi V about yoga, mindfulness or corporate well-being sessions in JP Nagar, Bangalore and online. Enquiry form, phone, WhatsApp and Instagram.",
+    "Write to Rajalakshmi V about yoga, mindfulness or corporate well-being sessions in JP Nagar, Bangalore and online. A short enquiry form, and WhatsApp if it is quicker.",
   path: "/contact",
 });
 
@@ -51,22 +53,6 @@ const faqs: { q: string; a: string }[] = [
     q: "What should I bring to a class?",
     a: "Loose clothes you can move in, water, and a mat if you own one. If you do not, mention it when you write and it will be sorted before you arrive.",
   },
-  {
-    q: "How quickly will I hear back?",
-    a: "Every enquiry is read by Rajalakshmi herself, so a reply usually takes a couple of days rather than a couple of minutes. WhatsApp reaches her faster than email if something is time-sensitive.",
-  },
-];
-
-/* Her details, in the order a person actually reaches for them. The footer
-   carries the same facts; this page states them in full because a contact page
-   that makes you scroll to the footer for a phone number has failed. */
-const details: { label: string; value: string; href?: string; external?: boolean }[] = [
-  { label: "Phone", value: site.phone, href: site.phoneHref },
-  { label: "WhatsApp", value: "Message on WhatsApp", href: site.whatsapp, external: true },
-  { label: "Email", value: site.email, href: site.emailHref },
-  { label: "Instagram", value: "@raw_on_earth", href: site.social.instagram, external: true },
-  { label: "LinkedIn", value: site.founder, href: site.social.linkedin, external: true },
-  { label: "Where", value: `${site.locality} – taught in person and online` },
 ];
 
 export default function ContactPage() {
@@ -75,124 +61,76 @@ export default function ContactPage() {
       <SiteHeader />
 
       <main id="main">
-        <PageHero
-          eyebrow="Contact"
-          title="Start with a message"
-          standfirst="A question, a class you are curious about, or a programme for your team. Every enquiry is read by Rajalakshmi, and a reply usually takes a couple of days."
-        />
+        {/* No standfirst. The heading says start with a message and the form is
+            directly under it; a paragraph in between only delayed it. */}
+        <PageHero eyebrow="Contact" title="Start with a message" />
 
-        {/* FORM + DETAILS
-            Form first in the DOM, so on a phone the details fall below it
-            rather than standing between the heading and the first input. The
-            grid only splits them from lg up. */}
         {/* Short top padding on purpose. This is the page every CTA points at, so
             the form has to be visible without a scroll: the hero rule sits at
             about y=516 on a 1280x720 laptop, and the standard py-32 put "Send an
             enquiry" on the fold line at y=644. pt-10/pt-14 lands the heading at
             about y=570 and the first field in view. */}
         <Section className="pb-24 pt-10 md:pb-32 md:pt-14">
-          <div className="grid gap-16 lg:grid-cols-12 lg:gap-20">
-            <div className="lg:col-span-7" data-reveal>
-              <h2 className="font-display text-[1.6rem] font-light leading-tight text-moss md:text-[2rem]">
-                Send an enquiry
-              </h2>
-              {/* Suspense is not optional: ContactForm reads useSearchParams
-                  (the ?about= prefill) and Next 15 fails the build without a
-                  boundary around it. */}
-              <div className="mt-10">
-                <Suspense fallback={<p className="leading-relaxed text-ink/60">Loading the form…</p>}>
-                  <ContactForm />
-                </Suspense>
-              </div>
+          {/* One column, centred, and the form is all of it. It used to sit in
+              seven of twelve columns beside a "reach her directly" list - phone,
+              email, WhatsApp and Instagram - which is the same four things the
+              footer carries on every page, plus a photograph to fill the space
+              that duplication made.
+
+              Centred rather than left-aligned: `Section` indents to 208px at
+              1440 and the masthead above starts at 60px, so a left-aligned
+              column here lands 148px right of the heading and reads as a
+              mistake. Centred, it reads as a choice. */}
+          <div className="mx-auto max-w-2xl" data-reveal>
+            <h2 className="font-display text-[1.6rem] font-light leading-tight text-moss md:text-[2rem]">
+              Send an enquiry
+            </h2>
+            {/* Suspense is not optional: ContactForm reads useSearchParams
+                (the ?about= prefill) and Next 15 fails the build without a
+                boundary around it. */}
+            <div className="mt-10">
+              <Suspense fallback={<p className="leading-relaxed text-ink/60">Loading the form…</p>}>
+                <ContactForm />
+              </Suspense>
             </div>
-
-            <aside className="lg:col-span-5" data-reveal>
-              <h2 className="font-display text-[1.6rem] font-light leading-tight text-moss md:text-[2rem]">
-                Or reach her directly
-              </h2>
-
-              <dl className="mt-10 border-t border-ink/15">
-                {details.map((d) => (
-                  <div key={d.label} className="flex flex-col gap-1 border-b border-ink/15 py-5 sm:flex-row sm:gap-6">
-                    <dt className="label w-32 shrink-0 text-[0.68rem] text-moss">{d.label}</dt>
-                    <dd className="leading-relaxed text-ink/80">
-                      {d.href ? (
-                        <a
-                          href={d.href}
-                          {...(d.external ? { target: "_blank", rel: "noreferrer noopener" } : {})}
-                          className="underline decoration-ink/25 underline-offset-4 transition-colors duration-300 hover:decoration-moss"
-                        >
-                          {d.value}
-                        </a>
-                      ) : (
-                        d.value
-                      )}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-
-              {/* Portrait on a phone, where it stacks under the details and has
-                  the room. Landscape from lg up, and cropped from the top so the
-                  face survives: at 4/5 this column ran about 560px past the
-                  bottom of the form and left a hole beside it. */}
-              <img
-                src="/media/thumb/raji-24.webp"
-                width={760}
-                height={1138}
-                loading="lazy"
-                decoding="async"
-                alt="The founder sits in meditation with palms joined at her chest, eyes closed, on a mat in soft evening park light."
-                className="mt-12 aspect-[4/5] w-full object-cover lg:aspect-[3/2] lg:object-top"
-              />
-            </aside>
           </div>
         </Section>
 
         {/* FAQ - native <details>, so it is keyboard and screen-reader correct
-            with no JavaScript and works on the first paint. */}
-        <section className="tex tex-stone bg-sand/45">
-          <Section as="div" className="py-24 md:py-32">
-            <div className="grid gap-16 lg:grid-cols-12 lg:gap-20">
-              <div className="lg:col-span-5" data-reveal>
-                <img
-                  src="/media/thumb/raji-14.webp"
-                  width={760}
-                  height={1138}
-                  loading="lazy"
-                  decoding="async"
-                  alt="The founder folds forward into child's pose on a mat in a grassy park, hair falling to the ground."
-                  className="aspect-[3/4] w-full object-cover"
-                />
-              </div>
+            with no JavaScript and works on the first paint.
 
-              <div className="lg:col-span-7">
-                <SectionHead
-                  eyebrow="Before you write"
-                  title="Questions people ask first"
-                  standfirst="If your question is not here, the form is the right place for it."
-                />
+            One column on linen, the same width as the form above it. It used to
+            run beside a photograph on a sand ground: the picture was decoration
+            and the extra ground was a fourth change of colour on a page that
+            only needs one. */}
+        <Section className="pb-24 md:pb-32">
+          {/* No data-reveal here: SectionHead renders its own, and two nested
+              reveals compound the offset and run two ScrollTriggers. */}
+          <div className="mx-auto max-w-2xl">
+            <SectionHead
+              eyebrow="Before you write"
+              title="Questions people ask first"
+              standfirst="If your question is not here, the form is the right place for it."
+            />
 
-                <div className="mt-12 border-t border-ink/15">
-                  {faqs.map((f) => (
-                    <details key={f.q} className="group border-b border-ink/15">
-                      <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-6 font-display text-[1.3rem] leading-snug text-moss md:text-[1.5rem] [&::-webkit-details-marker]:hidden">
-                        {f.q}
-                        <span
-                          aria-hidden
-                          className="mt-2 shrink-0 text-ink/70 transition-transform duration-300 group-open:rotate-45"
-                        >
-                          +
-                        </span>
-                      </summary>
-                      <p className="max-w-[58ch] pb-7 leading-relaxed text-ink/80">{f.a}</p>
-                    </details>
-                  ))}
-                </div>
-              </div>
+            <div className="mt-12 border-t border-ink/15">
+              {faqs.map((f) => (
+                <details key={f.q} className="group border-b border-ink/15">
+                  <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-6 font-display text-[1.3rem] leading-snug text-moss md:text-[1.5rem] [&::-webkit-details-marker]:hidden">
+                    {f.q}
+                    <span
+                      aria-hidden
+                      className="mt-2 shrink-0 text-ink/70 transition-transform duration-300 group-open:rotate-45"
+                    >
+                      +
+                    </span>
+                  </summary>
+                  <p className="pb-7 leading-relaxed text-ink/80">{f.a}</p>
+                </details>
+              ))}
             </div>
-          </Section>
-        </section>
+          </div>
+        </Section>
 
         <CtaBand
           eyebrow="Begin your journey inward"
