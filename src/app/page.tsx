@@ -89,7 +89,14 @@ export default function Home() {
               col 11, not 12: running it to the container edge is what made the
               headline look jammed against the right of the frame. One spare
               column of air reads as composition rather than overflow. */}
-          <div className="relative z-10 mx-auto flex h-full min-h-[100svh] max-w-[1500px] items-stretch px-6 pt-28 pb-16 md:px-10 lg:grid lg:grid-cols-12 lg:items-center lg:gap-8 lg:px-14 lg:pt-20 lg:pb-20 2xl:px-20">
+          {/* The hero grid holds only the copy - she is an absolute layer behind it -
+              so the container's own padding IS the type's position. From lg up
+              the left and right padding are deliberately lopsided by 40px
+              (96/16 against the old 56/56, 120/40 against 80/80): the pair still
+              sums to the same total, so the column keeps its width and the
+              headline stays on one line, but everything sits 40px further right,
+              off the blurred edge of the photograph. Change them as a pair. */}
+          <div className="relative z-10 mx-auto flex h-full min-h-[100svh] max-w-[1500px] items-stretch px-6 pt-28 pb-16 md:px-10 lg:grid lg:grid-cols-12 lg:items-center lg:gap-8 lg:pl-24 lg:pr-4 lg:pt-20 lg:pb-20 2xl:pl-[7.5rem] 2xl:pr-10">
             {/* Portrait is a full-height flex column so the link can be pushed
                 to the foot of the screen (see the link block below). Desktop
                 drops back to normal flow inside the grid cell. */}
@@ -236,27 +243,35 @@ export default function Home() {
 
             </div>
 
-            {/* No negative bottom margin here: her closing line sits at the
-                foot of this column now, and an overhang would let the next
-                section paint over it. */}
             {/* Stacked, a phone got three paragraphs and no picture on the
                 screen straight after the hero - the measured drop-off point of
-                the visit. The photograph leads on a phone now, but her closing
-                line still closes: `.wellness-grid` under lg makes this column
-                `display: contents` so the picture and the line can be ordered
-                separately (globals.css). From lg up nothing changes - two
-                columns, picture beside the words, which is the brief's layout. */}
-            <div className="wellness-media relative lg:-mt-8" data-reveal>
+                the visit. The photograph leads on a phone: `.wellness-grid`
+                under lg makes this column `display: contents`, so its children
+                are ordered against the copy directly (globals.css). From lg up
+                nothing changes - two columns, picture beside the words, which is
+                the brief's layout.
+
+                "Move. Breathe. Become." sat under the picture here until
+                2026-09-17, when it was cut. Her own line and her own placement
+                (call, A5) - if it comes back, it goes here, in `.t-statement`. */}
+            <div className="wellness-media relative" data-reveal>
               {/* Plain <img>, not next/image: the optimiser is off for
                   Hostinger. Dimensions are on the tag so the column reserves
                   its height before the file lands.
 
                   A9, "zoom in where the photo has empty space top and bottom"
-                  (call, 00:58:25). The source is 1500x2666, so `aspect-square`
-                  plus `object-cover` crops 28% off each end and the subject
-                  stays centred. If a future photograph puts the subject off
-                  centre, re-crop the file rather than reaching for
-                  object-position: a CSS crop still ships the whole tall file. */}
+                  (call, 00:58:25). The source is 1500x2666 - far taller than it
+                  needs to be - so the frame crops it rather than showing the
+                  whole thing.
+
+                  4:5, not square. Square was right while her closing line sat
+                  under the picture and shared the column's height; with the line
+                  cut, a square left the photograph short against 755px of copy
+                  beside it and a band of empty sand underneath. 4:5 fills that
+                  and still crops the dead ground off the top and bottom of the
+                  source. If a future photograph puts the subject off centre,
+                  re-crop the file rather than reaching for object-position: a
+                  CSS crop still ships the whole tall file. */}
               <img
                 src="/media/gallery/raji-28.webp"
                 width={1500}
@@ -264,22 +279,14 @@ export default function Home() {
                 loading="lazy"
                 decoding="async"
                 alt="A practitioner sits in padmasana with eyes closed on a woven mat, surrounded by dry autumn leaves and forest trees."
-                className="aspect-square w-full object-cover object-center"
+                className="aspect-[4/5] w-full object-cover object-center"
               />
-
-              {/* Her closing line. It used to end the copy column; the client
-                  asked for it under the photograph, and it is better there -
-                  set as display type it reads as a caption on the image rather
-                  than as a fourth paragraph nobody finishes. */}
-              <p className="t-statement mt-8 italic text-moss">
-                Move. Breathe. Become.
-              </p>
             </div>
           </div>
         </section>
 
-        {/* A4b. Her own transition: "Move. Breathe. Become." ends the section
-            above and the line carries the eye from it into the next one. */}
+        {/* A4b. The continuity rule straddles this seam and carries the eye
+            from the section above into the quote below. */}
         {/* QUOTE PANEL, on mist rather than a full-bleed moss ground. The page
             falling from pale into dark green and back is what she meant by "it's
             confusing my own mind" (00:46:22); moss stays the colour of type and
