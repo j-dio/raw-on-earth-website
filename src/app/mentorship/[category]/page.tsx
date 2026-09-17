@@ -111,17 +111,25 @@ const SERVICE_IMAGES: Record<
   string,
   { src: string; alt: string; aspect?: string; position?: string }
 > = {
-  /* Private Yoga — one-to-one teaching, close adjustment */
+  /* Private Yoga — changed 2026-09-18. The previous frame was shot in a
+     public park, under a tree, with the pair small in a wide landscape. A
+     service called Private Yoga should not be illustrated in public. This is
+     indoors and the one-to-one assist is the subject. */
   "private-yoga":
-    { src: "/media/gallery/teaching-02.webp", alt: "A teacher adjusts a student's hips during a wheel pose on a mat — one-to-one instruction." },
+    { src: "/media/gallery/teaching-04.webp", alt: "A teacher assists a student into a supported bow pose on a purple mat inside a wooden, thatch-roofed pavilion." },
 
-  /* Mindfulness Coaching — seated, eyes closed, paying attention */
+  /* Mindfulness Coaching — takes the frame that used to sit on Breathwork.
+     raji-17 and raji-24 were the same woman in the same pose in the same
+     park, one slot apart, which read as the page repeating itself. */
   "mindfulness-coaching":
-    { src: "/media/gallery/raji-17.webp", alt: "The founder sits cross-legged in a meditative pose with palms pressed together, eyes closed on a park lawn." },
-
-  /* Breathwork — pranayama, palms joined at chest, breath focus */
-  "breathwork":
     { src: "/media/gallery/raji-24.webp", alt: "The founder sits in meditation with palms joined at her chest, eyes closed, in soft evening park light." },
+
+  /* Breathwork — changed 2026-09-18, after its frame moved up to Mindfulness
+     Coaching. Hands resting on the knees is the pranayama seat rather than
+     the palms-together one, and the setting is not the park, so the two
+     sections no longer look like one photograph printed twice. */
+  "breathwork":
+    { src: "/media/gallery/meditation-06.webp", alt: "A woman meditates in lotus position on a purple mat beneath a covered walkway, eyes closed, hands resting on her knees." },
 
   /* Lifestyle Coaching — study and reflection between sessions */
   "lifestyle-coaching":
