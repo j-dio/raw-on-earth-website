@@ -80,9 +80,22 @@ export default function Home() {
             <div className="hero-wash absolute inset-0" />
           </div>
 
+          {/* Desktop ring geometry, measured off the scene file rather than
+              placed by eye. The file is square and cover-fills the width at
+              every lg viewport, so a figure's x-position in the image maps 1:1
+              onto the viewport: sampling low-saturation pixels puts her body
+              between 25% and 57% across, centred near 41%.
+
+              It used to sit at 26% and 660px wide, which centred it on empty
+              grass to her left and ran its right edge to x=690 at 1440 - close
+              enough to the type column (starts x=736) to crowd it. At 30%/500px
+              it rings her head and torso and spans 182-682, so the type side
+              stays clear. The bigger alternative - 37%, 660px, wrapping her
+              whole body - was measured too and put 121px of ring behind the
+              headline. */}
           <div
             aria-hidden
-            className="hero-ring brand-mark mark-enso-ring absolute left-1/2 top-[calc(100%_-_var(--med-gap)_-_var(--med)/2)] h-[var(--med)] w-[var(--med)] text-moss lg:left-[26%] lg:top-[46%] lg:h-[min(44vw,660px)] lg:w-[min(44vw,660px)]"
+            className="hero-ring brand-mark mark-enso-ring absolute left-1/2 top-[calc(100%_-_var(--med-gap)_-_var(--med)/2)] h-[var(--med)] w-[var(--med)] text-moss lg:left-[30%] lg:top-[50%] lg:h-[min(34vw,500px)] lg:w-[min(34vw,500px)]"
           />
 
           {/* The section owns the height (see above). The type column stops at
