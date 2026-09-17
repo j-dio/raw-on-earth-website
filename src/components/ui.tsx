@@ -226,20 +226,8 @@ export function CtaBand({
   secondary?: { href: string; label: string; external?: boolean };
 }) {
   return (
-    <section
-      /* Two seams, both in the background-image layer. `seam-linen` takes the
-         linen band above into the top of this one; `seam-into-ink` sinks its
-         last 180px into the footer's ground, which is the biggest step on any
-         page - mist 221,229,210 against ink 36,30,25. Every route ends on this
-         band and then the footer, so the one class covers the site. */
-      className="tex tex-leaf seam-linen seam-into-ink relative overflow-hidden bg-mist text-ink"
-    >
-      {/* Deeper bottom padding than top, and not for looks: the band sinks into
-           the footer's ink over its last 120px, and the two buttons have to
-           finish above that. Measured at 1440x900 - buttons end at y=4051, the
-           gradient starts at 4079, so there is 28px of clear mist under the
-           ghost button, whose label is moss on this band's own ground. */}
-      <div className="relative mx-auto max-w-3xl px-6 py-24 pb-32 text-center md:px-10 md:py-32 md:pb-44" data-reveal>
+    <section className="tex tex-leaf relative overflow-hidden bg-mist text-ink">
+      <div className="relative mx-auto max-w-3xl px-6 py-24 text-center md:px-10 md:py-32" data-reveal>
         <p className="eyebrow">{eyebrow}</p>
         <h2 className="t-h2 mt-6 text-moss">{title}</h2>
         {body ? <p className="t-body mx-auto mt-6 text-ink/80">{body}</p> : null}

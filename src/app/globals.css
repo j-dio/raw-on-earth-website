@@ -738,12 +738,7 @@ body {
 .hero-wash {
   background:
     linear-gradient(103deg, rgba(243, 241, 233, 0) 0%, rgba(243, 241, 233, 0.14) 44%, rgba(243, 241, 233, 0.52) 100%),
-    /* The foot of the hero dissolves into linen instead of ending on a cut edge
-       of grass, and the band below picks that linen up in its own seam - so the
-       first transition on the page happens across about 200px rather than on a
-       line. 0.92 and not 1: at full opacity the bottom of the frame goes flat
-       cream and the grass stops being a photograph. */
-    linear-gradient(to top, rgba(243, 241, 233, 0.92) 0%, rgba(243, 241, 233, 0.3) 12%, rgba(243, 241, 233, 0) 42%);
+    linear-gradient(to top, rgba(243, 241, 233, 0.26) 0%, rgba(243, 241, 233, 0) 42%);
 }
 
 .hero-ring {
@@ -851,49 +846,6 @@ body {
    `isolation: isolate` keeps the blend inside its own section - without it
    soft-light reaches through to whatever is painted behind the section.
    --------------------------------------------------------------------------- */
-/* ---------------------------------------------------------------------------
-   SEAMS. The page is six bands and a footer, and their grounds alternate -
-   linen, sand, mist, linen, mist, ink - so every boundary was a hard edge and
-   the page read as a stack of panels rather than one descent. Measured at
-   1440x900: boundaries at y=900, 1911, 2531, 3596 and 4215.
-
-   `.seam` paints the PREVIOUS band's colour into the top of the next one and
-   lets it fall away over 140px, so the change of ground happens across a band
-   of the page instead of on a line. It is a background-image, so it sits on the
-   section's own background-color and costs no markup; `.tex` textures paint in
-   a ::before at z-index -1 and are unaffected.
-
-   140px is the smallest distance that reads as a fade rather than a shadow at
-   this contrast - the largest step on the page is mist to linen, 26 points of
-   luminance, and at 100px it still showed an edge.
-
-   The one at the foot works the other way: the CtaBand sinks into the footer's
-   ink, so the dark arrives as a rise rather than a cut. That seam is the
-   biggest jump on the page - mist 221,229,210 to ink 36,30,25 - and it is the
-   one a reader feels most.
-   --------------------------------------------------------------------------- */
-.seam-linen {
-  background-image: linear-gradient(to bottom, var(--color-linen) 0, rgba(247, 245, 238, 0) 140px);
-}
-
-.seam-sand {
-  background-image: linear-gradient(to bottom, var(--color-sand) 0, rgba(231, 223, 208, 0) 140px);
-}
-
-.seam-mist {
-  background-image: linear-gradient(to bottom, var(--color-mist) 0, rgba(221, 229, 210, 0) 140px);
-}
-
-/* Into the footer: the band's last 120px darkens to the footer's ground.
-
-   120 and not more, because the band's bottom padding is 128px (py-32) and the
-   darkening has to stay inside it. At 180px the gradient reached up under the
-   CtaBand's two buttons, and the ghost button is moss on the band's own ground
-   - it would have lost its contrast to a background that is no longer mist. */
-.seam-into-ink {
-  background-image: linear-gradient(to bottom, rgba(36, 30, 25, 0) calc(100% - 120px), var(--color-ink) 100%);
-}
-
 .tex {
   position: relative;
   isolation: isolate;

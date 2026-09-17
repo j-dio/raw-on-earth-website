@@ -184,7 +184,7 @@ export default function Home() {
         </section>
 
         {/* YOUR HOME OF WELLNESS - image on the right, per the brief */}
-        <section className="wellness seam-linen bg-sand/45">
+        <section className="wellness bg-sand/45">
           {/* `lg:items-center`, not top-aligned: the two columns are different
               heights, and centred the difference splits either side of the copy
               instead of pooling under it as one blank corner of sand. */}
@@ -315,7 +315,7 @@ export default function Home() {
 
             The rule down the centre is gone and stays gone - on a panel holding
             one centred quote it was a line through the middle of the sentence. */}
-        <section className="tex tex-paper seam-sand relative overflow-hidden bg-mist py-24 md:py-32">
+        <section className="tex tex-paper relative overflow-hidden bg-mist py-28 md:py-40">
           <figure className="quote-figure relative mx-auto max-w-3xl px-8 text-center" data-reveal>
             <blockquote className="t-quote text-moss">
               {/* verbatim client copy - one of the two quotes she offered for this
@@ -342,7 +342,7 @@ export default function Home() {
             arrives, put it back: absolute <img> at -z-10 under a bg-linen/75
             scrim, cards at bg-linen/92. 75% is a measured floor, not taste - at
             70% the standfirst fell to 4.40:1 and failed. */}
-        <section className="seam-mist bg-linen">
+        <section className="bg-linen">
           <div className="mx-auto max-w-[1280px] px-6 py-24 md:px-10 md:py-32 lg:px-20 xl:px-32">
             {/* "Offerings" is her word and it is the heading, not a kicker over
                 an invented headline. */}
