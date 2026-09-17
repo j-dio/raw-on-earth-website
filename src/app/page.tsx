@@ -68,10 +68,23 @@ export default function Home() {
             type sits in her eyeline and there is no separate cutout layer. */}
         <section className="relative min-h-[100svh] overflow-hidden flex items-center bg-linen">
           <div className="absolute inset-0 z-0">
+             {/* TEMPORARY, 2026-09-17. This was `/media/mockup/pin-classes.png`
+                 and that file has never been committed - referenced twice on
+                 this page, 404 on both, so the home page rendered its alt text
+                 in the corner with an invisible white logo over a pale ground.
+                 Broken on `main`, not by any merge.
+
+                 Pointing at `DSC00168` keeps the intended look, because it is
+                 the moody forest frame the same PR committed and it is already
+                 in the repo. `object-center`, not `left_center`: she is centred
+                 in a 2663x3987 portrait and a left crop removes her.
+
+                 RESTORE `pin-classes.png` the moment it is supplied, and put
+                 the object-position back with it. */}
              <img
-               src="/media/mockup/pin-classes.png"
-               alt="Yogi in lunge pose"
-               className="w-full h-full object-cover object-[left_center] brightness-[0.65] saturate-[0.65] hue-rotate-[5deg] contrast-[1.2]"
+               src="/media/mockup/DSC00168.webp"
+               alt="The founder sits in lotus on a mat on grass, hands joined at her chest, backlit by low sun through the trees."
+               className="w-full h-full object-cover object-center brightness-[0.65] saturate-[0.65] hue-rotate-[5deg] contrast-[1.2]"
              />
              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/10 to-black/30 z-10 pointer-events-none" />
           </div>
@@ -290,7 +303,9 @@ export default function Home() {
             scrim, cards at bg-linen/92. 75% is a measured floor, not taste - at
             70% the standfirst fell to 4.40:1 and failed. */}
         <section className="relative bg-linen/75">
-          <img src="/media/mockup/pin-classes.png" alt="" className="absolute inset-0 -z-10 h-full w-full object-cover object-center brightness-125 saturate-150" />
+          {/* Same temporary substitution as the hero above - pin-classes.png
+              has never been committed. Decorative, so the alt stays empty. */}
+          <img src="/media/mockup/DSC00168.webp" alt="" className="absolute inset-0 -z-10 h-full w-full object-cover object-center brightness-125 saturate-150" />
           <div className="mx-auto max-w-[1280px] px-6 py-24 md:px-10 md:py-32 lg:px-20 xl:px-32">
             {/* "Offerings" is her word and it is the heading, not a kicker over
                 an invented headline. */}
