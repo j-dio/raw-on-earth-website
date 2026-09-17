@@ -19,9 +19,10 @@ import { story, belief, journey } from "@/data/about";
    corporate client list, which moved to /workshops, and a three-frame photo
    band. See the comments where each stood.
 
-   Grounds: linen -> mist -> sand -> linen, closing on the CtaBand. One mild
-   green, not a page that keeps falling into a dark panel (client, 00:46:22
-   and 00:47:13).
+   Grounds: linen -> mist-pale -> sand/45, closing on the CtaBand. One mild
+   green, not a page that keeps falling into a dark panel (client, 00:46:22 and
+   00:47:13). The sand band under Journey is the one thing still outside the
+   two-ground rule CLAUDE.md settled on 2026-09-17 - flagged, not fixed.
 
    No masthead figure. PageHero crops its figure to 21:9 on desktop and every
    photograph of her from this shoot is a 1500x2246 portrait, which at 21:9
