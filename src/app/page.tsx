@@ -4,6 +4,7 @@ import SiteFooter from "@/components/SiteFooter";
 import { CtaBand } from "@/components/ui";
 import { offerings, pillars } from "@/data/home";
 import { site } from "@/data/site";
+import { gallery } from "@/data/gallery";
 
 /* The continuity line the client asked for (call, 00:32:40): "a vertical line
    that takes me to the next page... giving me a feel of continuity". It sits in
@@ -348,6 +349,43 @@ export default function Home() {
               ))}
             </ul>
           </div>
+        </section>
+
+        {/* GALLERY STRIP */}
+        <section className="tex tex-stone bg-sand/45 py-24 md:py-32 overflow-hidden">
+          <div className="mx-auto max-w-[1280px] px-6 md:px-10 lg:px-20 xl:px-32 flex flex-wrap items-end justify-between gap-6">
+            <div>
+              <p className="eyebrow tracking-widest text-sm uppercase text-moss mb-4">A glimpse</p>
+              <h2 className="t-h2 text-moss text-4xl md:text-5xl font-light">Where the practice happens</h2>
+              <p className="mt-4 max-w-xl text-ink/75 leading-relaxed">Parks at dawn, studio floors, school courtyards and the quiet of a hall between sessions.</p>
+            </div>
+            <Link
+              href="/gallery"
+              className="label -my-2 flex min-h-11 items-center border-b border-gold/60 py-2 text-[0.7rem] text-moss transition-colors hover:border-moss"
+            >
+              See the gallery
+            </Link>
+          </div>
+
+          <ul
+            className="mt-14 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-pl-6 pb-4 md:gap-6 md:scroll-pl-10 hide-scrollbar"
+            style={{ paddingLeft: 'max(1.5rem, calc((100vw - 1280px) / 2 + 1.5rem))', paddingRight: '1.5rem' }}
+          >
+            {gallery.slice(0, 5).map((item) => (
+              <li key={item.id} className="w-[85vw] shrink-0 snap-start sm:w-[46vw] lg:w-[28vw]">
+                <img
+                  src={item.thumb}
+                  alt={item.alt}
+                  width={item.w}
+                  height={item.h}
+                  loading="lazy"
+                  decoding="async"
+                  className="aspect-[3/4] w-full object-cover rounded-xl shadow-sm"
+                />
+                <p className="mt-4 text-[0.85rem] leading-relaxed text-ink/75 px-1">{item.caption}</p>
+              </li>
+            ))}
+          </ul>
         </section>
 
         {/* The client's own closing line, 27 July: "Last line - Begin your
