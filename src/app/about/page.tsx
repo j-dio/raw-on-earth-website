@@ -65,7 +65,14 @@ export default function AboutPage() {
             as the H1 above it, and the portrait is the larger element, which is
             the way round ouranoyoga.com sets its own bio row - copy 423px,
             picture 666px of a 1152px row (measured on /mentoring/, 1440px). */}
-        <Section className="bg-linen py-24 md:py-32">
+        {/* pt-10/12, not the full 24/32 beat. PageHero's own block already
+            pays `pb-14 md:pb-20` (56/80px), and this section carries the same
+            linen, so there is no seam between them for a second full beat to
+            mark - it just opened 208px of empty ground between her subheading
+            and the first line of her story (measured, 1440x900). 40+56 and
+            48+80 put the pair back on the site's one padding beat, 96/128.
+            The bottom keeps the full beat: below it the ground changes. */}
+        <Section className="bg-linen pt-10 pb-24 md:pt-12 md:pb-32">
           <div className="grid gap-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-16">
             <div className="lg:col-start-1 lg:row-start-1" data-reveal>
               {/* Verbatim client copy, stored in src/data/about.ts. Rendered
@@ -102,10 +109,24 @@ export default function AboutPage() {
                   +-60px while it is pinned is two motions arguing, and the
                   sticky hold is the one that does work. */}
               <div className="lg:sticky lg:top-24">
-                {/* A9 - the frame carries ~18% blurred canopy above her head
-                    and ~14% bare grass below her feet. 4:5 held slightly high
-                    (30%) drops both and keeps the whole tree pose, head to
-                    standing foot.
+                {/* A9, re-cropped 2026-09-17 and saved as its own file rather
+                    than framed with object-position.
+
+                    The full frame is the darkest photograph in the set - mean
+                    luminance 55 of 255 across the 4:5 window the page showed,
+                    against linen at 246. Every other frame of her measures 76
+                    to 120. She also stood about a sixth of the frame high in
+                    it, so most of that 55 was out-of-focus canopy. Enlarging
+                    the picture to 524px made both obvious.
+
+                    `raji-20-story.webp` is crop 1160x1450 at offset (230,420)
+                    of `raji-20.webp`. It carries the whole tree pose, head to
+                    standing foot, with ground still under her; it measures 69,
+                    and it is 60KB against the original's 88KB. Do not add a
+                    filter to lift it further - the frame is hers.
+
+                    The file is already 4:5, so `object-cover` has nothing to
+                    trim and the old `object-[50%_30%]` is gone with it.
 
                     `sm:max-w-[32rem]` is the tablet fix and only that: while the
                     row is still stacked, a full-width 4:5 portrait is 754x943 at
@@ -116,13 +137,13 @@ export default function AboutPage() {
                     with the H1 above. The cap is dropped at `lg`, where the
                     portrait is a column again. */}
                 <img
-                  src="/media/gallery/raji-20.webp"
-                  width={1500}
-                  height={2246}
+                  src="/media/gallery/raji-20-story.webp"
+                  width={1160}
+                  height={1450}
                   loading="lazy"
                   decoding="async"
                   alt="The founder balances in tree pose on a park lawn, smiling with hands pressed together at her chest."
-                  className="aspect-[4/5] w-full object-cover object-[50%_30%] sm:max-w-[32rem] lg:max-w-none"
+                  className="aspect-[4/5] w-full object-cover sm:max-w-[32rem] lg:max-w-none"
                 />
               </div>
             </div>
