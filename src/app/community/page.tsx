@@ -31,9 +31,10 @@ import { testimonials } from "@/data/home";
    Do not bring back the horizontal photo strip that used to tease /gallery from
    here. It showed the same photographs twice.
 
-   OPEN WITH THE CLIENT: she asked for the gallery at the end of THIS page, and
-   it is a separate route again. See docs/feedback for her exact words. Raise it
-   through the intermediary rather than moving it a third time.
+   Settled: the gallery keeps its own route, and this page hands off to it with
+   a line and a link where the grid used to sit. She had asked for the grid
+   itself at the end of this page - see docs/feedback - so mention the hand-off
+   next time rather than moving the grid a third time.
 
    Grounds: linen -> mist -> sand -> linen, closing on the CtaBand. One mild
    green (mist), not a page that keeps falling into a dark panel (client,
@@ -296,7 +297,19 @@ export default function CommunityPage() {
           </ul>
         </Section>
 
-
+        {/* The gallery used to be the end of this page and now has its own
+            route. This is the hand-off, in the place the grid used to sit: a
+            reader who has got this far is browsing, which is exactly who the
+            photographs are for. One line and one link, not a photo strip - a
+            strip here showed the same pictures twice. */}
+        <Section className="pb-24 pt-4 text-center md:pb-32 md:pt-6">
+          <p className="t-statement mx-auto max-w-[24ch] text-moss">
+            The practice, as it actually looks.
+          </p>
+          <Link href="/gallery" className="link mt-6 inline-block py-3">
+            See the gallery
+          </Link>
+        </Section>
 
         <CtaBand
           eyebrow="Grow together"
