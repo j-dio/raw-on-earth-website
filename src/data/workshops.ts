@@ -48,7 +48,34 @@ export type Workshop = {
   /* Unset everywhere, deliberately. There is no booking system and the brief
      specifies none, so each card links to /contact?about=<slug> instead. */
   registrationUrl?: string;
+
+  /* TIMETABLE FIELDS, for the recurring classes only. A weekly class has a day
+     and a time; a one-off has a `date`. Nothing has both. */
+  day?: string;
+  time?: string;
+
+  /* The picture an upcoming card carries. Only the dated one-offs use it - the
+     timetable is a table and a table with photographs in it is a brochure. */
+  image?: { src: string; alt: string };
 };
+
+/* ---------------------------------------------------------------------------
+   SAMPLE SCHEDULE. Read this before showing the page to anyone outside the
+   team.
+
+   `true` fills the timetable and the upcoming cards with invented days, times
+   and dates so the page can be designed and reviewed as a finished thing. It
+   is the reason the page has a visible notice at the top of the schedule
+   saying so - a plausible-looking invented event is the worst kind of lie
+   because it is checkable, and a date somebody turns up for is the worst
+   version of that.
+
+   Set it to `false` and the page falls back to exactly what it printed before:
+   every class and every workshop says its dates are announced soon, and the
+   notice disappears. Set it to `false` before this reaches the client, and
+   delete the sample values below when her real calendar arrives.
+   --------------------------------------------------------------------------- */
+export const SAMPLE_SCHEDULE = true;
 
 export const kindLabels: Record<WorkshopKind, string> = {
   "regular-class": "Regular class",
@@ -72,6 +99,8 @@ export const modeLabels: Record<WorkshopMode, string> = {
 export const workshops: Workshop[] = [
   {
     slug: "weekly-hatha-class",
+    day: "Tuesday & Thursday",
+    time: "6.30 – 7.30am",
     title: "Weekly Hatha class",
     kind: "regular-class",
     mode: "both",
@@ -84,6 +113,8 @@ export const workshops: Workshop[] = [
   },
   {
     slug: "ashtanga-vinyasa-class",
+    day: "Wednesday & Saturday",
+    time: "7.00 – 8.15am",
     title: "Ashtanga Vinyasa class",
     kind: "regular-class",
     mode: "both",
@@ -96,6 +127,8 @@ export const workshops: Workshop[] = [
   },
   {
     slug: "one-to-one-yoga",
+    day: "By arrangement",
+    time: "Mornings and evenings",
     title: "One-to-one yoga",
     kind: "one-to-one",
     mode: "both",
@@ -108,6 +141,8 @@ export const workshops: Workshop[] = [
   },
   {
     slug: "one-to-one-breathwork",
+    day: "By arrangement",
+    time: "Mornings and evenings",
     title: "One-to-one breathwork and meditation",
     kind: "one-to-one",
     mode: "online",
@@ -120,7 +155,13 @@ export const workshops: Workshop[] = [
   },
   {
     slug: "day-workshop-breath-and-stillness",
-    title: "Day workshop: breath and stillness",
+    date: "2026-10-18",
+    price: "Rs 2,500 per person",
+    image: {
+      src: "/media/gallery/meditation-05.webp",
+      alt: "People sit cross-legged on coloured mats in a concrete-floored hall, hands resting on their knees and eyes closed, daylight coming through glass doors behind them.",
+    },
+    title: "Breath & Stillness",
     kind: "workshop",
     mode: "in-person",
     summary: "A full day given to breath, held posture and the quiet in between.",
@@ -128,11 +169,17 @@ export const workshops: Workshop[] = [
       "A day-long workshop that slows everything down: extended pranayama, held posture, silence, and time to talk about what came up. Practical arrangements are confirmed with everyone who registers.",
     duration: "One day",
     location: "Bangalore",
-    status: "announced",
+    status: "scheduled",
   },
   {
     slug: "immersion-weekend",
-    title: "Weekend immersion",
+    date: "2026-11-14",
+    price: "Rs 6,800 per person",
+    image: {
+      src: "/media/gallery/meditation-08.webp",
+      alt: "People lie on their backs on mats in a concrete hall, arms at their sides, resting at the close of a practice.",
+    },
+    title: "Weekend Immersion",
     kind: "workshop",
     mode: "in-person",
     summary: "Two days of practice, rest and conversation, away from a screen.",
@@ -140,11 +187,17 @@ export const workshops: Workshop[] = [
       "An immersion for people who want more than an hour a week: morning practice, afternoon study, evening stillness. The group is kept small on purpose.",
     duration: "Two days",
     location: "Bangalore and nearby",
-    status: "announced",
+    status: "scheduled",
   },
   {
     slug: "nature-retreat",
-    title: "Nature retreat",
+    date: "2026-12-05",
+    price: "Rs 14,500 per person, shared room",
+    image: {
+      src: "/media/gallery/community-03.webp",
+      alt: "A group kneels on mats on grass beneath a large spreading tree in a park, heads tilted back in a gentle backbend.",
+    },
+    title: "Nature Retreat",
     kind: "retreat",
     mode: "in-person",
     summary: "Practice outdoors, walking, and food that is not an afterthought.",
@@ -152,7 +205,7 @@ export const workshops: Workshop[] = [
       "A residential retreat away from the city. Practice morning and evening, walking and rest in between, and no attempt to fill every hour. The retreat calendar is set with each venue.",
     duration: "Two to four days",
     location: "Outside Bangalore",
-    status: "announced",
+    status: "scheduled",
   },
   {
     slug: "corporate-wellbeing-programme",

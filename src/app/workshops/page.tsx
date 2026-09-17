@@ -1,19 +1,18 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import JsonLd from "@/components/JsonLd";
 import ClassFinder from "@/components/ClassFinder";
-import { Section, SectionHead, LeafRule, Button, CtaBand } from "@/components/ui";
+import { Section, SectionHead, Button, CtaBand } from "@/components/ui";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { stats } from "@/data/home";
 import {
   workshops,
   pastFormats,
-  kindLabels,
-  modeLabels,
   corporateClients,
+  kindLabels,
+  SAMPLE_SCHEDULE,
 } from "@/data/workshops";
 import { site } from "@/data/site";
 
@@ -25,11 +24,19 @@ import { site } from "@/data/site";
    one-to-one, and the online / offline dropdown. There is no Events tab; this
    page is it.
 
-   The awkward fact this page is built around: NOT ONE date, price, venue or
-   registration link has been supplied. So the page never prints one. Every
-   card says "Dates announced soon" and every CTA goes to the contact page.
-   That is not a placeholder to be prettied up later - it is the honest state,
-   and it stays until she sends the real calendar.
+   Reworked 2026-09-17 into the diary her brief asks for. What stood here was a
+   second copy of the services catalogue - the same corporate, schools, retreats
+   and one-to-one that /mentorship already sets out by audience. Her brief draws
+   the line clearly: Services is WHAT she offers, Workshops is WHEN it runs. The
+   catalogue is linked once now, not repeated.
+
+   The awkward fact this page is built around: NOT ONE real date, price, venue
+   or registration link has ever been supplied. `SAMPLE_SCHEDULE` in
+   src/data/workshops.ts fills the timetable and the cards so the page can be
+   designed and reviewed as a finished thing, and the page prints a visible
+   notice saying so while it is on. Turn it off before this reaches the client;
+   with it off every row falls back to "Dates announced soon" and nothing on
+   the page claims a date. Every CTA goes to the contact page either way.
 
    Registration links carry the slug: /contact?about=<slug>, so an enquiry
    arrives with context. The contact page may not read `about` yet; if it does
@@ -58,8 +65,23 @@ const current = workshops.filter((w) => w.status !== "past");
 const classes = workshops.filter(
   (w) => w.kind === "regular-class" || w.kind === "one-to-one",
 );
-const immersions = workshops.filter((w) => w.kind === "workshop" || w.kind === "retreat");
-const forOrganisations = workshops.filter((w) => w.kind === "corporate" || w.kind === "schools");
+/* The diary: the one-off formats, soonest first. A dated entry outranks an
+   undated one so the page opens on something a visitor can actually put in a
+   calendar, rather than on whichever object happens to be first in the file. */
+const upcoming = workshops
+  .filter((w) => (w.kind === "workshop" || w.kind === "retreat") && w.status !== "past")
+  .sort((a, b) => (a.date ?? "9999").localeCompare(b.date ?? "9999"));
+
+/* Dates are printed two ways from one ISO string, so a card can never disagree
+   with itself. `formatDots` is the reference's own device - 18 . 10 . 2026 on
+   half an em of tracking - and `formatLong` is the line a person reads.
+   en-GB and a fixed UTC timezone: the site is British-spelled throughout, and
+   without the timezone a build machine west of Greenwich renders yesterday. */
+const DOTS = { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "UTC" } as const;
+const LONG = { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "UTC" } as const;
+const formatDots = (iso: string) =>
+  new Intl.DateTimeFormat("en-GB", DOTS).format(new Date(iso)).replace(/\//g, " . ");
+const formatLong = (iso: string) => new Intl.DateTimeFormat("en-GB", LONG).format(new Date(iso));
 
 export default function WorkshopsPage() {
   return (
@@ -147,130 +169,158 @@ export default function WorkshopsPage() {
           </div>
         </Section>
 
-        {/* WORKSHOPS AND IMMERSIONS - deliberately not another row list. A
-            single feature figure and cards with a rule and a number. */}
+        {/* UPCOMING - the calendar the brief actually asks this page for.
+
+            Her brief: "Display upcoming and past workshops, retreat calendar,
+            corporate workshops, school workshops, with description, date,
+            duration, location and registration." That is a diary. What stood
+            here instead was a second copy of the services catalogue - the same
+            one-to-one, corporate, retreats and schools that /mentorship already
+            lists by audience, which is the split her brief draws: Services is
+            WHAT she offers, Workshops is WHEN it happens. The catalogue is gone
+            from this page and linked to once, below.
+
+            The card shape is measured off ouranoyoga.com/events/ (1440px), the
+            only page on the reference that does this job: a full-width picture
+            with the event name over it in Cormorant at 60px/weight 500/3px of
+            tracking, the date under it in Lato at 16px on EIGHT pixels of
+            tracking - half an em, and the thing that makes a date read as a
+            date at a glance - then the description and Where / When / Cost as
+            labelled lines in a column under the picture, and one button.
+
+            Ours keeps that and drops their centring below the image, because
+            everything else on this site sets prose on the left rule. */}
         <Section className="bg-linen py-24 md:py-32">
           <SectionHead
-            eyebrow="Workshops and immersions"
-            title="When an hour is not enough"
-            standfirst="Longer formats, run a few times a year. The retreat calendar is set with each venue, so dates are confirmed with everyone who has registered interest."
+            eyebrow="Upcoming"
+            title="What is coming up"
+            standfirst="Longer formats, run a few times a year. Numbers are small, so a place is held once you have written in."
           />
 
-          <div className="mt-16 grid gap-12 lg:grid-cols-12 lg:gap-16">
-            <div className="lg:col-span-5">
-              <img
-                src="/media/gallery/raji-06.webp"
-                alt="The founder arches into full wheel pose on a mat beneath the trunk of a large tree in a public park."
-                width={1500}
-                height={2666}
-                loading="lazy"
-                decoding="async"
-                data-scrub-scale
-                className="w-full object-cover"
-              />
-            </div>
+          {SAMPLE_SCHEDULE ? (
+            /* Visible on purpose while SAMPLE_SCHEDULE is on. The data file
+               explains the rule: a plausible-looking invented event is the
+               worst kind of lie, because somebody turns up for it. This says
+               so on the page rather than only in a comment. */
+            <p className="label mt-8 inline-block border border-moss/30 px-4 py-3 text-[0.62rem] leading-relaxed text-moss">
+              Sample dates, for layout only &mdash; real dates to be confirmed
+            </p>
+          ) : null}
 
-            <ul className="lg:col-span-7" data-reveal-stagger>
-              {immersions.map((w, i) => (
-                <li key={w.slug} className="border-t border-ink/15 py-10 first:border-t-0 first:pt-0">
-                  <p className="label text-[0.66rem] text-moss">
-                    {String(i + 1).padStart(2, "0")} &middot; {kindLabels[w.kind]}
-                  </p>
-                  <h3 className="mt-4 font-display text-[1.6rem] font-light leading-tight text-moss md:text-[2rem]">
-                    {w.title}
-                  </h3>
-                  <p className="mt-4 max-w-[54ch] leading-relaxed text-ink/80">{w.description}</p>
-                  {/* A fixed grid, not flex-wrap: with wrapping, "Two days"
-                      and "Bangalore and nearby" fitted one row on a phone while
-                      the next card's longer values did not, so the three cards
-                      lost their shared rhythm. */}
-                  <dl className="mt-6 grid grid-cols-2 gap-x-8 gap-y-4 text-sm text-ink/70 sm:grid-cols-3 sm:gap-x-10">
-                    <div>
-                      <dt className="label text-[0.6rem] text-ink/70">Duration</dt>
-                      <dd className="mt-1">{w.duration}</dd>
-                    </div>
-                    <div>
-                      <dt className="label text-[0.6rem] text-ink/70">Location</dt>
-                      <dd className="mt-1">{w.location}</dd>
-                    </div>
-                    <div>
-                      <dt className="label text-[0.6rem] text-ink/70">Dates</dt>
-                      {/* No invented date. See the head of this file. */}
-                      <dd className="mt-1">Announced soon</dd>
-                    </div>
-                  </dl>
-                  {/* The workshop title stays in the accessible name - eleven
-                      links reading "Register interest" would be useless out of
-                      context - but it is not printed, because set in tracked
-                      caps it ran to two shouting lines on a phone. The 44px box
-                      is the tap target; the rule stays tight to the text. */}
-                  <Link
-                    href={`/contact?about=${w.slug}`}
-                    className="mt-5 inline-flex min-h-11 items-center text-moss"
-                  >
-                    <span className="label border-b border-moss/40 pb-1 text-[0.7rem] transition-colors duration-300 hover:border-moss">
-                      Register interest
-                    </span>
-                    <span className="sr-only"> in {w.title}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </Section>
+          <ul className="mt-14 space-y-20 md:space-y-28" data-reveal-stagger>
+            {upcoming.map((w) => (
+              <li key={w.slug}>
+                {w.image ? (
+                  <div className="relative overflow-hidden">
+                    <img
+                      src={w.image.src}
+                      alt={w.image.alt}
+                      width={1500}
+                      height={1000}
+                      loading="lazy"
+                      decoding="async"
+                      className="aspect-[16/10] w-full object-cover md:aspect-[21/9]"
+                    />
+                    {/* A flat scrim at 60%, not a gradient, and the number is
+                        measured rather than chosen. A gradient failed first:
+                        over `meditation-08`, a hall of pale concrete, the type
+                        sat on the light middle of the ramp.
 
-        {/* FOR ORGANISATIONS AND SCHOOLS. Mist ground since 2026-09-15: this was
-            walnut, and a page that runs pale, drops into a dark brown band and
-            comes back is the switching the client asked us to stop (call,
-            00:46:22). Moss 8.19:1 on mist, ink 12.72:1. */}
-        <section className="bg-mist-pale text-ink">
-          <Section className="py-24 md:py-32">
-            <div className="grid gap-14 lg:grid-cols-12 lg:gap-16 lg:items-center">
-              <div className="lg:col-span-6">
-                <SectionHead
-                  eyebrow="For organisations and schools"
-                  title="Work that happens on your premises"
-                  standfirst="Programmes for teams under load, and sessions for children and teaching staff. Run over weeks where that suits, or as a single session for a wellness day."
-                  
-                />
-                <ul className="mt-10 space-y-4" data-reveal-stagger>
-                  {forOrganisations.map((w) => (
-                    <li key={w.slug} className="border-t border-ink/15 pt-4">
-                      <h3 className="font-display text-[1.35rem] font-light leading-tight text-moss">
+                        Sampled off the rendered page at 1440x900, reading the
+                        brightest background pixel beside the type - at 45% the
+                        title came back 3.24:1, which passes for large text but
+                        leaves the 11px date under it short of the 4.5:1 small
+                        text needs. At 60%: title 4.86:1 and 5.16:1, date
+                        5.48:1 and 5.56:1, and 7.01:1 over the outdoor frame.
+
+                        The scrim also means the photographs are left alone
+                        rather than darkened in the file - the palette's light
+                        greens fail 4.5:1 over an uncontrolled image, so the
+                        type carries its own ground. */}
+                    <div className="absolute inset-0 bg-ink/60" />
+                    <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
+                      {/* The format as a label, the NAME as the heading. That
+                          is the reference's own division - its bands read "TEA
+                          CEREMONY", not "Day workshop: tea ceremony" - and it
+                          is why the titles in the data file are short names
+                          now. Set as a sentence, "Day workshop: breath and
+                          stillness" wrapped to four lines at 72px and ran out
+                          of the bottom of a 21:9 band.
+
+                          `.t-h3` rather than `.t-h2`, uppercased and tracked
+                          here to match the masthead treatment at a size that
+                          fits the frame: the reference sets its event names at
+                          60px and `.t-h2` tops out at 72px. */}
+                      <p className="label text-[0.62rem] text-linen/75">{kindLabels[w.kind]}</p>
+                      <h3 className="t-h3 mt-3 max-w-[16ch] uppercase tracking-[0.055em] text-linen">
                         {w.title}
                       </h3>
-                      <p className="mt-2 max-w-[52ch] leading-relaxed text-ink/75">{w.summary}</p>
-                      <p className="label mt-3 text-[0.62rem] text-moss/70">
-                        {w.duration} &middot; {modeLabels[w.mode]}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-                <LeafRule className="mt-12 max-w-[240px]" />
-                <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-                  <Button href="/mentorship" variant="solid">
-                    See the full programmes
-                  </Button>
-                  <Button href={site.whatsapp} variant="ghost" external>
-                    Ask on WhatsApp
-                  </Button>
-                </div>
-              </div>
+                      {w.date ? (
+                        /* 0.5em of tracking, which is the reference's own
+                           number: 16px Lato on 8px of letter-spacing. It is
+                           what makes `18 . 10 . 2026` read as a date at a
+                           glance rather than as a line of small type. */
+                        <p className="label mt-6 text-[0.7rem] tracking-[0.5em] text-linen">
+                          {formatDots(w.date)}
+                        </p>
+                      ) : null}
+                    </div>
+                  </div>
+                ) : null}
 
-              <div className="lg:col-span-6">
-                <img
-                  src="/media/gallery/kids-26.webp"
-                  alt="A student holds crow pose on a mat while an instructor in a mauve t-shirt observes and corrects alignment nearby, large windows and potted plants behind."
-                  width={1440}
-                  height={1440}
-                  loading="lazy"
-                  decoding="async"
-                  className="w-full object-cover"
-                />
-              </div>
+                <div className="mt-8 grid gap-8 lg:grid-cols-12 lg:gap-16">
+                  <p className="leading-[1.9] text-ink/80 lg:col-span-7">{w.description}</p>
+
+                  <dl className="space-y-4 lg:col-span-4 lg:col-start-9">
+                    <div>
+                      <dt className="label text-[0.6rem] text-ink/60">When</dt>
+                      <dd className="mt-1 text-ink/85">
+                        {w.date ? formatLong(w.date) : "Announced soon"}
+                        {w.duration ? ` · ${w.duration}` : ""}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="label text-[0.6rem] text-ink/60">Where</dt>
+                      <dd className="mt-1 text-ink/85">{w.location}</dd>
+                    </div>
+                    {/* Printed only when there is one. No invented fee. */}
+                    {w.price ? (
+                      <div>
+                        <dt className="label text-[0.6rem] text-ink/60">Cost</dt>
+                        <dd className="mt-1 text-ink/85">{w.price}</dd>
+                      </div>
+                    ) : null}
+                    <div className="pt-2">
+                      <Button href={`/contact?about=${w.slug}`} variant="solid">
+                        Hold me a place
+                      </Button>
+                      <span className="sr-only"> at {w.title}</span>
+                    </div>
+                  </dl>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </Section>
+
+        {/* THE CATALOGUE LIVES ON /mentorship. One line and a link, rather than
+            the two sections that used to stand here re-listing corporate work,
+            schools, retreats and one-to-one - all four of which /mentorship
+            already sets out by audience, in the five sections her brief names.
+            Her split, kept: what she offers there, when it runs here. */}
+        <Section className="bg-mist-pale py-20 md:py-24">
+          <div className="grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-16">
+            <p className="t-h3 text-moss lg:col-span-7">
+              Corporate programmes, schools, retreats and one-to-one teaching are set out in
+              full on the mentorship page.
+            </p>
+            <div className="lg:col-span-4 lg:col-start-9">
+              <Button href="/mentorship" variant="ghost">
+                See every offering
+              </Button>
             </div>
-          </Section>
-        </section>
+          </div>
+        </Section>
 
         {/* CORPORATE CREDENTIALS. Moved here from /about on 2026-09-17.
 
