@@ -24,18 +24,34 @@ export default function PageHero({
   title,
   standfirst,
   figure,
+  mark = true,
 }: {
   eyebrow: string;
   title: string;
   standfirst?: string;
+  /* The faint enso behind the masthead. On by default; off where the masthead
+     is too short to hold it.
+
+     A 620px circle cannot fit a 371px block, and `.page-hero` clips with
+     `overflow: hidden`, so on the shortest mastheads the arc is cut by a
+     straight horizontal line. Two ways of moving it were tried on 2026-09-17 -
+     sizing it off the masthead's height, and anchoring its centre to the
+     bottom edge - and both looked worse than the cut. Measured: the circle's
+     bottom sits at 124% of the /about masthead and 149% of /contact.
+
+     So on those two it is simply off, until either the mark gets a shape that
+     survives a short block or those mastheads get taller. /workshops (96%),
+     /community (42%) and /mentorship keep it. */
+  mark?: boolean;
   figure?: { src: string; alt: string; width: number; height: number };
 }) {
   return (
     <section className="page-hero tex tex-paper relative overflow-hidden bg-linen pt-36 md:pt-44">
       {/* Was `.page-hero::after` in globals.css. Moved into EnsoMark so the
           home hero and every inner masthead draw the same mark from one
-          definition - see that file. */}
-      <EnsoMark variant="masthead" />
+          definition - see that file. `mark` turns it off per page; see the
+          prop's note above. */}
+      {mark ? <EnsoMark variant="masthead" /> : null}
       {/* The padding-bottom is load-bearing: `.page-hero` sets a top padding
           only, and this block used to end on a LeafRule whose `mt-14 md:mt-20`
           was the gap. With the rule gone the standfirst sat flush against the

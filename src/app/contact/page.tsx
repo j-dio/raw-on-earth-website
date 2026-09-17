@@ -63,7 +63,10 @@ export default function ContactPage() {
       <main id="main">
         {/* No standfirst. The heading says start with a message and the form is
             directly under it; a paragraph in between only delayed it. */}
-        <PageHero eyebrow="Contact" title="Start with a message" />
+        {/* No enso here: at 371px this is the shortest masthead on the site
+            and a 620px circle cannot fit it without being cut by a straight
+            line. See the `mark` prop in PageHero. */}
+        <PageHero eyebrow="Contact" title="Start with a message" mark={false} />
 
         {/* Short top padding on purpose. This is the page every CTA points at, so
             the form has to be visible without a scroll: the hero rule sits at

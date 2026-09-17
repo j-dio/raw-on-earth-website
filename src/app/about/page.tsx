@@ -42,6 +42,10 @@ export default function AboutPage() {
 
       <main id="main">
         <PageHero
+          /* No enso here: this masthead is too short to hold it without the
+             arc being cut by a straight line. See the `mark` prop in
+             PageHero. */
+          mark={false}
           eyebrow="About"
           title={story.heading}
           standfirst={story.subheading}
