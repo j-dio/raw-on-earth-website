@@ -279,19 +279,36 @@ export default function AboutPage() {
                 </li>
               ))}
           </ul>
-          <ul className="grid gap-px bg-ink/15 pt-px sm:grid-cols-3" data-reveal-stagger>
+          {/* Three across at every width, including a phone. Stacked, the three
+              figures were three full-width rows of mostly empty linen and the
+              set read as a list rather than as one measurement of her practice.
+
+              The phone sizes are measured against the narrowest cell, not
+              guessed. At 390px the Section leaves 342px, so a cell is 113px;
+              at 320px it is 90px. "5,000+" is the widest string and renders
+              about 2.46x its font size in Cormorant, so px-3 (12px each side)
+              leaves 66px at 320px and 1.5rem renders 59px into it. The labels
+              are hers and unshortened: at 0.75rem the widest, "Participants",
+              is 63px and fits one line, and only "Years of experience" wraps -
+              to two, which is what it should do. */}
+          <ul className="grid grid-cols-3 gap-px bg-ink/15 pt-px" data-reveal-stagger>
             {journey
               .filter((item) => item.lead)
               .map((item) => (
-                <li key={item.label} className="flex flex-col gap-3 bg-linen p-8 md:p-10">
+                <li
+                  key={item.label}
+                  className="flex flex-col gap-2 bg-linen px-3 py-6 sm:gap-3 sm:p-8 md:p-10"
+                >
                   <span
-                    className="font-display text-[2.6rem] font-light leading-none text-moss md:text-[3.2rem]"
+                    className="font-display text-[1.5rem] font-light leading-none text-moss sm:text-[2.6rem] md:text-[3.2rem]"
                     data-count={item.count}
                     data-count-suffix={item.suffix}
                   >
                     {item.lead}
                   </span>
-                  <span className="text-[0.95rem] leading-snug text-ink/75">{item.label}</span>
+                  <span className="text-[0.75rem] leading-snug text-ink/75 sm:text-[0.95rem]">
+                    {item.label}
+                  </span>
                 </li>
               ))}
           </ul>
