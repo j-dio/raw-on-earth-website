@@ -144,7 +144,7 @@ function NavDropdown({
                   setOpen(false);
                 }}
                 aria-current={active ? "page" : undefined}
-                className={`label block px-5 py-3 text-[0.7rem] transition-colors duration-200 hover:bg-mist hover:text-moss ${
+                className={`label label-sm block px-5 py-3 transition-colors duration-200 hover:bg-mist hover:text-moss ${
                   active ? "text-moss" : "text-ink"
                 }`}
               >
@@ -323,7 +323,7 @@ export default function SiteHeader() {
               href="/contact"
               tabIndex={showCta ? undefined : -1}
               aria-hidden={!showCta}
-              className="label ml-8 inline-flex whitespace-nowrap rounded-full bg-moss px-6 py-3 text-[0.72rem] text-linen transition-colors duration-300 hover:bg-moss-deep"
+              className="label label-sm ml-8 inline-flex whitespace-nowrap rounded-full bg-moss px-6 py-3 text-linen transition-colors duration-300 hover:bg-moss-deep"
             >
               Book a session
             </Link>
@@ -335,7 +335,7 @@ export default function SiteHeader() {
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-controls="overlay-nav"
-          className={`label -m-3 flex items-center gap-3 p-3 text-[0.74rem] transition-colors xl:hidden ${
+          className={`label label-sm -m-3 flex items-center gap-3 p-3 transition-colors xl:hidden ${
             light ? "text-linen" : "text-ink"
           }`}
         >
@@ -384,14 +384,14 @@ export default function SiteHeader() {
                   {item.href ? (
                     <Link
                       href={item.href}
-                      className="flex items-baseline justify-between gap-4 py-3 font-display text-3xl text-linen transition-colors hover:text-sand"
+                      className="t-h3 flex items-baseline justify-between gap-4 py-3 text-linen transition-colors hover:text-sand"
                       style={rise}
                     >
                       {item.label}
                     </Link>
                   ) : (
                     <p
-                      className="flex items-baseline justify-between gap-4 py-3 font-display text-3xl text-linen"
+                      className="t-h3 flex items-baseline justify-between gap-4 py-3 text-linen"
                       style={rise}
                     >
                       {item.label}
@@ -405,7 +405,7 @@ export default function SiteHeader() {
                           <Link
                             href={child.href}
                             onClick={() => setOpen(false)}
-                            className="label flex min-h-11 items-center text-[0.72rem] text-linen/75 transition-colors hover:text-linen"
+                            className="label label-sm flex min-h-11 items-center text-linen/75 transition-colors hover:text-linen"
                           >
                             {child.label}
                           </Link>
@@ -421,7 +421,7 @@ export default function SiteHeader() {
           <div className="mt-10 flex flex-col gap-4">
             <Link
               href="/contact"
-              className="label inline-flex justify-center rounded-full bg-linen px-7 py-3.5 text-[0.74rem] text-moss"
+              className="label label-sm inline-flex justify-center rounded-full bg-linen px-7 py-3.5 text-moss"
             >
               Book a session
             </Link>

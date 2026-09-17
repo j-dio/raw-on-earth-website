@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Lato, Montserrat } from "next/font/google";
-import Preloader from "@/components/Preloader";
 import Motion from "@/components/Motion";
 import JsonLd, { organisationLd, websiteLd } from "@/components/JsonLd";
 import { site } from "@/data/site";
@@ -82,7 +81,13 @@ export const viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-GB" className={`${cormorant.variable} ${lato.variable} ${montserrat.variable}`}>
+    <html
+      lang="en-GB"
+      /* `is-loaded` ships in the server HTML rather than being added by a
+         script. The hero entry animations are keyed on it and used to wait for
+         the preloader to lift; with the preloader gone they run on first paint. */
+      className={`is-loaded ${cormorant.variable} ${lato.variable} ${montserrat.variable}`}
+    >
       <body>
         {/* First thing in the tab order, hidden until it has focus. Nine nav
             items is a lot to tab past on every page. */}
@@ -93,7 +98,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
 
-        <Preloader />
         <Motion />
         {children}
 

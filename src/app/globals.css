@@ -37,6 +37,23 @@
      12.72:1. The footer is the one exception and stays dark, because a foot is
      an ending, not a switch the reader falls through mid-page. */
   --color-mist: #DDE5D2;
+  /* Ground for full-width bands. Use this, not `mist`, on anything that fills
+     the page width; true `mist` is for small panels.
+
+     Must stay a SOLID colour. `bg-mist/60` looks equivalent and is not: a
+     translucent ground lets the .tex texture through at full strength and
+     renders DARKER, not paler - measured 192 luminance against mist's own 226.
+
+     Why it exists: the landing page runs two grounds, linen (245 luminance) and
+     this (236) - a 9-point step. It used to run linen, sand and mist with steps
+     up to 26 points, which made the page read as a stack of panels. The
+     reference site runs two grounds 10 points apart and no scroll motion at all,
+     so the fix for "it does not feel continuous" is palette and rhythm, not
+     animation.
+
+     Not finished: six `bg-sand/45` bands remain on About, Community, Contact,
+     Mentorship and Workshops. Convert them the next time those pages are open. */
+  --color-mist-pale: #EAEDE0;
   --color-sage: #AEB89C;
   --color-linen: #F7F5EE;
   --color-sand: #E7DFD0;
@@ -175,6 +192,9 @@ body {
   .t-lead {
     font-family: var(--font-display);
     font-size: clamp(1.15rem, 2vw, 1.5rem);
+    /* Keep this. Undeclared it falls back to Cormorant's 400 and the site ends
+       up running two display weights. */
+    font-weight: 300;
     font-style: italic;
     line-height: 1.4;
     text-wrap: balance;
@@ -208,6 +228,21 @@ body {
        out at a glance. */
     letter-spacing: 0.14em;
     font-size: 0.875rem;
+  }
+
+  /* The one smaller label. Use `.label` or `.label-sm`; do not set a label's
+     size inline.
+
+     Reason: `.label` tracks in `em`, so `label text-[0.72rem]` silently retunes
+     the letter-spacing too. The 0.163em here is chosen so this size lands on the
+     same ~2px of tracking the 14px label runs.
+
+     The landing page, the header and the footer follow this. About, Community,
+     Contact, Mentorship and Workshops still set about twenty label sizes inline
+     - convert them the next time those pages are open. */
+  .label-sm {
+    letter-spacing: 0.163em;
+    font-size: 0.75rem;
   }
 }
 
@@ -275,6 +310,45 @@ body {
      effect vanishes. */
   z-index: 2;
   isolation: isolate;
+}
+
+/* Phone order for the wellness block: picture, heading, prose, button, closing
+   line. Desktop is untouched - this whole rule is below lg.
+
+   How: `display: contents` dissolves `.wellness-media`, so its two children (the
+   picture and the closing line) become items of the same flex column as the
+   copy and can be ordered separately. Without it the copy ran first and a phone
+   got 300 words before any picture.
+
+   Side effect, accepted: `.wellness-media` carries `data-reveal`, and a
+   `display: contents` box cannot be transformed, so that one reveal does not
+   play on a phone. The content is simply visible from the start. */
+@media (max-width: 1023.98px) {
+  .wellness-grid {
+    display: flex;
+    flex-direction: column;
+    /* The element carries Tailwind's `items-start`. Under `grid` that only set
+       the block axis and children still filled the column; as a flex column it
+       means `align-items: flex-start`, which shrink-wraps the copy - measured
+       590px of text under a 673px photograph at 768. Stretch puts it back. */
+    align-items: stretch;
+  }
+
+  .wellness-grid > .wellness-copy {
+    order: 2;
+  }
+
+  .wellness-grid > .wellness-media {
+    display: contents;
+  }
+
+  .wellness-grid > .wellness-media > img {
+    order: 1;
+  }
+
+  .wellness-grid > .wellness-media > p {
+    order: 3;
+  }
 }
 
 .wellness > * {
@@ -365,125 +439,15 @@ body {
 }
 
 /* ---------------------------------------------------------------------------
-   PRELOADER
-   The enso paints itself. There is no spinner and no type - the brush ring IS
-   the animation.
-
-   How: the ring art is a PNG with an alpha channel, not a vector, so there is
-   no path to trace with stroke-dashoffset. Instead two masks are composited -
-   the brush art, and a conic gradient wedge - and only where both are opaque
-   does the ring show. Sweeping the wedge's start and end angles reveals the
-   brush progressively around the circle.
-
-   An enso is drawn in one breath, so the loop follows the same shape: the
-   head runs ahead to paint the ring in, then the tail follows to lift it away.
-
-   The exit runs on CSS alone. Preloader.tsx adds `is-done` to cut it short
-   once the page has loaded, but if that script never runs the keyframe below
-   still clears the overlay at 2.2s. Nothing here depends on JS.
-   --------------------------------------------------------------------------- */
-.preloader {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: grid;
-  place-items: center;
-  background: var(--color-linen);
-  animation: preloader-out 700ms cubic-bezier(0.4, 0, 0.2, 1) 2200ms forwards;
-}
-
-.preloader.is-done {
-  animation: preloader-out 700ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes preloader-out {
-  to {
-    opacity: 0;
-    transform: scale(1.04);
-    visibility: hidden;
-    pointer-events: none;
-  }
-}
-
-/* Registered so the angles interpolate. Without @property a custom property
-   animates as a discrete swap and the ring would jump rather than sweep.
-   The initial values are the FULLY DRAWN state on purpose: where @property is
-   unsupported the keyframes do nothing and the result is a complete, static
-   enso instead of a broken one. */
-@property --enso-head {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 360deg;
-}
-
-@property --enso-tail {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
-}
-
-.preloader-enso {
-  width: clamp(86px, 22vw, 116px);
-  aspect-ratio: 1;
-  background-color: var(--color-moss);
-
-  /* Soft ramps at both ends, not hard stops. A hard stop slices the brush
-     flat across its width and reads as a crop; ramping the mask over ~16deg
-     lets the stroke fade in and out along its own direction, the way a brush
-     lifts. When head and tail are closer than the ramps, CSS clamps the
-     out-of-order stops for us and the arc simply stays faint. */
-  --enso-wedge: conic-gradient(
-    from 84deg,
-    transparent 0 var(--enso-tail),
-    #000 calc(var(--enso-tail) + 16deg),
-    #000 calc(var(--enso-head) - 16deg),
-    transparent var(--enso-head) 360deg
-  );
-
-  -webkit-mask-image: url("/brand/enso-ring.png"), var(--enso-wedge);
-  -webkit-mask-size: contain, 100% 100%;
-  -webkit-mask-position: center, center;
-  -webkit-mask-repeat: no-repeat, no-repeat;
-  -webkit-mask-composite: source-in;
-
-  mask-image: url("/brand/enso-ring.png"), var(--enso-wedge);
-  mask-size: contain, 100% 100%;
-  mask-position: center, center;
-  mask-repeat: no-repeat, no-repeat;
-  mask-composite: intersect;
-
-  animation: enso-breath 2600ms cubic-bezier(0.65, 0, 0.35, 1) infinite;
-}
-
-@keyframes enso-breath {
-  0% {
-    --enso-head: 0deg;
-    --enso-tail: 0deg;
-  }
-  48% {
-    --enso-head: 360deg;
-    --enso-tail: 0deg;
-  }
-  56% {
-    --enso-head: 360deg;
-    --enso-tail: 0deg;
-  }
-  100% {
-    --enso-head: 360deg;
-    --enso-tail: 360deg;
-  }
-}
-
-/* ---------------------------------------------------------------------------
    HERO ENTRY
-   Plays once, when the preloader lifts. Preloader.tsx puts `is-loaded` on
-   <html>; nothing here runs before that, so the choreography is never spent
-   behind the overlay.
+   Plays once, on first paint. `is-loaded` is in the server HTML (layout.tsx).
+   It used to be added by the preloader when the overlay lifted; the preloader
+   is gone, so these run immediately instead of after a gate.
 
    Resting state is the VISIBLE state, and every rule below is scoped to
-   `.is-loaded`. If the script never runs, the hero renders complete and
-   static rather than stuck mid-animation. Same principle as the loader's
-   CSS exit: an animation must never be the thing that makes content appear.
+   `.is-loaded`. If the class is ever dropped, the hero renders complete and
+   static rather than stuck mid-animation. An animation must never be the thing
+   that makes content appear.
 
    Entry transforms live on WRAPPERS, never on the scrubbed layers. The scroll
    scrub already owns transform/opacity on .hero-atmos, .hero-figure and
@@ -534,9 +498,29 @@ body {
   to { opacity: 1; transform: none; clip-path: inset(0 0 -18% 0); }
 }
 
-/* The hero enso paints itself in one pass, picking up where the loader's ring
-   left off. Same two-layer mask as .preloader-enso - see that block for why a
-   conic wedge is used instead of stroke-dashoffset. */
+/* The hero enso paints itself in one pass.
+
+   The ring art is a PNG with an alpha channel, not a vector, so there is no path
+   to trace with stroke-dashoffset. Two masks are composited instead - the brush
+   art and a conic wedge - and the ring shows only where both are opaque, so
+   sweeping the wedge's angles reveals the brush around the circle.
+
+   The angles are registered with @property so they interpolate; without it a
+   custom property animates as a discrete swap and the ring jumps. The initial
+   values are the FULLY DRAWN state on purpose: where @property is unsupported
+   the keyframes do nothing and the result is a complete static enso. */
+@property --enso-head {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 360deg;
+}
+
+@property --enso-tail {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
 .is-loaded .hero-ring {
   --enso-wedge: conic-gradient(
     from 84deg,
@@ -669,7 +653,16 @@ body {
    enough ground, and keeps the gradient's midtones off the text. Verified
    against the rendered pixels, not assumed. */
 @media (min-width: 1024px) {
-  /* Desktop is close enough in aspect to fill the frame properly. */
+  /* Desktop fills the frame with `cover`.
+
+     Do not try to nudge this sideways with background-position. The scene file
+     is 1024x1024, so cover renders it at exactly the viewport width on any
+     landscape screen - there is no horizontal overflow to move into, and
+     background-position-x does nothing. Sizing it above 100% does move it, but
+     it scales her up with it (tried at 118%, rejected).
+
+     To move the picture sideways: re-export the scene with its cream ground
+     extended on the right. */
   .hero-atmos {
     background: url("/hero/hero-scene.jpg") center / cover no-repeat;
     -webkit-mask-image: none;
@@ -699,7 +692,6 @@ body {
 /* Calm site: motion is a courtesy, never a requirement. */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .preloader { display: none; }
   .is-loaded .hero-in,
   .is-loaded .hero-in-soft,
   .is-loaded .hero-in-figure,
@@ -788,6 +780,47 @@ body {
    `isolation: isolate` keeps the blend inside its own section - without it
    soft-light reaches through to whatever is painted behind the section.
    --------------------------------------------------------------------------- */
+.bg-mist-pale {
+  background-color: var(--color-mist-pale);
+}
+
+/* The five practice names. From sm up they are a wrapped row of small caps.
+
+   On a phone that row is the problem: the names run from 4 to 20 characters, so
+   wrapped they gave a ragged 2/2/1 block, stacked they were five rows deep, and
+   two columns broke two of them across lines. Below sm they are set as running
+   text instead - body face, sentence spacing, commas and a final "and" - so the
+   line breaks belong to the sentence rather than to the layout. Two lines.
+
+   It also stops the row reading as a tab bar, which it never was: these names
+   are labels, not links. */
+@media (max-width: 639.98px) {
+  .pillar-row {
+    line-height: 2;
+  }
+
+  /* The face has to be set on the li, not the ul: `.label` sets font-family in
+     the components layer and it beats an inherited value. */
+  .pillar-row > li {
+    display: inline;
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 1rem;
+    letter-spacing: normal;
+    text-transform: none;
+  }
+
+  .pillar-row > li + li::before {
+    content: ", ";
+  }
+
+  /* `:not(:first-child)` matters: `li:last-child` alone also matches a list of
+     one, which would render " and Yoga". */
+  .pillar-row > li:not(:first-child):last-child::before {
+    content: " and ";
+  }
+}
+
 .tex {
   position: relative;
   isolation: isolate;
@@ -917,8 +950,7 @@ body {
 
 /* ---------------------------------------------------------------------------
    INNER PAGE MASTHEAD
-   Ungated by `is-loaded`, unlike the home hero: the preloader only runs on
-   Home, so there is no overlay for these to play behind.
+   Ungated by `is-loaded`, unlike the home hero.
    --------------------------------------------------------------------------- */
 .page-hero-in {
   animation: hero-rise 1000ms cubic-bezier(0.22, 1, 0.36, 1) both;

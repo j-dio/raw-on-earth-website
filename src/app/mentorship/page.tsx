@@ -237,7 +237,7 @@ export default function MentorshipPage() {
         {/* Mist, not moss. A whole section never takes dark green as its ground
             any more - the client found the page dropping in and out of dark green
             confusing (call, 00:46:22). Moss 8.19:1 on mist. */}
-        <section id={corporate.slug} className="bg-mist text-ink">
+        <section id={corporate.slug} className="bg-mist-pale text-ink">
           <Section className="py-24 md:py-32">
             <SectionHead
               eyebrow={corporate.eyebrow}
@@ -299,7 +299,7 @@ export default function MentorshipPage() {
 
           <Section className="mt-16 md:mt-20">
             <SectionHead eyebrow={retreats.eyebrow} title={retreats.title} standfirst={retreats.intro} />
-            <LeafRule className="mt-14" />
+            <LeafRule className="mt-14 max-w-[240px]" />
 
             <div className="mt-14 space-y-14" data-reveal-stagger>
               {retreats.services.map((service) => (
