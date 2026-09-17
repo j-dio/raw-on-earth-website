@@ -91,12 +91,40 @@ export default function WorkshopsPage() {
         <PageHero
           eyebrow="Workshops"
           title="Classes, workshops and immersions"
-          standfirst="An hour a week, a day given over to breath, or a weekend away from a screen. Same practice, different amounts of time."
+          /* Rewritten 2026-09-17 to the reference's voice. It read "An hour a
+             week, a day given over to breath, or a weekend away from a screen.
+             Same practice, different amounts of time." - a riddle with no verb
+             and no reader in it.
+
+             ouranoyoga.com opens its own events page "Join our regular events
+             where you can explore new styles... Immerse yourself in our
+             masterclasses. Treat yourself to our nourishing day retreats." So:
+             a verb first, "you" in the sentence, and no word a tired person has
+             to decode. */
+          standfirst="Join a weekly class, spend a day on breath and stillness, or come away for a weekend. However much time you have, the teaching is the same."
+          /* `workshops.webp` is now a 21:9 crop of `kids-30`, replacing the
+             monk conducting a blessing ceremony - a real photograph from her
+             practice, but not a class, and this page is the one that has to
+             show what turning up looks like.
+
+             Crop is `1500:643:0:90` of the 1500x1000 original, chosen by
+             looking: at y=20 the frame is mostly sky, at y=160 her forehead is
+             cut. At 90 her whole face is in and the children read clearly.
+             1500px wide against the other heroes' 2400, so it upscales about
+             1.13x at the 1700px container - visible only if someone goes
+             looking. Ask her for the full-resolution original.
+
+             GATE BEFORE LAUNCH: this frame shows identifiable children's
+             faces, and "whether the 27 children's faces may be published" is
+             still on the open list in docs/CLIENT-BRIEF.md. It is fine on a
+             dev server; it is not fine on a live domain until she answers.
+             If the answer is no, swap this back to a frame without children -
+             `/media/hero/gallery.webp` is a class mid-session and is unused. */
           figure={{
             src: "/media/hero/workshops.webp",
-            alt: "A monk in maroon robes shares a blessing ritual with a man and a woman over a small bowl, in a bright room with yoga mats stacked in the background.",
-            width: 2400,
-            height: 1028,
+            alt: "The founder leans over a row of school children folding forward on mats in an outdoor yard, a wire fence and trees behind them.",
+            width: 1500,
+            height: 643,
           }}
         />
 
@@ -108,7 +136,7 @@ export default function WorkshopsPage() {
               <SectionHead
                 eyebrow="What to expect"
                 title="Small groups, watched closely"
-                standfirst="Nothing here is a video you follow along with. Numbers are kept low enough that alignment is corrected rather than assumed, and a session ends with rest, not with a rush for the door."
+                standfirst="This is not a video you follow along with. Numbers are kept low, so your alignment is watched and corrected, and every session ends with rest rather than a rush for the door."
               />
               <div className="mt-10 max-w-[58ch] space-y-6 leading-[1.75] text-ink/80">
                 <p>
@@ -142,15 +170,30 @@ export default function WorkshopsPage() {
             </div>
 
             <div className="lg:col-span-5">
+              {/* The heading beside this says "Small groups, watched closely",
+                  and the frame here used to be `teaching-02` - one teacher
+                  adjusting ONE student under a tree. Accurate alt text, wrong
+                  picture: the section's whole claim is that there is a group
+                  and it is small, and the photograph showed neither.
+
+                  `teaching-01` is the claim: five people, the teacher on her
+                  own mat at the front, everyone in frame.
+
+                  `aspect-[3/4]` rather than the old `h-full`. Stretched to the
+                  height of the copy beside it the column runs about 0.35:1
+                  against a 0.56:1 source, so `object-cover` trims 550px of
+                  WIDTH - and the width is where the group is. A 3/4 box crops
+                  height instead, keeps every student, and 25% holds it high
+                  enough to drop the empty floor at the bottom of the frame. */}
               <img
-                src="/media/gallery/teaching-02.webp"
-                alt="A teacher adjusts a student's hips during a wheel pose on a mat beneath a large tree in a park."
+                src="/media/gallery/teaching-01.webp"
+                alt="A teacher sits cross-legged on her mat at the front of a bright studio, leading four students who sit in meditation on mats behind her."
                 width={1500}
                 height={2666}
                 loading="lazy"
                 decoding="async"
                 data-parallax="40"
-                className="h-full w-full object-cover"
+                className="aspect-[3/4] w-full object-cover object-[50%_25%]"
               />
             </div>
           </div>
@@ -162,7 +205,7 @@ export default function WorkshopsPage() {
           <SectionHead
             eyebrow="Regular classes and one-to-one"
             title="Find a class"
-            standfirst="Weekly group classes and private sessions, taught online and in JP Nagar. Filter by how you want to attend. The longer formats, and the work run inside organisations, are further down the page."
+            standfirst="Weekly group classes and private sessions, online and in JP Nagar. Choose how you want to attend, and write in for a place."
           />
           <div className="mt-14" data-reveal>
             <ClassFinder items={classes} />
@@ -194,7 +237,7 @@ export default function WorkshopsPage() {
           <SectionHead
             eyebrow="Upcoming"
             title="What is coming up"
-            standfirst="Longer formats, run a few times a year. Numbers are small, so a place is held once you have written in."
+            standfirst="Take a whole day, or come away for a weekend. These run a few times a year and numbers are small, so your place is held as soon as you write in."
           />
 
           {SAMPLE_SCHEDULE ? (
