@@ -91,6 +91,26 @@ export const headerNav: HeaderNavItem[] = [
   {
     label: "Yoga & Meditation",
     children: [
+      /* Workshops moved INTO the group on 2026-09-17, and that is what makes
+         the group's label true. Read off the reference's own dropdown the same
+         day: "Yoga & Meditation" there opens onto Timetable, Prices, Private
+         Classes, Teachers and Gift Voucher - the class practicalities,
+         everything you need to turn up. Ours opened onto Mentorship, Community
+         and Gallery, so a visitor hunting for a class clicked the yoga menu and
+         found a photo gallery, while the classes sat behind a sibling item.
+
+         Renaming the group was the other option and it was the worse one: it
+         would have made the label honest about a menu still missing the main
+         thing.
+
+         It also takes the desktop row to three items, which is the direction
+         she asked for twice - "rather than having so many" (00:39:48) and "as
+         plain as possible like orano" (00:27:55).
+
+         NOT copied from the reference: it keeps Mentoring and Events as
+         top-level items rather than children. Her call asked for the opposite,
+         and where the call and the reference disagree the call wins. */
+      { label: "Classes & Workshops", href: "/workshops" },
       { label: "Mentorship", href: "/mentorship" },
       { label: "Community", href: "/community" },
       /* Gallery belongs in this group, not the top row - the client asked for
@@ -99,7 +119,6 @@ export const headerNav: HeaderNavItem[] = [
       { label: "Gallery", href: "/gallery" },
     ],
   },
-  { label: "Workshops", href: "/workshops" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
