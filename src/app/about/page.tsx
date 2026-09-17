@@ -65,14 +65,16 @@ export default function AboutPage() {
             as the H1 above it, and the portrait is the larger element, which is
             the way round ouranoyoga.com sets its own bio row - copy 423px,
             picture 666px of a 1152px row (measured on /mentoring/, 1440px). */}
-        {/* pt-10/12, not the full 24/32 beat. PageHero's own block already
-            pays `pb-14 md:pb-20` (56/80px), and this section carries the same
-            linen, so there is no seam between them for a second full beat to
-            mark - it just opened 208px of empty ground between her subheading
-            and the first line of her story (measured, 1440x900). 40+56 and
-            48+80 put the pair back on the site's one padding beat, 96/128.
-            The bottom keeps the full beat: below it the ground changes. */}
-        <Section className="bg-linen pt-10 pb-24 md:pt-12 md:pb-32">
+        {/* No top padding at all, and that is deliberate. PageHero's own block
+            already pays `pb-14 md:pb-20` (56/80px), and this section carries
+            the same linen, so any top padding here is a second gap marking a
+            seam that does not exist. The full 24/32 beat left 208px of empty
+            ground between her subheading and the first line of her story;
+            halving it to the beat (128px) still read as a hole. The masthead's
+            56/80 alone is the gap.
+
+            The bottom keeps the full beat: below it the ground does change. */}
+        <Section className="bg-linen pt-0 pb-24 md:pt-0 md:pb-32">
           <div className="grid gap-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-16">
             <div className="lg:col-start-1 lg:row-start-1" data-reveal>
               {/* Verbatim client copy, stored in src/data/about.ts. Rendered
