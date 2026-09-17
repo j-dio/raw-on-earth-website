@@ -14,10 +14,10 @@ import { story, belief, journey } from "@/data/about";
      2. Belief     the brief indents this quote away from the running copy, so
                    it gets a panel rather than a paragraph.
      3. Journey    the brief's "Journey" list, seven items.
-     4. Photo band three frames, no captions.
 
-   The corporate client list used to sit between 3 and 4. It moved to
-   /workshops on 2026-09-17 - see the comment where it stood.
+   Two things used to sit after 3 and are both gone, on 2026-09-17: the
+   corporate client list, which moved to /workshops, and a three-frame photo
+   band. See the comments where each stood.
 
    Grounds: linen -> mist -> sand -> linen, closing on the CtaBand. One mild
    green, not a page that keeps falling into a dark panel (client, 00:46:22
@@ -135,10 +135,6 @@ export default function AboutPage() {
                     of `raji-10.webp`. 83KB against the original's 128KB. Do not
                     add a filter to lift it further - the frame is hers, and the
                     gain here is framing, not grading.
-
-                    raji-10 was also the middle frame of the photo band at the
-                    foot of this page. That slot now runs raji-09, because the
-                    same picture twice on one page is worse than either choice.
 
                     The file is already 4:5, so `object-cover` has nothing to
                     trim and the `object-position` that framed the old one is
@@ -340,53 +336,17 @@ export default function AboutPage() {
             room that page has. See the "For organisations and schools" section
             in src/app/workshops/page.tsx. */}
 
-        {/* A breath between the copy and the CtaBand. Three frames, three
-            different ratios, staggered so the row reads as three moments rather
-            than a grid of thumbnails. No captions: the alt text carries the
-            description for a screen reader and a caption under each would turn
-            the band into a gallery, which Community already is. */}
-        <Section wide className="bg-linen pt-20 pb-24 md:pt-24 md:pb-32">
-          {/* A9 - all three are 2:3 park frames with a quarter of blurred
-              canopy above the head and a strip of grass below. Each is cropped
-              tighter and held low (object-position Y above 50%) because the
-              dead space is mostly at the top; the Y values are per frame,
-              measured off where the subject actually sits in each one. */}
-          <ul className="grid gap-4 sm:grid-cols-3 md:gap-6" data-reveal-stagger>
-            <li>
-              <img
-                src="/media/gallery/raji-08.webp"
-                width={1500}
-                height={2246}
-                loading="lazy"
-                decoding="async"
-                alt="The founder sits cross-legged with hands in prayer position, eyes closed, backlit by golden-hour light in a park."
-                className="aspect-[4/5] w-full object-cover object-[50%_80%] sm:mt-10"
-              />
-            </li>
-            <li>
-              <img
-                src="/media/gallery/raji-09.webp"
-                width={1500}
-                height={2246}
-                loading="lazy"
-                decoding="async"
-                alt="The founder sits cross-legged on a mat in a park, head tilted slightly down, hands joined at her chest in late afternoon light."
-                className="aspect-square w-full object-cover object-[50%_57%]"
-              />
-            </li>
-            <li>
-              <img
-                src="/media/gallery/raji-24.webp"
-                width={1500}
-                height={2246}
-                loading="lazy"
-                decoding="async"
-                alt="The founder sits in meditation with palms joined at her chest, eyes closed, on a mat in soft evening park light."
-                className="aspect-[4/5] w-full object-cover object-[50%_62%] sm:mt-16"
-              />
-            </li>
-          </ul>
-        </Section>
+        {/* The three-frame photo band stood here and is removed, 2026-09-17.
+
+            It ran raji-08, raji-09 and raji-24 at three ratios with a stagger.
+            All three were the same seated moment from the same golden-hour
+            shoot, and after the story portrait changed to raji-10 the page was
+            showing four near-identical frames of one pose. A breath before the
+            closing band is worth having; four versions of it is a gallery, and
+            Community already is one.
+
+            The page now closes on her strapline in the belief panel and then
+            the CtaBand, which is the shape the rest of the site uses. */}
 
         {/* No `body`: CtaBand's default eyebrow and title are already the
             client's own closing line, and the strapline has just been said at
