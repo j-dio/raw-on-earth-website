@@ -51,10 +51,6 @@ const faqs: { q: string; a: string }[] = [
     q: "What should I bring to a class?",
     a: "Loose clothes you can move in, water, and a mat if you own one. If you do not, mention it when you write and it will be sorted before you arrive.",
   },
-  {
-    q: "How quickly will I hear back?",
-    a: "Every enquiry is read by Rajalakshmi herself, so a reply usually takes a couple of days rather than a couple of minutes. WhatsApp reaches her faster than email if something is time-sensitive.",
-  },
 ];
 
 /* Her details, in the order a person actually reaches for them. The footer
