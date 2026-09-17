@@ -96,56 +96,32 @@ export default function WorkshopsPage() {
              clauses, one sentence, every one of them ending on what it does
              FOR you, and not a verb aimed at you. */
           standfirst="Classes to steady you, workshops to take you deeper, and retreats to take you away."
-          /* `workshops.webp` is a 21:9 crop of `kids-32` - her crouched among
-             a yard of school children, steadying one of them.
+          /* NO masthead figure, and that is the point rather than an
+             omission.
 
-             It replaced a monk conducting a blessing ceremony: a real
-             photograph from her practice, but not a class, on the one page
-             that has to show what turning up looks like.
+             The reference's own events page carries none: heading, a short
+             intro, a rule, then straight into the event bands, and every
+             photograph on it belongs to an event. This page had four big
+             pictures and the top one was doing the same job as the three
+             below it - a wide band of people on mats - so it competed with
+             the events instead of introducing them. /about and /contact made
+             the same call already.
 
-             kids-30 was tried first and did not survive the band. It is a 3:2
-             frame of her standing, so at 21:9 she filled the whole height and
-             the children were cut away below - "doesn't show the image as a
-             whole", which is exactly right. kids-32 is the same session shot
-             WIDE: the scene spreads horizontally, so a 21:9 window holds all
-             of it and nothing has to be invented to make it fit.
+             The type stays. The H1 lives in PageHero and a page without one
+             has no top-level heading at all; the eyebrow is the visible half
+             of the trail `breadcrumbLd` emits; and every inner page opening
+             the same way is what makes six pages read as one site.
 
-             Cropped to 16:9 (1500:844:0:80), NOT the 21:9 the other heroes
-             use, and the reason is the small screens rather than the large
-             one. PageHero runs a 16:9 box below `lg` and 21:9 above it, so a
-             21:9 master hits `object-cover` on a phone and it trims the SIDES:
-             measured at 390px the band shows 449px of a 1500px frame - 70% of
-             the picture gone, and on this photograph the sides are where the
-             children are. Tablet lost 34% the same way.
-
-             A 16:9 master inverts that. The phone box is 16:9 exactly, so
-             nothing is cropped at all; desktop trims height instead, 27% at
-             1440 and 32% at 1920, out of sky and empty mat. y=80 keeps her
-             head and the front row.
-
-             (CLAUDE.md says the /media/hero files are pre-cropped to 21:9 "so
-             object-cover only has to trim the sides on a phone rather than
-             discard two thirds of the picture". Measured, it discards two
-             thirds anyway. That is true of every page and wants looking at
-             properly, not just here.)
-
-             1500px wide against the other heroes' 2400, so it upscales about
-             1.13x at the 1700px container. Ask her for the full-resolution
-             original.
-
-             GATE BEFORE LAUNCH: this frame shows identifiable children's
-             faces, and "whether the 27 children's faces may be published" is
-             still on the open list in docs/CLIENT-BRIEF.md. It is fine on a
-             dev server; it is not fine on a live domain until she answers.
-             If the answer is no, `/media/hero/gallery.webp` is a class
-             mid-session and is unused. */
-          figure={{
-            src: "/media/hero/workshops.webp",
-            alt: "The founder crouches among a yard full of school children, steadying one of them in a seated forward fold, a wire fence and trees behind.",
-            width: 1500,
-            height: 844,
-          }}
+             The frame that stood here was a 16:9 crop of `kids-32`, her
+             teaching a yard of school children. It is still at
+             /media/hero/workshops.webp, and it was also the only photograph
+             of children on this page - so the open question in
+             CLIENT-BRIEF.md about publishing their faces no longer gates
+             this page. Read the git history before putting any masthead
+             picture back: the 21:9 masters this folder holds lose two thirds
+             of their width to `object-cover` on a phone. */
         />
+
 
         {/* The "What you will practise" section stood here and is removed.
 
