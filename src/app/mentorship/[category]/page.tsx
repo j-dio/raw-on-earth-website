@@ -155,17 +155,34 @@ const SERVICE_IMAGES: Record<
   "emotional-resilience":
     { src: "/media/gallery/community-10.webp", alt: "A monk in maroon robes shares a blessing ritual with a man and a woman over a small bowl." },
 
-  /* Counselling — intimate setting, monks and guests in quiet conversation */
+  /* Counselling — changed 2026-09-18. It ran the same photograph as
+     Immersion Retreat, a posed group beside a Buddha statue, which showed
+     neither a conversation nor one person. This is the only frame in the
+     library of one teacher working with one adult.
+
+     Cropped from the clip-04 video poster into its own still: the poster is
+     1080x1920, so the 3:4 slot left both figures small under a wide band of
+     roof and floor. A separate file because /media/video/clip-04.webp is the
+     poster for a clip that still plays elsewhere. */
   "counselling":
-    { src: "/media/gallery/community-06.webp", alt: "Two Buddhist monks in maroon robes stand with two guests beside a golden Buddha statue in a bright, minimal room." },
+    { src: "/media/gallery/teaching-10.webp", alt: "A teacher explains a posture with her hands to a single student standing on a mat in an open brick hall." },
 
   /* Weekend Retreat — community gathered together in shared practice */
   "weekend-retreat":
     { src: "/media/gallery/community-03.webp", alt: "A close gathering of practitioners seated together outdoors in shared practice and reflection." },
 
-  /* Immersion Retreat — intimate group in a moment of ritual and connection */
+  /* Immersion Retreat — recropped 2026-09-18.
+
+     community-06 is 1500x2666, so a 3:4 slot cut 666px off it and the
+     centred window it left was about half bare floor, with a mobile phone
+     lying in the middle of it. This is a 880x1173 window on the four
+     figures instead. The Buddha statue is outside it, so the alt text no
+     longer claims it.
+
+     A separate file rather than a recrop in place: community-06.webp is
+     also a gallery entry and a thumbnail on /community. */
   "immersion-retreat":
-    { src: "/media/gallery/community-06.webp", alt: "Two Buddhist monks in maroon robes stand with two guests beside a golden Buddha statue in a bright, minimal room." },
+    { src: "/media/gallery/community-06-tight.webp", alt: "Two Buddhist monks in maroon robes stand beside two guests in a bright, minimal room." },
 
   /* Bespoke Retreat — a large crowd gathered, collective energy */
   "bespoke-retreat":
