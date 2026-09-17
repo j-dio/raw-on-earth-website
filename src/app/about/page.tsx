@@ -174,68 +174,87 @@ export default function AboutPage() {
             (00:46:22) and asked for "just a mild green tone" (00:47:13), so
             the ground is mist and every child that assumed a dark ground was
             re-toned with it. */}
-        <section className="relative overflow-hidden bg-mist-pale py-24 md:py-32">
-          {/* One centred column, one width, and that is the whole fix.
+        {/* BELIEF. On the page's own left rule, not centred.
 
-              Retyped 2026-09-17. Measured at 1440x900, this panel stacked five
-              treatments at four widths, all centred: a 47-character sentence in
-              12.8px tracked Montserrat caps across 688px, a 48px italic
-              Cormorant quote across 688px, two 16px Lato paragraphs across
-              403px, then a 32px italic Cormorant line across 403px. Two italic
-              Cormorant sizes in one block is the reason it was hard to tell
-              which line was the statement, and centred running body on a 403px
-              measure is why the middle of it read as ragged.
+            Retyped 2026-09-17. Measured at 1440x900, this panel had stacked
+            five treatments at four widths, all centred: a 47-character sentence
+            in 12.8px tracked Montserrat caps across 688px, a 48px italic
+            Cormorant quote across 688px, two 16px Lato paragraphs across 403px,
+            then a 32px italic Cormorant line across 403px. Two italic Cormorant
+            sizes in one block is why it was hard to tell which line was the
+            statement, and the body was running `leading-relaxed` (1.625) rather
+            than the site's own 2.0.
 
-              What the reference does instead, measured on its own centred
-              statement: ONE block, 38px Cormorant, weight 300, 1px of tracking,
-              NOT italic, on a 645px measure, with nothing stacked around it.
-              The client's instruction is the same in words - "let's not have
-              too many elements" (00:30:54), "as plain as possible like orano"
-              (00:27:55).
+            Centring was the deeper fault. The reference centres a statement
+            only when the statement stands ALONE - measured on its home page,
+            one block, 38px Cormorant, weight 300, 1px tracking, not italic, on
+            645px, with nothing stacked around it. Where a display line sits
+            WITH prose it left-aligns the whole thing: /mentoring/ runs heading,
+            standfirst and body all left on one 365px rule.
 
-              So: `.t-statement` for the belief, which is the role written from
-              that measurement and is a held sentence rather than a heading.
-              `.t-lead` for her strapline, which keeps it display and italic but
-              puts it clearly below the statement instead of beside it. `.t-body`
-              for the prose between them, at the site's own 2.0 leading rather
-              than the `leading-relaxed` 1.625 this block had been running. The
-              lead-in keeps her words and loses the tracked caps: it ends in a
-              colon and runs into the quote, so it is one sentence, not a label.
+            Ours is the second shape and cannot be the first: "Raw On Earth grew
+            from THAT BELIEF" points back at the quote, so the prose has to
+            follow it. The band therefore uses the same `Section` container the
+            story above does, and every line in both blocks starts on one rule -
+            208px at 1440, 128 at 1280, 40 on a tablet.
 
-              32rem is the single column everything sits in - the same 512px the
-              story portrait is capped at above. */}
-          <div className="relative px-6 md:px-10">
-            <div className="mx-auto max-w-[32rem] text-center">
-              <figure data-reveal>
-                {/* verbatim client copy */}
-                <figcaption className="text-ink/60">{belief.intro}</figcaption>
-                {/* verbatim client copy */}
-                <blockquote data-lines className="t-statement mt-6 text-moss">
-                  {belief.quote}
-                </blockquote>
-              </figure>
+            NOT the same rule as the H1 above them, and that is a separate
+            fault: PageHero runs `max-w-[1400px] px-6 md:px-10` while `Section`
+            runs `max-w-[1280px] ... lg:px-20 xl:px-32`, so from `lg` up the
+            masthead sits 148px further left than the page under it (60 against
+            208 at 1440). They agree below `lg`. That gap is in every inner
+            page, not just this one, so it wants fixing in the two components
+            rather than here.
 
-              {/* Her closing lines, which follow the belief in the source and
-                  read as its consequence ("Raw On Earth grew from that
-                  belief"). The last of the three is her strapline and the
-                  footer carries it too, so it stays display type; the two
-                  before it are prose and are now set as prose. */}
-              <div className="mt-14 space-y-6" data-reveal>
-                {/* verbatim client copy */}
-                {story.closing.slice(0, -1).map((line) => (
-                  <p key={line.slice(0, 32)} className="t-body mx-auto text-ink/75">
-                    {line}
-                  </p>
-                ))}
-              </div>
+            Roles, all of them already in the scale: `.t-statement` for the
+            belief (written from that 38px measurement, and a held sentence
+            rather than a heading), `.t-body` for her prose, `.t-lead` for the
+            strapline - display and italic, but clearly below the statement
+            instead of beside it. The lead-in keeps her words and loses the
+            tracked caps: it ends in a colon and runs into the quote, so it is a
+            sentence, not a label.
 
-              {/* verbatim client copy */}
-              <p className="t-lead mt-14 text-moss" data-reveal>
-                {story.closing[story.closing.length - 1]}
+            `max-w-[19.6em]` on the blockquote is measured, and em not rem so it
+            tracks the clamp. At 38px the quote's first sentence renders 728px
+            and the same run plus "It" renders 765px, so any measure inside that
+            37px window breaks the line on the full stop - which is the break
+            the sentence wants and the one `text-wrap: balance` could never
+            find, because balance optimises for even lines. 19.6em is 745px at
+            38px and holds the same ratio at every step of the clamp. Hence also
+            `[text-wrap:wrap]`, which turns the scale's balance off here. */}
+        <Section className="relative overflow-hidden bg-mist-pale py-24 md:py-32">
+          <figure data-reveal>
+            {/* verbatim client copy */}
+            <figcaption className="text-ink/60">{belief.intro}</figcaption>
+            {/* verbatim client copy */}
+            <blockquote
+              data-lines
+              className="t-statement mt-6 max-w-[19.6em] [text-wrap:wrap] text-moss"
+            >
+              {belief.quote}
+            </blockquote>
+          </figure>
+
+          {/* Her closing lines, which follow the belief in the source and read
+              as its consequence - "Raw On Earth grew from THAT BELIEF" points
+              back at the quote, so this prose cannot be moved above it and the
+              block has to stack rather than run beside it. The last of the
+              three is her strapline, which the footer carries too, so it stays
+              display type; the two before it are prose and are set as prose. */}
+          <div className="mt-14 max-w-[55ch] space-y-6" data-reveal>
+            {/* verbatim client copy */}
+            {story.closing.slice(0, -1).map((line) => (
+              <p key={line.slice(0, 32)} className="t-body text-ink/75">
+                {line}
               </p>
-            </div>
+            ))}
           </div>
-        </section>
+
+          {/* verbatim client copy */}
+          <p className="t-lead mt-14 text-moss" data-reveal>
+            {story.closing[story.closing.length - 1]}
+          </p>
+        </Section>
 
         {/* JOURNEY - a hairline grid, not cards. gap-px over a tinted parent
             draws the rules, so no cell owns a border and none double up.
