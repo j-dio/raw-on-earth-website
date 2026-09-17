@@ -29,7 +29,11 @@ export default function PageHero({
 }) {
   return (
     <section className="page-hero tex tex-paper relative overflow-hidden bg-linen pt-36 md:pt-44">
-      <div className="mx-auto max-w-[1400px] px-6 md:px-10">
+      {/* The padding-bottom is load-bearing: `.page-hero` sets a top padding
+          only, and this block used to end on a LeafRule whose `mt-14 md:mt-20`
+          was the gap. With the rule gone the standfirst sat flush against the
+          section edge - measured 0px on /about and /contact. Same 56/80px. */}
+      <div className="mx-auto max-w-[1400px] px-6 pb-14 md:px-10 md:pb-20">
         <div className="max-w-4xl">
           <p className="eyebrow page-hero-in" style={{ "--d": "80ms" } as React.CSSProperties}>
             {eyebrow}

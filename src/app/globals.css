@@ -814,7 +814,9 @@ body {
     content: ", ";
   }
 
-  .pillar-row > li:last-child::before {
+  /* `:not(:first-child)` matters: `li:last-child` alone also matches a list of
+     one, which would render " and Yoga". */
+  .pillar-row > li:not(:first-child):last-child::before {
     content: " and ";
   }
 }

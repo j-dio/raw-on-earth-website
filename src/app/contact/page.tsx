@@ -9,21 +9,23 @@ import { Section, SectionHead, CtaBand } from "@/components/ui";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { site } from "@/data/site";
 
-/* Contact. One form, plus the footer details in full. The call of 2026-09-06
-   cut the form to three fields - "name, email address, your message" - so the
-   design brief's phone and Instagram fields are gone. There is no booking
-   system on this site and none is specified, so nothing here embeds a
-   scheduler or a calendar.
+/* Contact. The form is the page.
 
-   No masthead photograph. Every other inner page opens on one, but this page's
-   job is a form, and a 21:9 plate pushes the first input below the fold on a
-   laptop. The two reserved photographs are used further down where their
-   portrait crop is not fighting the layout. */
+   Three fields, single-line, no boxes - the client's own instruction, recorded
+   in docs/feedback. There is no booking system on this site and none is
+   specified, so nothing here embeds a scheduler or a calendar.
+
+   Her phone, email, WhatsApp and Instagram are NOT repeated here. The footer
+   carries all four on every page, and a second copy beside the form was what
+   made this page need a filler photograph to balance it.
+
+   No photographs at all, and no masthead plate: a 21:9 image pushes the first
+   input below the fold on a laptop, and the page's job is the form. */
 
 export const metadata: Metadata = pageMeta({
   title: "Contact",
   description:
-    "Write to Rajalakshmi V about yoga, mindfulness or corporate well-being sessions in JP Nagar, Bangalore and online. Enquiry form, phone, WhatsApp and Instagram.",
+    "Write to Rajalakshmi V about yoga, mindfulness or corporate well-being sessions in JP Nagar, Bangalore and online. A short enquiry form, and WhatsApp if it is quicker.",
   path: "/contact",
 });
 
@@ -53,10 +55,6 @@ const faqs: { q: string; a: string }[] = [
   },
 ];
 
-/* Her details, in the order a person actually reaches for them. The footer
-   carries the same facts; this page states them in full because a contact page
-   that makes you scroll to the footer for a phone number has failed. */
-
 export default function ContactPage() {
   return (
     <>
@@ -83,21 +81,18 @@ export default function ContactPage() {
               1440 and the masthead above starts at 60px, so a left-aligned
               column here lands 148px right of the heading and reads as a
               mistake. Centred, it reads as a choice. */}
-          <div className="mx-auto max-w-2xl">
-            <div data-reveal>
-              <h2 className="font-display text-[1.6rem] font-light leading-tight text-moss md:text-[2rem]">
-                Send an enquiry
-              </h2>
-              {/* Suspense is not optional: ContactForm reads useSearchParams
-                  (the ?about= prefill) and Next 15 fails the build without a
-                  boundary around it. */}
-              <div className="mt-10">
-                <Suspense fallback={<p className="leading-relaxed text-ink/60">Loading the form…</p>}>
-                  <ContactForm />
-                </Suspense>
-              </div>
+          <div className="mx-auto max-w-2xl" data-reveal>
+            <h2 className="font-display text-[1.6rem] font-light leading-tight text-moss md:text-[2rem]">
+              Send an enquiry
+            </h2>
+            {/* Suspense is not optional: ContactForm reads useSearchParams
+                (the ?about= prefill) and Next 15 fails the build without a
+                boundary around it. */}
+            <div className="mt-10">
+              <Suspense fallback={<p className="leading-relaxed text-ink/60">Loading the form…</p>}>
+                <ContactForm />
+              </Suspense>
             </div>
-
           </div>
         </Section>
 
@@ -109,7 +104,9 @@ export default function ContactPage() {
             and the extra ground was a fourth change of colour on a page that
             only needs one. */}
         <Section className="pb-24 md:pb-32">
-          <div className="mx-auto max-w-2xl" data-reveal>
+          {/* No data-reveal here: SectionHead renders its own, and two nested
+              reveals compound the offset and run two ScrollTriggers. */}
+          <div className="mx-auto max-w-2xl">
             <SectionHead
               eyebrow="Before you write"
               title="Questions people ask first"
