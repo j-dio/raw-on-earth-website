@@ -125,11 +125,16 @@ const SERVICE_IMAGES: Record<
     { src: "/media/gallery/raji-24.webp", alt: "The founder sits in meditation with palms joined at her chest, eyes closed, in soft evening park light." },
 
   /* Breathwork — changed 2026-09-18, after its frame moved up to Mindfulness
-     Coaching. Hands resting on the knees is the pranayama seat rather than
-     the palms-together one, and the setting is not the park, so the two
-     sections no longer look like one photograph printed twice. */
+     Coaching. Client-supplied 2026-09-18. Hands open on the knees is the
+     pranayama seat rather than the palms-together one, she is caught
+     mid-breath, and the setting is not the park - so this section and
+     Mindfulness Coaching no longer look like one photograph printed twice.
+
+     The source is square. A 3:4 window trims the outer hands, which is
+     worth it: keeping the whole square shrinks her by a third at this
+     column width and the breath stops being legible. */
   "breathwork":
-    { src: "/media/gallery/meditation-06.webp", alt: "A woman meditates in lotus position on a purple mat beneath a covered walkway, eyes closed, hands resting on her knees." },
+    { src: "/media/gallery/meditation-10.webp", alt: "A woman sits cross-legged with her eyes closed and her hands resting open on her knees, mid-breath, two others practising behind her in a quiet indoor hall." },
 
   /* Lifestyle Coaching — study and reflection between sessions */
   "lifestyle-coaching":
