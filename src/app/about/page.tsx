@@ -45,29 +45,29 @@ export default function AboutPage() {
           standfirst={story.subheading}
         />
 
-        {/* STORY - two-column editorial, portrait left. The portrait is the
-            taller column, so it sets the row and the copy sits against it. */}
-        <Section className="bg-linen py-24 md:py-32">
-          <div className="grid items-start gap-14 lg:grid-cols-12 lg:gap-16">
-            <div className="lg:col-span-5" data-reveal>
-              <div data-parallax="60">
-                {/* A9 - the frame carries ~18% blurred canopy above her head
-                    and ~14% bare grass below her feet. 4:5 held slightly high
-                    (30%) drops both and keeps the whole tree pose, head to
-                    standing foot. */}
-                <img
-                  src="/media/gallery/raji-20.webp"
-                  width={1500}
-                  height={2246}
-                  loading="lazy"
-                  decoding="async"
-                  alt="The founder balances in tree pose on a park lawn, smiling with hands pressed together at her chest."
-                  className="aspect-[4/5] w-full object-cover object-[50%_30%]"
-                />
-              </div>
-            </div>
+        {/* STORY - two-column editorial, copy left against the masthead's own
+            left edge, portrait right.
 
-            <div className="lg:col-span-6 lg:col-start-7" data-reveal>
+            Not a 12-column grid. `grid-cols-12 gap-16` splits 1024px of content
+            into 26.7px columns and eleven 64px gaps, so a `col-span-5` is 389px
+            and a `col-span-6` is 480px - which is how the copy ended up the
+            WIDER of the two at 480px/~60ch while the portrait sat at 389px with
+            417px of dead linen under it (measured, 1440x900).
+
+            5fr/6fr instead, so the picture stays the larger element at every
+            width. A fixed `26rem` measure track does not: at 1024px it leaves
+            the photograph 368px against a 416px column and the row inverts
+            again. Measured with 64px of gap: 364/436 at 1024, 436/524 at 1280
+            and up - the copy lands on ~54 characters, which is where the
+            reference sets its own bio measure (365px).
+
+            Sides swapped 2026-09-17. The copy now starts on the same left rule
+            as the H1 above it, and the portrait is the larger element, which is
+            the way round ouranoyoga.com sets its own bio row - copy 423px,
+            picture 666px of a 1152px row (measured on /mentoring/, 1440px). */}
+        <Section className="bg-linen py-24 md:py-32">
+          <div className="grid gap-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-16">
+            <div className="lg:col-start-1 lg:row-start-1" data-reveal>
               {/* Verbatim client copy, stored in src/data/about.ts. Rendered
                   from the data file rather than typed into the page so that
                   swapping drafts is one line there and nothing here. */}
@@ -76,6 +76,55 @@ export default function AboutPage() {
                   <p key={p.slice(0, 32)}>{p}</p>
                 ))}
               </Prose>
+            </div>
+
+            {/* `order-first` below `lg`: the source order is copy-then-portrait
+                because that is the desktop reading order, left to right. On a
+                phone the same order puts seven paragraphs between the masthead
+                and the only photograph of her, so the portrait is pulled back
+                above the copy there. Nothing in this block is focusable, so the
+                reorder costs no tab order - only the order a screen reader
+                reads two static blocks in, and either order is coherent. */}
+            <div className="order-first lg:order-none lg:col-start-2 lg:row-start-1" data-reveal>
+              {/* Sticky, and that is what the column is for. The copy runs 904px
+                  against a 660px portrait, so something had to hold the bottom
+                  244px of the right-hand column - it read as an unfinished
+                  corner. The picture holds while the last three paragraphs pass
+                  it, which is the one authored movement on this page.
+
+                  `top-24` (96px), not more: `lg` starts at 1024px, where a
+                  landscape tablet is 768px tall, and 96 + 660 = 756 clears it.
+                  The grid dropped `items-start` for the same reason - a start-
+                  aligned item is only as tall as its content, so there is no
+                  room for a sticky child to travel in.
+
+                  This replaced `data-parallax="60"`. Scrubbing the picture
+                  +-60px while it is pinned is two motions arguing, and the
+                  sticky hold is the one that does work. */}
+              <div className="lg:sticky lg:top-24">
+                {/* A9 - the frame carries ~18% blurred canopy above her head
+                    and ~14% bare grass below her feet. 4:5 held slightly high
+                    (30%) drops both and keeps the whole tree pose, head to
+                    standing foot.
+
+                    `sm:max-w-[32rem]` is the tablet fix and only that: while the
+                    row is still stacked, a full-width 4:5 portrait is 754x943 at
+                    834px - taller than the viewport, so the story below it never
+                    appeared on a first screen. 512px makes it 512x640 and lands
+                    its right edge on the same rule as the prose, which `.t-body`
+                    caps at 55ch (510px at this size). Left edges already agree
+                    with the H1 above. The cap is dropped at `lg`, where the
+                    portrait is a column again. */}
+                <img
+                  src="/media/gallery/raji-20.webp"
+                  width={1500}
+                  height={2246}
+                  loading="lazy"
+                  decoding="async"
+                  alt="The founder balances in tree pose on a park lawn, smiling with hands pressed together at her chest."
+                  className="aspect-[4/5] w-full object-cover object-[50%_30%] sm:max-w-[32rem] lg:max-w-none"
+                />
+              </div>
             </div>
           </div>
         </Section>
