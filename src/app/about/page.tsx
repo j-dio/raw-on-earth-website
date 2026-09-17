@@ -111,24 +111,36 @@ export default function AboutPage() {
                   +-60px while it is pinned is two motions arguing, and the
                   sticky hold is the one that does work. */}
               <div className="lg:sticky lg:top-24">
-                {/* A9, re-cropped 2026-09-17 and saved as its own file rather
-                    than framed with object-position.
+                {/* raji-10, chosen 2026-09-17 against raji-08 and raji-09, and
+                    re-cropped into its own file rather than framed with
+                    object-position.
 
-                    The full frame is the darkest photograph in the set - mean
-                    luminance 55 of 255 across the 4:5 window the page showed,
-                    against linen at 246. Every other frame of her measures 76
-                    to 120. She also stood about a sixth of the frame high in
-                    it, so most of that 55 was out-of-focus canopy. Enlarging
-                    the picture to 524px made both obvious.
+                    It replaced raji-20, which was the darkest photograph in the
+                    set: mean luminance 55 of 255 across the 4:5 window this
+                    frame shows, against linen at 246, with the subject about a
+                    sixth of the frame high. Enlarging the picture to 524px made
+                    both obvious.
 
-                    `raji-20-story.webp` is crop 1160x1450 at offset (230,420)
-                    of `raji-20.webp`. It carries the whole tree pose, head to
-                    standing foot, with ground still under her; it measures 69,
-                    and it is 60KB against the original's 88KB. Do not add a
-                    filter to lift it further - the frame is hers.
+                    Measured over the same tightened 4:5 window, the three
+                    candidates came out 08 at 99, 09 at 90 and 10 at 111. Two
+                    things the number does not carry decided it as well: 09 has
+                    a fence running horizontally behind her head, and 10 is the
+                    only one in full profile facing LEFT - into the copy, rather
+                    than out of the page. A subject at the right-hand edge
+                    should look inward.
+
+                    `raji-10-story.webp` is crop 1160x1450 at offset (140,445)
+                    of `raji-10.webp`. 83KB against the original's 128KB. Do not
+                    add a filter to lift it further - the frame is hers, and the
+                    gain here is framing, not grading.
+
+                    raji-10 was also the middle frame of the photo band at the
+                    foot of this page. That slot now runs raji-09, because the
+                    same picture twice on one page is worse than either choice.
 
                     The file is already 4:5, so `object-cover` has nothing to
-                    trim and the old `object-[50%_30%]` is gone with it.
+                    trim and the `object-position` that framed the old one is
+                    gone with it.
 
                     `sm:max-w-[32rem]` is the tablet fix and only that: while the
                     row is still stacked, a full-width 4:5 portrait is 754x943 at
@@ -139,12 +151,12 @@ export default function AboutPage() {
                     with the H1 above. The cap is dropped at `lg`, where the
                     portrait is a column again. */}
                 <img
-                  src="/media/gallery/raji-20-story.webp"
+                  src="/media/gallery/raji-10-story.webp"
                   width={1160}
                   height={1450}
                   loading="lazy"
                   decoding="async"
-                  alt="The founder balances in tree pose on a park lawn, smiling with hands pressed together at her chest."
+                  alt="The founder sits in lotus position in profile, eyes closed and hands joined at her chest, her hair and arms rimmed by low golden light in a park."
                   className="aspect-[4/5] w-full object-cover sm:max-w-[32rem] lg:max-w-none"
                 />
               </div>
@@ -297,12 +309,12 @@ export default function AboutPage() {
             </li>
             <li>
               <img
-                src="/media/gallery/raji-10.webp"
+                src="/media/gallery/raji-09.webp"
                 width={1500}
                 height={2246}
                 loading="lazy"
                 decoding="async"
-                alt="The founder meditates in lotus position with a sparkling hair clip, framed close in golden backlight."
+                alt="The founder sits cross-legged on a mat in a park, head tilted slightly down, hands joined at her chest in late afternoon light."
                 className="aspect-square w-full object-cover object-[50%_57%]"
               />
             </li>
