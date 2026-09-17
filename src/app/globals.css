@@ -976,11 +976,10 @@ body {
   animation-delay: var(--d, 0ms);
 }
 
-/* The faint enso on every inner masthead is drawn by EnsoMark, not by a
-   pseudo-element here. It lived as `.page-hero::after` until 2026-09-17, which
-   meant the same mark existed twice in two technologies - a div with Tailwind
-   classes on the home hero, a ::after rule here - and neither knew about the
-   other. `.page-hero > *` below still lifts the real content above it. */
+/* No enso on an inner masthead any more. It was `.page-hero::after` here until
+   2026-09-17; the reasoning, and what would have to change to bring it back,
+   is in PageHero where someone would look for it. `.brand-mark` stays in the
+   `:not()` below because the home hero's mark is still an element. */
 
 /* Lifts the masthead's real content above the enso behind it.
 

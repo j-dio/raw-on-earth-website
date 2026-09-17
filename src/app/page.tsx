@@ -104,7 +104,7 @@ export default function Home() {
             className="hero-in-soft absolute inset-0 z-10 pointer-events-none"
             style={{ "--d": "400ms" } as React.CSSProperties}
           >
-            <EnsoMark variant="hero" />
+            <EnsoMark />
           </div>
 
           {/* The section owns the height (see above). The type column stops at

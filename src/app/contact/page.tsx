@@ -66,7 +66,7 @@ export default function ContactPage() {
         {/* No enso here: at 371px this is the shortest masthead on the site
             and a 620px circle cannot fit it without being cut by a straight
             line. See the `mark` prop in PageHero. */}
-        <PageHero eyebrow="Contact" title="Start with a message" mark={false} />
+        <PageHero eyebrow="Contact" title="Start with a message" />
 
         {/* Short top padding on purpose. This is the page every CTA points at, so
             the form has to be visible without a scroll: the hero rule sits at
