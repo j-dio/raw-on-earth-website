@@ -175,32 +175,65 @@ export default function AboutPage() {
             the ground is mist and every child that assumed a dark ground was
             re-toned with it. */}
         <section className="relative overflow-hidden bg-mist-pale py-24 md:py-32">
-          <figure className="relative mx-auto max-w-3xl px-6 text-center md:px-10" data-reveal>
-            <figcaption className="eyebrow">{belief.intro}</figcaption>
-            {/* verbatim client copy */}
-            <blockquote data-lines className="t-quote mt-8 text-moss">
-              {belief.quote}
-            </blockquote>
-          </figure>
+          {/* One centred column, one width, and that is the whole fix.
 
-          {/* Her closing lines, which follow the belief in the source and read
-              as its consequence ("Raw On Earth grew from that belief"). They
-              are display type rather than a fourth paragraph up in the story
-              column because that is how the brief sets them. */}
-          <div className="relative mx-auto mt-16 max-w-[52ch] space-y-6 px-6 text-center md:px-10" data-reveal>
-            {/* verbatim client copy */}
-            {story.closing.map((line, i) => (
-              <p
-                key={line.slice(0, 32)}
-                className={
-                  i === story.closing.length - 1
-                    ? "t-h3 italic text-moss"
-                    : "leading-relaxed text-ink/80"
-                }
-              >
-                {line}
+              Retyped 2026-09-17. Measured at 1440x900, this panel stacked five
+              treatments at four widths, all centred: a 47-character sentence in
+              12.8px tracked Montserrat caps across 688px, a 48px italic
+              Cormorant quote across 688px, two 16px Lato paragraphs across
+              403px, then a 32px italic Cormorant line across 403px. Two italic
+              Cormorant sizes in one block is the reason it was hard to tell
+              which line was the statement, and centred running body on a 403px
+              measure is why the middle of it read as ragged.
+
+              What the reference does instead, measured on its own centred
+              statement: ONE block, 38px Cormorant, weight 300, 1px of tracking,
+              NOT italic, on a 645px measure, with nothing stacked around it.
+              The client's instruction is the same in words - "let's not have
+              too many elements" (00:30:54), "as plain as possible like orano"
+              (00:27:55).
+
+              So: `.t-statement` for the belief, which is the role written from
+              that measurement and is a held sentence rather than a heading.
+              `.t-lead` for her strapline, which keeps it display and italic but
+              puts it clearly below the statement instead of beside it. `.t-body`
+              for the prose between them, at the site's own 2.0 leading rather
+              than the `leading-relaxed` 1.625 this block had been running. The
+              lead-in keeps her words and loses the tracked caps: it ends in a
+              colon and runs into the quote, so it is one sentence, not a label.
+
+              32rem is the single column everything sits in - the same 512px the
+              story portrait is capped at above. */}
+          <div className="relative px-6 md:px-10">
+            <div className="mx-auto max-w-[32rem] text-center">
+              <figure data-reveal>
+                {/* verbatim client copy */}
+                <figcaption className="text-ink/60">{belief.intro}</figcaption>
+                {/* verbatim client copy */}
+                <blockquote data-lines className="t-statement mt-6 text-moss">
+                  {belief.quote}
+                </blockquote>
+              </figure>
+
+              {/* Her closing lines, which follow the belief in the source and
+                  read as its consequence ("Raw On Earth grew from that
+                  belief"). The last of the three is her strapline and the
+                  footer carries it too, so it stays display type; the two
+                  before it are prose and are now set as prose. */}
+              <div className="mt-14 space-y-6" data-reveal>
+                {/* verbatim client copy */}
+                {story.closing.slice(0, -1).map((line) => (
+                  <p key={line.slice(0, 32)} className="t-body mx-auto text-ink/75">
+                    {line}
+                  </p>
+                ))}
+              </div>
+
+              {/* verbatim client copy */}
+              <p className="t-lead mt-14 text-moss" data-reveal>
+                {story.closing[story.closing.length - 1]}
               </p>
-            ))}
+            </div>
           </div>
         </section>
 
