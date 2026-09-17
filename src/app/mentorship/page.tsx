@@ -4,36 +4,18 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageHero from "@/components/PageHero";
 import JsonLd from "@/components/JsonLd";
-import { Section, SectionHead, LeafRule, Button, CtaBand } from "@/components/ui";
+import { CtaBand } from "@/components/ui";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { site } from "@/data/site";
-import { serviceGroups, type Service } from "@/data/services";
+import { serviceGroups } from "@/data/services";
 
-/* Mentorship - renamed from Services, label and URL, on the client call of
-   2026-09-06. The commercial page, so it has to convert without raising its
-   voice. Everything on it is read out of src/data/services.ts - the page never
-   names a service in its own markup, so adding one is an object and nothing
-   here has to change.
+/* Mentorship landing page — full-bleed hero background image, then three
+   rounded audience cards below it.
 
-   Five groups is a lot to scan, so the block SHAPE changes between them
-   instead of five identical grids: portrait-left editorial (Individual),
-   numbered list on a moss ground (Corporate), full-bleed plate over a wide
-   stacked list (Retreats), hairline grid on sand (Schools), three divided
-   columns (Online). The "three ways in" strip above them carries the five anchors, so
-   the page stays navigable without a sticky sidebar.
-
-   Grounds are all light since 2026-09-15: linen, a quiet linen, mist, sand/45.
-   No section takes a dark ground any more - the old corporate band was moss and
-   the page dropping in and out of dark green is what the client asked us to stop
-   (call, 00:46:22). Old order for reference: linen - linen(quiet) - MOSS - linen - sand/45 - linen -
-   MOSS(CtaBand). Two moss panels, which is the ceiling in the page spec.
-
-   No client company is named. The business cards list them, but publishing
-   those names is her call and possibly theirs, so Corporate says the sector
-   instead. Do not "improve" that into a logo wall.
-
-   There is no booking system and the brief specifies none, so every CTA on
-   this page goes to /contact or to WhatsApp. */
+   Redesigned 2026-09-17: removed the PageHero strip; the hero is now a
+   standalone full-viewport section with the client's children's yoga photo
+   as the background. The three cards are rounded panels, not full-bleed
+   strips, so they float above the linen ground. */
 
 export const metadata: Metadata = pageMeta({
   title: "Mentorship",
@@ -42,84 +24,45 @@ export const metadata: Metadata = pageMeta({
   path: "/mentorship",
 });
 
-/* Format / who-it-suits, set under a service. Only fields the client has
-   actually stated ever reach it (see services.ts), so this renders nothing
-   rather than inventing a duration.
-
-   Two type roles, not one: the delivery format is a tracked label because it
-   is the same handful of words on every card, but "who it suits" is a real
-   sentence and was unreadable set as tracked caps at 10px - on a phone it
-   wrapped to two lines of shouting. */
-function Meta({ service }: { service: Service }) {
-  const format = [service.format, service.duration].filter(Boolean).join("  ·  ");
-  if (!format && !service.for) return null;
-
-  return (
-    <p
-      className={`mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 ${
-        "text-ink/70"
-      }`}
-    >
-      {format ? <span className="label text-[0.62rem]">{format}</span> : null}
-      {service.for ? <span className="text-[0.85rem] leading-snug">{service.for}</span> : null}
-    </p>
-  );
-}
-
-const [individual, corporate, retreats, schools, online] = serviceGroups;
-
-/* Three ways in. Each card owns the anchors it covers, so all five groups are
-   reachable from one screen. */
-const waysIn = [
+const audienceCards = [
   {
+    slug: "for-yourself",
     n: "01",
     title: "For yourself",
-    body: "One-to-one teaching, or a small group that keeps its own rhythm. Start where your body is today.",
-    links: [individual, online],
+    subtitle: "Individual & Online",
+    body: "One-to-one teaching or a small group that keeps its own rhythm. Start where your body is today.",
+    img: {
+      src: "/media/gallery/raji-11.webp",
+      alt: "The founder folds into a standing side stretch with her eyes closed, lit from behind in a park at dusk.",
+    },
+    groups: ["individual", "online-programmes"],
   },
   {
+    slug: "for-your-team",
     n: "02",
     title: "For your team",
+    subtitle: "Corporate",
     body: "Programmes for people under load, run on site in your own rooms or online for a team working apart.",
-    links: [corporate],
+    img: {
+      src: "/media/gallery/teaching-07.webp",
+      alt: "A teacher leads a standing group class with palms pressed together, students lined up on mats inside a long thatched hall.",
+    },
+    groups: ["corporate"],
   },
   {
+    slug: "for-a-group",
     n: "03",
     title: "For a group you gather",
+    subtitle: "Retreats & Schools",
     body: "A school, a studio, a circle of friends. Time away, or a practice brought into a room you already have.",
-    links: [retreats, schools],
+    img: {
+      src: "/media/gallery/kids-14.webp",
+      alt: "Rows of schoolchildren in white shirts stand at attention on coloured mats arranged in a wide outdoor courtyard.",
+    },
+    groups: ["retreats", "schools"],
   },
 ];
 
-const howItWorks = [
-  {
-    n: "01",
-    title: "Say hello",
-    body: "Write, or send a message on WhatsApp. Tell her roughly what you are after and where you are starting from.",
-  },
-  {
-    n: "02",
-    title: "A short conversation",
-    /* No duration and no price here on purpose. Nobody has quoted either, and
-       an invented "twenty minutes, no charge" is a commercial promise the site
-       would be making on her behalf. */
-    body: "A conversation before anything is booked. What you want, what your body is doing, what your week actually looks like.",
-  },
-  {
-    n: "03",
-    title: "A plan",
-    body: "Raji comes back with what she would teach and how often. If a different teacher or a different practice would suit you better, she says so.",
-  },
-  {
-    n: "04",
-    title: "Practise",
-    body: "You begin. The plan gets adjusted as you go, because a body in week eight is not the body that started.",
-  },
-];
-
-/* OfferCatalog built FROM the data array, so the schema cannot drift from the
-   page. No prices and no rating: nobody has quoted a price and there are no
-   reviews on the site yet. */
 const catalogueLd = {
   "@context": "https://schema.org",
   "@type": "OfferCatalog",
@@ -150,271 +93,92 @@ export default function MentorshipPage() {
       <SiteHeader />
 
       <main id="main">
-        <PageHero
-          eyebrow="Mentorship"
-          title="Ways to practise"
-          standfirst="Individual teaching, workplace programmes, retreats, schools and online courses. The same practice, sized to whoever is in the room."
-          figure={{
-            src: "/media/hero/services.webp",
-            alt: "A row of students hold crow pose on coloured mats in a bright studio with floor-to-ceiling windows and potted palms, the instructor demonstrating at the front.",
-            width: 2400,
-            height: 1028,
-          }}
-        />
 
-        {/* THREE WAYS IN - a quieter interstitial, and the page's index. */}
-        <Section className="bg-linen py-16 md:py-20">
-          <ul className="grid gap-px bg-ink/15 md:grid-cols-3" data-reveal-stagger>
-            {waysIn.map((way) => (
-              <li key={way.n} className="bg-linen p-8 md:p-10">
-                <p className="label text-[0.62rem] text-moss/85">{way.n}</p>
-                <h2 className="mt-5 font-display text-[1.6rem] font-light leading-tight text-moss md:text-[2rem]">
-                  {way.title}
-                </h2>
-                <p className="mt-4 leading-relaxed text-ink/80">{way.body}</p>
-                {/* The page index, so these are real targets: inline-flex with
-                    a 44px minimum height rather than a 10px line of caps with
-                    a hit area you have to aim at. */}
-                <p className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
-                  {way.links.map((group) => (
-                    <a
-                      key={group.slug}
-                      href={`#${group.slug}`}
-                      className="link label inline-flex min-h-11 items-center text-[0.68rem]"
-                    >
-                      {group.title}
-                    </a>
-                  ))}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </Section>
-
-        {/* INDIVIDUAL - portrait left, hairline-separated list right. */}
-        <Section id={individual.slug} className="bg-linen py-24 md:py-32">
-          <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
-            <div className="lg:col-span-5" data-reveal>
-              <img
-                src="/media/gallery/raji-11.webp"
-                alt="The founder folds into a standing side stretch with her eyes closed, lit from behind in a park at dusk."
-                width={1500}
-                height={2246}
-                loading="lazy"
-                decoding="async"
-                data-scrub-scale
-                /* max-h: the sticky column is taller than a 720px laptop
-                   viewport, so without it the foot of the picture is never
-                   seen. */
-                className="aspect-[3/4] w-full object-cover lg:sticky lg:top-28 lg:max-h-[calc(100svh-9rem)]"
-              />
-            </div>
-
-            <div className="lg:col-span-7">
-              <SectionHead eyebrow={individual.eyebrow} title={individual.title} standfirst={individual.intro} />
-              <ul className="mt-12 border-t border-ink/15" data-reveal-stagger>
-                {individual.services.map((service) => (
-                  <li key={service.slug} className="border-b border-ink/15 py-8">
-                    <h3 className="font-display text-[1.6rem] font-light leading-tight text-moss md:text-[2rem]">
-                      {service.name}
-                    </h3>
-                    <p className="mt-3 max-w-[52ch] leading-relaxed text-ink/80">{service.summary}</p>
-                    <Meta service={service} />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </Section>
-
-        {/* CORPORATE - the highest-value group, so it gets the one dark ground
-            on the page and a numbered editorial list rather than a grid.
-
-            The decorative vertical rule that used to sit here was removed: at
-            1024-1480px the container's own gutter equals the rule's offset, so
-            it landed exactly on the first letter of every line and read as a
-            stray border. The motif still closes the page in the CtaBand. */}
-        {/* Mist, not moss. A whole section never takes dark green as its ground
-            any more - the client found the page dropping in and out of dark green
-            confusing (call, 00:46:22). Moss 8.19:1 on mist. */}
-        <section id={corporate.slug} className="bg-mist-pale text-ink">
-          <Section className="py-24 md:py-32">
-            <SectionHead
-              eyebrow={corporate.eyebrow}
-              title={corporate.title}
-              standfirst={corporate.intro}
+        {/* HERO — gallery-style: image as full background, text overlaid */}
+        <div className="relative bg-linen text-moss overflow-hidden flex flex-col items-center justify-center">
+          {/* Background image — not cropped, covers the full section */}
+          <div className="absolute inset-0 z-0">
+            <img
+              src="/media/hero/mentorship-hero.png"
+              alt="An instructor and a young student practise a seated partner boat pose on a green mat, children watching in the background."
+              loading="eager"
+              decoding="async"
+              className="w-full h-full object-cover"
             />
+            {/* Gradient overlay matching gallery hero */}
+            <div className="absolute inset-0 bg-gradient-to-b from-linen/60 via-linen/80 to-linen" />
+          </div>
 
-            <ol className="mt-16 grid gap-x-16 gap-y-12 md:grid-cols-2" data-reveal-stagger>
-              {corporate.services.map((service, i) => (
-                /* An odd number of services in a two-column grid leaves the
-                   last cell's neighbour empty, which reads as a broken layout
-                   rather than as space. The odd one out runs full width, so
-                   its rule crosses the panel and the row looks deliberate. */
-                <li
-                  key={service.slug}
-                  className={`border-t border-ink/15 pt-6 ${
-                    corporate.services.length % 2 === 1 && i === corporate.services.length - 1
-                      ? "md:col-span-2"
-                      : ""
-                  }`}
-                >
-                  <p className="label text-[0.62rem] text-moss/70">{String(i + 1).padStart(2, "0")}</p>
-                  <h3 className="mt-4 font-display text-[1.6rem] font-light leading-tight text-moss md:text-[2rem]">
-                    {service.name}
-                  </h3>
-                  <p className="mt-3 max-w-[48ch] leading-relaxed text-ink/75">{service.summary}</p>
-                  <Meta service={service}  />
+          {/* Text overlaid on top — same structure as gallery */}
+          <div className="relative z-10 max-w-[1280px] mx-auto w-full text-left px-6 pt-40 pb-24 md:px-10 lg:px-20 xl:px-32 md:pt-52 md:pb-32">
+            <div className="flex items-center gap-4 mb-6">
+              <span className="w-6 h-px bg-moss/40" />
+              <p className="eyebrow tracking-widest text-sm uppercase">Mentorship</p>
+            </div>
+            <h1 className="font-display text-[4rem] md:text-[6rem] lg:text-[7rem] font-light leading-tight text-moss mb-8">
+              Ways to practise
+            </h1>
+            <p className="t-body text-ink/80 max-w-md text-lg md:text-xl font-light leading-relaxed">
+              Individual teaching, workplace programmes, retreats, schools and online courses.
+              The same practice, sized to whoever is in the room.
+            </p>
+          </div>
+        </div>
+
+        {/* THREE AUDIENCE CARDS — rounded panels floating on linen */}
+        <section className="bg-linen py-20 md:py-28">
+          <div className="mx-auto max-w-[1280px] px-6 md:px-10 lg:px-20 xl:px-32">
+            <ul className="flex flex-col gap-6 md:gap-8">
+              {audienceCards.map((card) => (
+                <li key={card.slug}>
+                  <Link
+                    href={`/mentorship/${card.slug}`}
+                    className="group relative flex min-h-[280px] w-full items-end overflow-hidden rounded-3xl shadow-md transition-shadow duration-300 hover:shadow-xl md:min-h-[340px]"
+                  >
+                    {/* Card background image */}
+                    <img
+                      src={card.img.src}
+                      alt={card.img.alt}
+                      loading="lazy"
+                      decoding="async"
+                      className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
+                    {/* Gradient so text sits over the photo */}
+                    <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-ink/80 via-ink/50 to-ink/10" />
+
+                    {/* Card text */}
+                    <div className="relative flex w-full flex-wrap items-end justify-between gap-6 px-8 py-10 md:px-12 md:py-12 lg:px-16">
+                      <div>
+                        <p className="label text-[0.62rem] text-linen/50">{card.n}</p>
+                        <h2 className="mt-3 font-display text-[2rem] font-light leading-tight text-linen md:text-[2.6rem] lg:text-[3rem]">
+                          {card.title}
+                        </h2>
+                        <p className="mt-1 label text-[0.62rem] tracking-widest text-gold/80 uppercase">
+                          {card.subtitle}
+                        </p>
+                        <p className="mt-4 max-w-[42ch] leading-relaxed text-linen/75 text-[0.95rem]">
+                          {card.body}
+                        </p>
+                      </div>
+
+                      {/* Arrow */}
+                      <span className="inline-flex shrink-0 items-center gap-3 label text-[0.68rem] text-linen/60 transition-all duration-300 group-hover:gap-5 group-hover:text-linen">
+                        Explore
+                        <svg
+                          width="24" height="10" viewBox="0 0 24 10" fill="none"
+                          className="transition-transform duration-300 group-hover:translate-x-1"
+                          aria-hidden
+                        >
+                          <path d="M0 5h22M18 1l4 4-4 4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </span>
+                    </div>
+                  </Link>
                 </li>
               ))}
-            </ol>
-
-            <div className="mt-16 flex flex-col items-start gap-4 sm:flex-row sm:items-center" data-reveal>
-              <Button href="/contact" variant="solid">
-                Discuss a programme
-              </Button>
-              <Button href={site.whatsapp} variant="ghost" external>
-                Message on WhatsApp
-              </Button>
-            </div>
-          </Section>
-        </section>
-
-        {/* RETREATS - a plate across the measure, then a wide stacked list. */}
-        <section id={retreats.slug} className="bg-linen py-24 md:py-32">
-          <Section wide>
-            <div className="overflow-hidden" data-reveal>
-              <img
-                src="/media/gallery/teaching-08.webp"
-                alt="A teacher spots a laughing student attempting crow pose on a black mat inside a thatched pavilion."
-                width={1500}
-                height={2666}
-                loading="lazy"
-                decoding="async"
-                data-scrub-scale
-                className="aspect-[4/5] w-full object-cover object-center sm:aspect-[16/9] lg:aspect-[21/9]"
-              />
-            </div>
-          </Section>
-
-          <Section className="mt-16 md:mt-20">
-            <SectionHead eyebrow={retreats.eyebrow} title={retreats.title} standfirst={retreats.intro} />
-            <LeafRule className="mt-14 max-w-[240px]" />
-
-            <div className="mt-14 space-y-14" data-reveal-stagger>
-              {retreats.services.map((service) => (
-                <article key={service.slug} className="grid gap-6 md:grid-cols-12 md:gap-10">
-                  <h3 className="font-display text-[1.6rem] font-light leading-tight text-moss md:col-span-4 md:text-[2rem]">
-                    {service.name}
-                  </h3>
-                  <div className="md:col-span-8">
-                    <p className="max-w-[58ch] leading-relaxed text-ink/80">{service.summary}</p>
-                    {service.includes ? (
-                      <ul className="mt-5 flex flex-wrap gap-x-3 gap-y-2">
-                        {service.includes.map((item) => (
-                          <li
-                            key={item}
-                            className="label rounded-full border border-gold/50 px-4 py-2 text-[0.6rem] text-ink/80"
-                          >
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : null}
-                    <Meta service={service} />
-                  </div>
-                </article>
-              ))}
-            </div>
-
-            <p className="mt-14 max-w-[58ch] leading-relaxed text-ink/80" data-reveal>
-              Dates are announced as they are set. Past and upcoming immersions live on the{" "}
-              <Link href="/workshops" className="link">
-                Workshops page
-              </Link>
-              .
-            </p>
-          </Section>
-        </section>
-
-        {/* SCHOOLS - hairline grid. `.hairline` is the shared grid rule from
-            globals.css: gap-px over a tinted parent, so no cell owns a border. */}
-        <Section id={schools.slug} className="tex tex-stone bg-sand/45 py-24 md:py-32">
-          <SectionHead eyebrow={schools.eyebrow} title={schools.title} standfirst={schools.intro} />
-          <ul className="hairline mt-14 md:grid-cols-3" data-reveal-stagger>
-            {schools.services.map((service) => (
-              <li key={service.slug} className="bg-linen p-8 md:p-10">
-                <h3 className="font-display text-[1.6rem] font-light leading-tight text-moss md:text-[2rem]">
-                  {service.name}
-                </h3>
-                <p className="mt-4 leading-relaxed text-ink/80">{service.summary}</p>
-                <Meta service={service} />
-              </li>
-            ))}
-          </ul>
-        </Section>
-
-        {/* ONLINE - three open columns divided by hairlines. It used to be a
-            12-column heading-left / body-right list, which is the shape
-            Retreats already uses: side by side the two groups read as the same
-            block. Columns on bare linen also stay distinct from Schools, whose
-            cards are filled panels on sand. */}
-        <Section id={online.slug} className="bg-linen py-24 md:py-32">
-          <SectionHead eyebrow={online.eyebrow} title={online.title} standfirst={online.intro} />
-          <ul className="mt-14 grid border-y border-ink/15 md:grid-cols-3" data-reveal-stagger>
-            {online.services.map((service) => (
-              <li
-                key={service.slug}
-                className="border-b border-ink/15 py-8 last:border-b-0 md:border-b-0 md:border-l md:px-8 md:py-10 md:first:border-l-0 md:first:pl-0 md:last:pr-0"
-              >
-                <h3 className="font-display text-[1.6rem] font-light leading-tight text-moss md:text-[1.85rem]">
-                  {service.name}
-                </h3>
-                <p className="mt-4 leading-relaxed text-ink/80">{service.summary}</p>
-                <Meta service={service} />
-              </li>
-            ))}
-          </ul>
-        </Section>
-
-        {/* HOW IT WORKS - four steps, no booking widget, because there is no
-            booking system on this site. */}
-        <Section className="bg-linen py-24 md:py-32">
-          <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
-            <div className="lg:col-span-7">
-              <SectionHead
-                eyebrow="How it works"
-                title="Four steps, and none of them is a form"
-                standfirst="There is no booking system here on purpose. A class is a person teaching a person, so it starts with a conversation."
-              />
-              <ol className="mt-12 space-y-10" data-reveal-stagger>
-                {howItWorks.map((step) => (
-                  <li key={step.n} className="grid gap-2 sm:grid-cols-12 sm:gap-8">
-                    <p className="label text-[0.62rem] text-moss/85 sm:col-span-2">{step.n}</p>
-                    <div className="sm:col-span-10">
-                      <h3 className="font-display text-[1.35rem] font-light leading-tight text-moss md:text-[1.6rem]">
-                        {step.title}
-                      </h3>
-                      <p className="mt-2 max-w-[54ch] leading-relaxed text-ink/80">{step.body}</p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            </div>
-
-            <div className="lg:col-span-5" data-reveal>
-              <img
-                src="/media/gallery/raji-13.webp"
-                alt="The founder arches back in a kneeling lunge with one leg extended, head tilted skyward in a grassy park."
-                width={1500}
-                height={2246}
-                loading="lazy"
-                decoding="async"
-                className="aspect-[3/4] w-full object-cover"
-              />
-            </div>
+            </ul>
           </div>
-        </Section>
+        </section>
 
         <CtaBand
           title="Begin where you are"

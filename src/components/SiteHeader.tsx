@@ -205,9 +205,20 @@ export default function SiteHeader() {
     };
   }, [open]);
 
-  // Both the logo and nav links sit on the dark hero background, so they must be light when at the top.
-  const light = open || !scrolled;
-  const logoLight = open || !scrolled;
+  /* Pages whose hero is LIGHT (linen/pale gradient) need the header to start
+     in its dark (moss/ink) state rather than the default linen state, so the
+     wordmark and nav links are readable from the first pixel.
+
+     The rule: if the hero background is pale, the header must be dark.
+     If the hero background is dark/photo, the header can be light (linen). */
+  const lightHeroPage = ["/community", "/gallery", "/mentorship", "/workshops"].some((p) =>
+    pathname === p || pathname.startsWith(p + "/")
+  );
+
+  // On light-hero pages the header is always dark unless the mobile menu is open.
+  // On all other pages it is light at the top (over the dark photo hero).
+  const light = open ? true : lightHeroPage ? false : !scrolled;
+  const logoLight = open ? true : lightHeroPage ? false : !scrolled;
 
   const desktopNav = headerNav.filter((item) => item.href !== "/");
   const showCta = pathname !== "/" || scrolled;
