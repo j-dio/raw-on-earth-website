@@ -339,9 +339,13 @@ export default function Home() {
           <div className="mx-auto max-w-[1280px] px-6 py-24 md:px-10 md:py-32 lg:px-20 xl:px-32">
             {/* "Offerings" is her word and it is the heading, not a kicker over
                 an invented headline. */}
-            <div className="max-w-2xl" data-reveal>
+            <div data-reveal>
               <h2 className="t-h2 text-moss">Offerings</h2>
-              <p className="t-body mt-6 text-ink/75">
+              {/* `max-w-none` overrides .t-body's 55ch measure, and the wrapper
+                  has no cap either: the sentence is 87 characters and wants
+                  about 700px, so both had to go for it to hold one line from lg
+                  up. It still wraps on a phone, which is correct. */}
+              <p className="t-body mt-6 max-w-none text-ink/75">
                 Start where you are. Every offering below leads to the same place, at a
                 different door.
               </p>
