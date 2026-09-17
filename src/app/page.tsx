@@ -80,26 +80,9 @@ export default function Home() {
             <div className="hero-wash absolute inset-0" />
           </div>
 
-          {/* Desktop ring geometry, measured off the scene file rather than
-              placed by eye. The file is square and cover-fills the width at
-              every lg viewport, so a figure's x-position in the image maps 1:1
-              onto the viewport: sampling low-saturation pixels puts her body
-              between 25% and 57% across, centred near 41%.
-
-              It used to sit at 26% and 660px wide, which centred it on empty
-              grass to her left. 34% puts it over her.
-
-              The vertical is a calc, not a percentage, because a percentage is
-              of the SECTION height while she is positioned by the IMAGE, which
-              is as tall as the viewport is wide. `50vh - 7vw` resolves to her
-              head and upper back at every desktop aspect - 340px at 1912x948,
-              349 at 1440x900, 312 at 1024x768 - where `44%` drifted low on a
-              wide screen and was the reason this looked off at 1912. Checked in
-              a real browser at 1912, and with scripts/shot.mjs at 1440 and
-              1024. */}
           <div
             aria-hidden
-            className="hero-ring brand-mark mark-enso-ring absolute left-1/2 top-[calc(100%_-_var(--med-gap)_-_var(--med)/2)] h-[var(--med)] w-[var(--med)] text-moss lg:left-[34%] lg:top-[calc(50vh_-_7vw)] lg:h-[min(34vw,500px)] lg:w-[min(34vw,500px)]"
+            className="hero-ring brand-mark mark-enso-ring absolute left-1/2 top-[calc(100%_-_var(--med-gap)_-_var(--med)/2)] h-[var(--med)] w-[var(--med)] text-moss lg:left-[26%] lg:top-[46%] lg:h-[min(44vw,660px)] lg:w-[min(44vw,660px)]"
           />
 
           {/* The section owns the height (see above). The type column stops at
