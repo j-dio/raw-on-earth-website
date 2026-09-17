@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { registerSmoothScroll } from "@/lib/smooth-scroll";
 
 /* All scroll-driven motion on the site, in one client component.
 
@@ -329,6 +330,77 @@ export default function Motion() {
       mm.revert();
     };
   }, [pathname]);
+
+  /* SMOOTH SCROLL. Its own effect, with no dependency array, because Lenis is
+     one instance for the whole visit - re-creating it on every route change
+     would leave the old one's wheel listener attached.
+
+     Why at all: ouranoyoga.com feels smooth under a hard scroll and we could
+     not say why. Read off the live page 2026-09-17, the answer is that its
+     theme loads `Divi/js/smoothscroll.js` - the classic wheel-hijack, easing
+     each notch over 400ms with a pulse curve, 80px steps, and acceleration
+     CAPPED AT 1 so scrolling harder does not scroll faster. That cap is the
+     whole feeling. `scroll-behavior: smooth` in globals.css is not the same
+     thing and never was: it only eases jumps to an anchor, never the wheel.
+
+     Lenis is 3KB and does the same job. The settings are deliberate:
+
+     - `lerp: 0.12`, not a duration. A lerp chases the target by a fixed
+       fraction per frame, so a hard flick and a gentle one settle over the
+       same ~350ms. That is the cap, expressed as maths rather than a clamp.
+     - `syncTouch` stays OFF (its default). A phone's own scroll physics are
+       better than ours and taking them over is how a smooth-scroll library
+       earns the accessibility complaint in CLAUDE.md.
+     - `anchors: true` so the skip link to #main and /workshops#find-a-class
+       still work. Without it Lenis owns the scroll position and a native
+       anchor jump fights it.
+     - `autoRaf: false` because GSAP's ticker drives it below. Two independent
+       rAF loops is how a scrubbed ScrollTrigger ends up a frame behind the
+       thing it is pinned to.
+
+     `lagSmoothing(0)` is GSAP's own instruction for this pairing: its default
+     lag smoothing pauses tweens after a slow frame, which reads as the page
+     sticking mid-scroll. */
+  useEffect(() => {
+    /* Not bolted on afterwards, same rule as the tweens above: under
+       `prefers-reduced-motion` Lenis is never constructed, so the page keeps
+       the browser's own scrolling and `scroll-behavior` in globals.css keeps
+       handling anchors. */
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let lenis: import("lenis").default | null = null;
+    let update: ((time: number) => void) | null = null;
+    let cancelled = false;
+
+    /* Dynamic import: the library is only ever needed by a visitor who does
+       not ask for reduced motion, so it stays out of the first bundle. */
+    import("lenis").then(({ default: Lenis }) => {
+      if (cancelled) return;
+
+      lenis = new Lenis({ lerp: 0.12, anchors: true, autoRaf: false });
+      lenis.on("scroll", ScrollTrigger.update);
+
+      update = (time: number) => lenis?.raf(time * 1000);
+      gsap.ticker.add(update);
+      gsap.ticker.lagSmoothing(0);
+
+      /* Anything that scrolls the page from a click handler goes through
+         src/lib/smooth-scroll.ts, so it animates with Lenis rather than
+         starting a second, competing animation. See that file. */
+      registerSmoothScroll(lenis);
+    });
+
+    return () => {
+      cancelled = true;
+      if (update) gsap.ticker.remove(update);
+      /* Put GSAP back the way it was. 500/33 are its documented defaults, and
+         leaving lag smoothing off for the rest of the session would change how
+         every other tween behaves after a dropped frame. */
+      gsap.ticker.lagSmoothing(500, 33);
+      registerSmoothScroll(null);
+      lenis?.destroy();
+    };
+  }, []);
 
   return null;
 }

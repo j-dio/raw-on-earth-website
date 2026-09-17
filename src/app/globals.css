@@ -1,4 +1,9 @@
 @import "tailwindcss";
+/* Lenis ships its own two rules: `height: auto` on html/body (a smooth-scroll
+   wrapper needs the document to size itself) and overscroll containment for
+   anything marked [data-lenis-prevent]. Imported rather than copied so a
+   version bump brings its own fixes. See Motion.tsx for why Lenis is here. */
+@import "lenis/dist/lenis.css";
 
 /* Japandi palette, read off the client mood board (docs brief) and the
    business cards (green logo on cream, gold hairlines).
@@ -67,9 +72,19 @@
   --font-label: var(--font-montserrat), Montserrat, system-ui, sans-serif;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+/* No `scroll-behavior` here, and that is deliberate rather than an omission.
+
+   It used to say `smooth`. Next reads the root's scroll-behavior during its own
+   scroll handling and restores it by writing it back as an INLINE style, which
+   then beats every stylesheet rule - measured on the production build, <html>
+   carried `style="scroll-behavior: smooth"` and neither `html.lenis` nor
+   `html:not(.lenis)` could override it. A declaration that gets snapshotted
+   cannot be taken back, so there is nothing to snapshot.
+
+   Smooth scrolling is Lenis's job now (see Motion.tsx), and Lenis handles
+   anchor links itself. Without Lenis - a reduced-motion visitor, or no
+   JavaScript - anchors jump instantly, which is the right behaviour for the
+   first case and an acceptable one for the second. */
 
 body {
   background: var(--color-linen);
@@ -691,7 +706,6 @@ body {
 
 /* Calm site: motion is a courtesy, never a requirement. */
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
   .is-loaded .hero-in,
   .is-loaded .hero-in-soft,
   .is-loaded .hero-in-figure,

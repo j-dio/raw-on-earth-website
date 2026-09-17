@@ -3,6 +3,7 @@
 import { useState } from "react";
 import GalleryGrid from "@/components/GalleryGrid";
 import type { GalleryCategoryName, GalleryItem } from "@/data/gallery";
+import { scrollToId } from "@/lib/smooth-scroll";
 
 export default function GallerySection({
   items,
@@ -85,9 +86,10 @@ export default function GallerySection({
                   key={card.name}
                   onClick={() => {
                     setSelectedCategory(card.name);
-                    setTimeout(() => {
-                      document.getElementById('gallery-grid')?.scrollIntoView({ behavior: 'smooth' });
-                    }, 100);
+                    /* Through the shared helper, not scrollIntoView: Lenis
+                       owns the scroll position and a native smooth scroll
+                       animates the same thing at the same time. */
+                    setTimeout(() => scrollToId('gallery-grid'), 100);
                   }}
                   className={`flex flex-col flex-shrink-0 w-64 md:w-80 h-[24rem] md:h-[28rem] snap-start rounded-xl overflow-hidden transition-all duration-500 ease-out group border ${
                     isActive ? 'border-moss shadow-md' : 'border-moss/10 shadow-sm hover:shadow-md hover:border-moss/30 hover:-translate-y-1'
@@ -130,7 +132,8 @@ export default function GallerySection({
                       key={card.name}
                       onClick={() => {
                         setSelectedCategory(card.name);
-                        window.scrollTo({ top: document.getElementById('gallery-grid')?.offsetTop! - 68, behavior: 'smooth' });
+                        /* 68 is the shrunk header's height - see CLAUDE.md. */
+                        scrollToId('gallery-grid', 68);
                       }}
                       className={`shrink-0 w-48 md:w-56 p-4 text-left rounded-xl border transition-all duration-300 snap-start ${
                         isActive 
