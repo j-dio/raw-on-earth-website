@@ -37,6 +37,14 @@
      12.72:1. The footer is the one exception and stays dark, because a foot is
      an ending, not a switch the reader falls through mid-page. */
   --color-mist: #DDE5D2;
+  /* Half mist, half linen, solid - NOT `bg-mist/60`. A translucent ground lets
+     the `.tex` texture through at full strength and reads darker, not paler:
+     measured 192 luminance against mist's own 226. This is for the big bands,
+     where the step from linen matters; true mist stays for small panels.
+     Linen 245 to mist-pale 236 is a 9-point step, which is the step
+     ouranoyoga.com runs between its two grounds (255 to 245, measured
+     2026-09-17). */
+  --color-mist-pale: #EAEDE0;
   --color-sage: #AEB89C;
   --color-linen: #F7F5EE;
   --color-sand: #E7DFD0;
@@ -846,6 +854,10 @@ body {
    `isolation: isolate` keeps the blend inside its own section - without it
    soft-light reaches through to whatever is painted behind the section.
    --------------------------------------------------------------------------- */
+.bg-mist-pale {
+  background-color: var(--color-mist-pale);
+}
+
 .tex {
   position: relative;
   isolation: isolate;

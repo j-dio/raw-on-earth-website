@@ -226,7 +226,7 @@ export function CtaBand({
   secondary?: { href: string; label: string; external?: boolean };
 }) {
   return (
-    <section className="tex tex-leaf relative overflow-hidden bg-mist text-ink">
+    <section className="tex tex-leaf relative overflow-hidden bg-mist-pale text-ink">
       <div className="relative mx-auto max-w-3xl px-6 py-24 text-center md:px-10 md:py-32" data-reveal>
         <p className="eyebrow">{eyebrow}</p>
         <h2 className="t-h2 mt-6 text-moss">{title}</h2>

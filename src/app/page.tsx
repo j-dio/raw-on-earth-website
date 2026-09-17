@@ -184,7 +184,16 @@ export default function Home() {
         </section>
 
         {/* YOUR HOME OF WELLNESS - image on the right, per the brief */}
-        <section className="wellness bg-sand/45">
+        <section
+          /* Linen, not sand. Measured on ouranoyoga.com 2026-09-17, which is the
+             site she keeps naming: its whole page runs on two grounds, #FFFFFF
+             and #F5F5F5 - a four-point step - and nothing moves on scroll. Our
+             page ran linen, sand, mist, linen, mist, which is four changes of
+             ground and steps of up to 26 points of luminance. That, not the
+             hardness of the edges, is what made it read as a stack of panels.
+             Dropping sand takes the page to two grounds and one change. */
+          className="wellness bg-linen"
+        >
           {/* `lg:items-center`, not top-aligned: the two columns are different
               heights, and centred the difference splits either side of the copy
               instead of pooling under it as one blank corner of sand. */}
@@ -315,7 +324,13 @@ export default function Home() {
 
             The rule down the centre is gone and stays gone - on a panel holding
             one centred quote it was a line through the middle of the sentence. */}
-        <section className="tex tex-paper relative overflow-hidden bg-mist py-28 md:py-40">
+        <section
+          /* Same rhythm as every other band: 96/128. It ran 112/160, which was
+             the only band on a different beat. The reference runs 75.875px top
+             and bottom on nearly every section - one number, repeated - and the
+             evenness is half of why it reads as one page. */
+          className="tex tex-paper relative overflow-hidden bg-mist-pale py-24 md:py-32"
+        >
           <figure className="quote-figure relative mx-auto max-w-3xl px-8 text-center" data-reveal>
             <blockquote className="t-quote text-moss">
               {/* verbatim client copy - one of the two quotes she offered for this

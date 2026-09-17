@@ -237,7 +237,7 @@ export default function MentorshipPage() {
         {/* Mist, not moss. A whole section never takes dark green as its ground
             any more - the client found the page dropping in and out of dark green
             confusing (call, 00:46:22). Moss 8.19:1 on mist. */}
-        <section id={corporate.slug} className="bg-mist text-ink">
+        <section id={corporate.slug} className="bg-mist-pale text-ink">
           <Section className="py-24 md:py-32">
             <SectionHead
               eyebrow={corporate.eyebrow}

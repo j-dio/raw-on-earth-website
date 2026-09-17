@@ -186,7 +186,7 @@ export default function CommunityPage() {
             linen type; it is mist now, because the client could not tell
             whether the site was pale green or dark green (00:46:22). Every
             child that assumed a dark ground was re-toned with it. */}
-        <section className="bg-mist py-24 md:py-32">
+        <section className="bg-mist-pale py-24 md:py-32">
           <div className="mx-auto grid max-w-[1400px] items-center gap-14 px-6 md:px-10 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
             <div data-reveal>
               <p className="eyebrow">Retreat memories</p>
