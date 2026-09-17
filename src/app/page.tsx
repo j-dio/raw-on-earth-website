@@ -85,17 +85,20 @@ export default function Home() {
             className="hero-ring brand-mark mark-enso-ring absolute left-1/2 top-[calc(100%_-_var(--med-gap)_-_var(--med)/2)] h-[var(--med)] w-[var(--med)] text-moss lg:left-[26%] lg:top-[46%] lg:h-[min(44vw,660px)] lg:w-[min(44vw,660px)]"
           />
 
-          {/* The section owns the height (see above). The type column stops at
-              col 11, not 12: running it to the container edge is what made the
-              headline look jammed against the right of the frame. One spare
-              column of air reads as composition rather than overflow. */}
-          {/* Change lg:pl-24 / lg:pr-4 as a PAIR - they must sum to 112px, and
-              2xl:pl-[10rem] / 2xl:pr-0 to 160px. Break the sum and the headline
-              wraps to two lines: it is 641px wide in a 648px column at 1440.
+          {/* The section owns the height (see above). The type column is
+              `col-start-7 col-span-6`, so it runs to the container's right edge;
+              the air on the right of the headline is the column being wider than
+              the text, not a reserved column. */}
+          {/* The lopsided padding is what moves the type right, off the blurred
+              part of the photo. This grid holds only the copy - she is an
+              absolute layer behind it - so container padding = type position.
 
-              The lopsided padding is what moves the type right, off the blurred
-              part of the photo. This grid holds only the copy (she is an
-              absolute layer behind it), so container padding = type position. */}
+              Keep each pair summing to what it replaced (lg 96+16 = 112, 2xl
+              160+0 = 160) and the column keeps the exact width it had under
+              symmetric padding. That is the only reason for the odd numbers.
+              Measured at 1440: the column is 641px and the headline text inside
+              it is 364px, so there is room either way - changing the sum resizes
+              the column, it does not wrap the headline. */}
           <div className="relative z-10 mx-auto flex h-full min-h-[100svh] max-w-[1500px] items-stretch px-6 pt-28 pb-16 md:px-10 lg:grid lg:grid-cols-12 lg:items-center lg:gap-8 lg:pl-24 lg:pr-4 lg:pt-20 lg:pb-20 2xl:pl-[10rem] 2xl:pr-0">
             {/* Portrait is a full-height flex column so the link can be pushed
                 to the foot of the screen (see the link block below). Desktop
@@ -176,8 +179,9 @@ export default function Home() {
 
         {/* YOUR HOME OF WELLNESS - image on the right, per the brief */}
         <section
-          /* Linen, not sand. The site runs two grounds only: linen and
-             mist-pale. Reasoning and measurements are in globals.css, under
+          /* Linen, not sand. This page runs two grounds, linen and mist-pale.
+             The inner pages still carry `bg-sand/45` bands and have not been
+             converted yet. Reasoning and measurements are in globals.css, under
              --color-mist-pale. */
           className="wellness bg-linen"
         >
@@ -258,10 +262,10 @@ export default function Home() {
                   its height before the file lands.
 
                   A9, "zoom in where the photo has empty space top and bottom"
-                  Source is 1500x2666; `aspect-square` plus
-                  `object-cover` crops 28% off each end and the subject stays
-                  centred. Keep it square - the closing line below shares this
-                  column's height with it.
+                  Source is 1500x2666; `aspect-square` plus `object-cover` keeps
+                  the middle 1500 rows, so it crops 21.9% off each end and the
+                  subject stays centred. Keep it square - the closing line below
+                  shares this column's height with it.
 
                   New photo off centre? Re-crop the file. Do not reach for
                   object-position: a CSS crop still downloads the whole tall

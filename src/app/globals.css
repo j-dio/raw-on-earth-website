@@ -44,11 +44,15 @@
      translucent ground lets the .tex texture through at full strength and
      renders DARKER, not paler - measured 192 luminance against mist's own 226.
 
-     Why it exists: the site runs two grounds, linen (245 luminance) and this
-     (236) - a 9-point step. It used to run linen, sand and mist with steps up to
-     26 points, which made the page read as a stack of panels. The reference site
-     runs two grounds 10 points apart and no scroll motion at all, so the fix for
-     "it does not feel continuous" is palette and rhythm, not animation. */
+     Why it exists: the landing page runs two grounds, linen (245 luminance) and
+     this (236) - a 9-point step. It used to run linen, sand and mist with steps
+     up to 26 points, which made the page read as a stack of panels. The
+     reference site runs two grounds 10 points apart and no scroll motion at all,
+     so the fix for "it does not feel continuous" is palette and rhythm, not
+     animation.
+
+     Not finished: six `bg-sand/45` bands remain on About, Community, Contact,
+     Mentorship and Workshops. Convert them the next time those pages are open. */
   --color-mist-pale: #EAEDE0;
   --color-sage: #AEB89C;
   --color-linen: #F7F5EE;
@@ -226,13 +230,16 @@ body {
     font-size: 0.875rem;
   }
 
-  /* The one smaller label. Two label sizes exist, `.label` and `.label-sm`, and
-     that is all - do NOT set a label's size inline.
+  /* The one smaller label. Use `.label` or `.label-sm`; do not set a label's
+     size inline.
 
      Reason: `.label` tracks in `em`, so `label text-[0.72rem]` silently retunes
-     the letter-spacing too. Callers were doing that at 0.70, 0.72 and 0.74rem.
-     The 0.163em here is chosen so this size lands on the same ~2px of tracking
-     the 14px label runs. */
+     the letter-spacing too. The 0.163em here is chosen so this size lands on the
+     same ~2px of tracking the 14px label runs.
+
+     The landing page, the header and the footer follow this. About, Community,
+     Contact, Mentorship and Workshops still set about twenty label sizes inline
+     - convert them the next time those pages are open. */
   .label-sm {
     letter-spacing: 0.163em;
     font-size: 0.75rem;
@@ -320,6 +327,11 @@ body {
   .wellness-grid {
     display: flex;
     flex-direction: column;
+    /* The element carries Tailwind's `items-start`. Under `grid` that only set
+       the block axis and children still filled the column; as a flex column it
+       means `align-items: flex-start`, which shrink-wraps the copy - measured
+       590px of text under a 673px photograph at 768. Stretch puts it back. */
+    align-items: stretch;
   }
 
   .wellness-grid > .wellness-copy {

@@ -42,7 +42,7 @@ import { testimonials } from "@/data/home";
 export const metadata: Metadata = pageMeta({
   title: "Community",
   description:
-    "Nature walks, a running club, a book club, volunteer teaching, retreats and community events with Raw On Earth, plus the full photograph gallery. No membership, and no fee to turn up.",
+    "Nature walks, a running club, a book club, volunteer teaching, retreats and community events with Raw On Earth. No membership, and no fee to turn up.",
   path: "/community",
 });
 
