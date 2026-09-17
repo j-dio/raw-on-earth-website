@@ -173,8 +173,24 @@ export default function Home() {
                 className="hero-in-cta mx-auto mt-auto flex w-full justify-center pointer-events-auto lg:mx-0 lg:mt-14 lg:justify-start"
                 style={{ "--d": "760ms" } as React.CSSProperties}
               >
+                {/* /contact, not /book. The branch pointed this at /book,
+                    which is not a route on this site and returned 404 - on the
+                    landing page's only call to action.
+
+                    It is not a missing page either, it is a missing SYSTEM:
+                    CLIENT-BRIEF.md "Not now" records no booking system for
+                    three to four months (00:50:46), with CTAs pointing at the
+                    contact form or WhatsApp, and real workshop dates arriving
+                    after the build (00:57:25). /workshops would not do: it
+                    carries no date, price or registration link, so it looks
+                    like the button worked and then strands the reader.
+
+                    When real dates do arrive, the place for booking is a CTA
+                    on each dated event, not this one - this button means
+                    "start with her", which is the contact form. And the brief
+                    says integrate, never build. */}
                 <Link
-                  href="/book"
+                  href="/contact"
                   className="tap inline-flex justify-center rounded-full bg-[#87a091] px-8 py-3.5 text-[0.7rem] uppercase tracking-[0.15em] text-linen transition-colors hover:bg-[#728b7c] shadow-lg"
                 >
                   Book a session
