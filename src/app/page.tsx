@@ -129,7 +129,7 @@ export default function Home() {
                   390px screenshot is a crop of a 500px page. Use scripts/shot.mjs. */}
               <h1
                 className="hero-in-title font-display text-[clamp(2.4rem,4.6vw,3.6rem)] font-light uppercase leading-[1.1] tracking-[0.094em] text-moss"
-                style={{ "--d": "600ms" } as React.CSSProperties}
+                style={{ "--d": "240ms" } as React.CSSProperties}
               >
                 Yoga <span className="font-light text-moss/40">|</span> Life
               </h1>
@@ -147,7 +147,7 @@ export default function Home() {
                   the phone is unchanged. */}
               <p
                 className="hero-in mx-auto mt-8 max-w-[26ch] text-[clamp(1rem,1.9vw,1.5rem)] font-light leading-[1.4] text-ink/80 lg:mx-0"
-                style={{ "--d": "760ms" } as React.CSSProperties}
+                style={{ "--d": "380ms" } as React.CSSProperties}
               >
                 {/* verbatim client copy */}
                 Work on yourself before you work for somebody else.
@@ -163,7 +163,7 @@ export default function Home() {
                   globals.css; the two numbers move together. */}
               <div
                 className="hero-in mx-auto mt-auto flex w-full justify-center lg:mx-0 lg:mt-14 lg:justify-start"
-                style={{ "--d": "880ms" } as React.CSSProperties}
+                style={{ "--d": "500ms" } as React.CSSProperties}
               >
                 <Link
                   href="/contact"
