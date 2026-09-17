@@ -87,7 +87,7 @@ function NavDropdown({
         aria-controls={panelId}
         onClick={() => (open ? hoverClose() : hoverOpen())}
         className={`label group relative flex items-center gap-2 py-2 transition-[font-size,color] duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          scrolled ? "text-[0.72rem]" : "text-[0.85rem]"
+          scrolled ? "text-[0.8rem]" : "text-[0.95rem]"
         } ${light ? "text-linen" : "text-moss"}`}
       >
         {item.label}
@@ -333,7 +333,7 @@ export default function SiteHeader() {
                   href={item.href!}
                   aria-current={current ? "page" : undefined}
                   className={`label group relative py-2 transition-[font-size,color] duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                    scrolled ? "text-[0.72rem]" : "text-[0.85rem]"
+                    scrolled ? "text-[0.8rem]" : "text-[0.95rem]"
                   } ${light ? "text-linen" : "text-moss"}`}
                 >
                   {item.label}
@@ -372,7 +372,7 @@ export default function SiteHeader() {
               href="/contact"
               tabIndex={showCta ? undefined : -1}
               aria-hidden={!showCta}
-              className="label label-sm ml-8 inline-flex whitespace-nowrap rounded-full bg-moss px-6 py-3 text-linen transition-colors duration-300 hover:bg-moss-deep"
+              className="label ml-8 inline-flex whitespace-nowrap rounded-full bg-moss px-6 py-3 text-[0.84rem] tracking-[0.1455em] text-linen transition-colors duration-300 hover:bg-moss-deep"
             >
               Book a session
             </Link>
