@@ -6,7 +6,6 @@ import JsonLd from "@/components/JsonLd";
 import ClassFinder from "@/components/ClassFinder";
 import { Section, SectionHead, Button, CtaBand } from "@/components/ui";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
-import { stats } from "@/data/home";
 import {
   workshops,
   pastFormats,
@@ -49,12 +48,6 @@ export const metadata: Metadata = pageMeta({
     "Regular yoga classes, one-to-one sessions, day workshops, immersions and retreats with Rajalakshmi V, online and in Bangalore, and for organisations.",
   path: "/workshops",
 });
-
-/* The three figures that are real, from her credentials. The fourth entry in
-   `stats` is the lineage count, which is not a thing to count up. */
-const counts = stats.slice(0, 3);
-const digits = (v: string) => Number(v.replace(/[^\d]/g, ""));
-const suffix = (v: string) => v.replace(/[\d,]/g, "");
 
 /* Each offering appears in exactly ONE section. The finder used to be fed all
    eleven, which meant a visitor scrolled past the same seven rows three times
@@ -154,56 +147,65 @@ export default function WorkshopsPage() {
           }}
         />
 
-        {/* INTRO - what a session with her is actually like, and the only three
-            numbers on this page that are verified. */}
+        {/* INTRO. Cut back 2026-09-17 to what a source actually supports.
+
+            What stood here made four claims about how she runs a room, none of
+            which she has ever told us: "Numbers are kept low", "your alignment
+            is watched and corrected", "every session ends with rest", and
+            "Bring a mat if you have one, wear something you can breathe in,
+            and eat lightly beforehand". Plausible for a yoga teacher, invented
+            for THIS one - and a visitor who turns up matless because the site
+            said so has been misled by us, not by her. The heading "Small
+            groups, watched closely" was the same claim in larger type.
+
+            What is left is sourced. Classical Hatha, Ashtanga Vinyasa,
+            pranayama, meditation and mindfulness are her own credentials
+            (docs/yoga-site-handover.md). Online and in person is the 27 July
+            note. JP Nagar, Bangalore is off her business card. That everything
+            else is settled by writing in is a fact about this build: there is
+            no booking system and every CTA goes to the contact form.
+
+            The three counters that sat under this - 13+, 5,000+, 35+ - are
+            gone. They are her real figures, but they are the same three the
+            About page already sets out in its Journey list, two clicks away,
+            and repeating a credential does not strengthen it.
+
+            The register follows ouranoyoga.com's own class descriptions,
+            which state what happens and stop: "Students will be guided through
+            traditional yoga postures... There is lots of focus on developing
+            the breath and uniting it with movement in the body." No promises
+            about the room. */}
         <Section className="bg-linen py-24 md:py-32">
           <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-7">
               <SectionHead
                 eyebrow="What to expect"
-                title="Small groups, watched closely"
-                standfirst="This is not a video you follow along with. Numbers are kept low, so your alignment is watched and corrected, and every session ends with rest rather than a rush for the door."
+                title="What you will practise"
+                standfirst="Classical Hatha and Ashtanga Vinyasa, with pranayama and meditation carrying the same weight as the movement."
               />
               <div className="mt-10 max-w-[58ch] space-y-6 leading-[1.75] text-ink/80">
                 <p>
-                  Sessions are taught in Classical Hatha and Ashtanga Vinyasa, with pranayama and
-                  meditation carrying the same weight as the movement. Beginners are welcome in
-                  every format; so is a body that is stiff, tired, or coming back after a long gap.
+                  Every format on this page draws on the same practice. What changes is how much
+                  time you have, and whether you join in person in JP Nagar, Bangalore, or online.
                 </p>
                 <p>
-                  Bring a mat if you have one, wear something you can breathe in, and eat lightly
-                  beforehand. Everything else is arranged with you once you have written in.
+                  There is nothing to book and nothing to pay for here. Write in, say which one you
+                  are interested in, and the rest is arranged with you directly.
                 </p>
               </div>
-
-              <ul
-                className="mt-14 grid grid-cols-3 gap-6 border-t border-ink/15 pt-10"
-                data-reveal-stagger
-              >
-                {counts.map((s) => (
-                  <li key={s.label}>
-                    <p
-                      className="font-display text-[clamp(2.2rem,5vw,3.4rem)] font-light leading-none text-moss"
-                      data-count={digits(s.value)}
-                      data-count-suffix={suffix(s.value)}
-                    >
-                      {s.value}
-                    </p>
-                    <p className="label mt-4 text-[0.66rem] text-ink/70">{s.label}</p>
-                  </li>
-                ))}
-              </ul>
             </div>
 
             <div className="lg:col-span-5">
-              {/* The heading beside this says "Small groups, watched closely",
-                  and the frame here used to be `teaching-02` - one teacher
-                  adjusting ONE student under a tree. Accurate alt text, wrong
-                  picture: the section's whole claim is that there is a group
-                  and it is small, and the photograph showed neither.
+              {/* `teaching-02` stood here - one teacher adjusting ONE student
+                  under a tree - beneath a heading that then read "Small
+                  groups, watched closely". Accurate alt text, wrong picture:
+                  the heading's whole claim was a group, and the photograph
+                  showed one person.
 
-                  `teaching-01` is the claim: five people, the teacher on her
-                  own mat at the front, everyone in frame.
+                  That heading is gone now (nobody told us the groups are
+                  small), but the frame stays changed. `teaching-01` is a class
+                  being taught: five people, the teacher on her own mat at the
+                  front, everyone in view.
 
                   `aspect-[3/4]` rather than the old `h-full`. Stretched to the
                   height of the copy beside it the column runs about 0.35:1
