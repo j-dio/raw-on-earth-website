@@ -65,25 +65,25 @@ export default function Home() {
             One composed image: she is already placed on the gradient, in
             profile facing right, with the right of the frame left open. So the
             type sits in her eyeline and there is no separate cutout layer. */}
-        <section className="hero relative min-h-[100svh] overflow-hidden bg-linen">
-          <div
-            className="hero-in-figure absolute inset-0"
-            style={{ "--d": "60ms" } as React.CSSProperties}
-          >
-            <div className="hero-atmos absolute inset-0" role="img" aria-label="Rajalakshmi V seated in padmasana with hands at her heart, eyes closed" />
-          </div>
-          <div
-            className="hero-in-soft absolute inset-0"
-            aria-hidden
-            style={{ "--d": "220ms" } as React.CSSProperties}
-          >
-            <div className="hero-wash absolute inset-0" />
+        <section className="relative min-h-[100svh] overflow-hidden flex items-center bg-linen">
+          <div className="absolute inset-0 z-0">
+             <img
+               src="/media/mockup/pin-classes.png"
+               alt="Yogi in lunge pose"
+               className="w-full h-full object-cover object-[left_center] brightness-[0.65] saturate-[0.65] hue-rotate-[5deg] contrast-[1.2]"
+             />
+             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/10 to-black/30 z-10 pointer-events-none" />
           </div>
 
           <div
-            aria-hidden
-            className="hero-ring brand-mark mark-enso-ring absolute left-1/2 top-[calc(100%_-_var(--med-gap)_-_var(--med)/2)] h-[var(--med)] w-[var(--med)] text-moss lg:left-[26%] lg:top-[46%] lg:h-[min(44vw,660px)] lg:w-[min(44vw,660px)]"
-          />
+            className="hero-in-soft absolute inset-0 z-10 pointer-events-none"
+            style={{ "--d": "400ms" } as React.CSSProperties}
+          >
+            <div
+              aria-hidden
+              className="hero-ring brand-mark mark-enso-ring absolute left-1/2 top-[calc(100%_-_var(--med-gap)_-_var(--med)/2)] h-[var(--med)] w-[var(--med)] text-[#87a091] lg:left-[85%] lg:top-[50%] lg:-translate-y-1/2 lg:-translate-x-1/2 lg:h-[min(70vw,1000px)] lg:w-[min(70vw,1000px)] opacity-[0.25]"
+            />
+          </div>
 
           {/* The section owns the height (see above). The type column stops at
               col 11, not 12: running it to the container edge is what made the
@@ -93,7 +93,7 @@ export default function Home() {
             {/* Portrait is a full-height flex column so the link can be pushed
                 to the foot of the screen (see the link block below). Desktop
                 drops back to normal flow inside the grid cell. */}
-            <div className="hero-copy flex w-full flex-col text-center lg:col-span-6 lg:col-start-7 lg:block lg:text-left">
+            <div className="hero-copy flex w-full flex-col text-center lg:col-span-5 lg:col-start-8 lg:block lg:text-left lg:ml-8">
               {/* Same shape as ouranoyoga.com, which is the reference the client
                   named and the one she keeps pointing at: a short display line,
                   a plain sentence under it, then one button. Her content, their
@@ -117,10 +117,10 @@ export default function Home() {
                   Chrome on Windows will not open a window under 500px, so a
                   390px screenshot is a crop of a 500px page. Use scripts/shot.mjs. */}
               <h1
-                className="hero-in-title font-display text-[clamp(2.4rem,4.6vw,3.6rem)] font-normal uppercase leading-[1.1] tracking-[0.094em] text-moss"
-                style={{ "--d": "600ms" } as React.CSSProperties}
+                className="hero-in-title font-display text-[clamp(2.4rem,4.6vw,3.6rem)] font-normal uppercase leading-[1.1] tracking-[0.094em] text-linen"
+                style={{ "--d": "320ms" } as React.CSSProperties}
               >
-                Yoga <span className="font-light text-moss/40">|</span> Life
+                Yoga <span className="font-light text-linen/40">|</span> Life
               </h1>
 
               {/* Her tagline, and it is a statement, not a quotation - the quote
@@ -131,15 +131,12 @@ export default function Home() {
                   Its own role, not body copy: measured on ouranoyoga's hero at
                   1280, their subline is Lato 24px / 33.6 / weight 300 in a 304px
                   measure - bigger and TIGHTER than their 16px/32 body. Ours held
-                  16px/2.0 at every width, which was right on a phone and far too
-                  small beside a 58px headline on a desktop. Floor stays 1rem so
-                  the phone is unchanged. */}
+                  quotes or text content is more robust than pseudo-elements. */}
               <p
-                className="hero-in mx-auto mt-8 max-w-[26ch] text-[clamp(1rem,1.9vw,1.5rem)] font-light leading-[1.4] text-ink/80 lg:mx-0"
-                style={{ "--d": "760ms" } as React.CSSProperties}
+                className="hero-in-desc text-[clamp(1rem,1.9vw,1.3rem)] font-light leading-[1.6] text-linen"
+                style={{ "--d": "680ms" } as React.CSSProperties}
               >
-                {/* verbatim client copy */}
-                Work on yourself before you work for somebody else.
+                Work on yourself<br />before you work for somebody else.
               </p>
 
               {/* One button, not two. She asked for "Explore Workshops" to go and
@@ -151,12 +148,12 @@ export default function Home() {
                   thumb has to reach. The space it reserves is `--med-gap` in
                   globals.css; the two numbers move together. */}
               <div
-                className="hero-in mx-auto mt-auto flex w-full justify-center lg:mx-0 lg:mt-14 lg:justify-start"
-                style={{ "--d": "880ms" } as React.CSSProperties}
+                className="hero-in-cta mx-auto mt-auto flex w-full justify-center pointer-events-auto lg:mx-0 lg:mt-14 lg:justify-start"
+                style={{ "--d": "760ms" } as React.CSSProperties}
               >
                 <Link
-                  href="/contact"
-                  className="label inline-flex min-h-12 items-center rounded-full bg-moss px-7 text-linen transition-colors duration-300 hover:bg-moss-deep"
+                  href="/book"
+                  className="tap inline-flex justify-center rounded-full bg-[#87a091] px-8 py-3.5 text-[0.7rem] uppercase tracking-[0.15em] text-linen transition-colors hover:bg-[#728b7c] shadow-lg"
                 >
                   Book a session
                 </Link>
@@ -167,7 +164,7 @@ export default function Home() {
         </section>
 
         {/* YOUR HOME OF WELLNESS - image on the right, per the brief */}
-        <section className="wellness bg-sand/45">
+        <section className="wellness bg-[#e8eae3]">
           {/* `lg:items-center`, not top-aligned: the two columns are different
               heights, and centred the difference splits either side of the copy
               instead of pooling under it as one blank corner of sand. */}
@@ -236,27 +233,13 @@ export default function Home() {
                 foot of this column now, and an overhang would let the next
                 section paint over it. */}
             <div className="wellness-media relative lg:-mt-8" data-reveal>
-              {/* Plain <img>, not next/image: the optimiser is off for
-                  Hostinger. Dimensions are on the tag so the column reserves
-                  its height before the file lands.
-
-                  A9, "zoom in where the photo has empty space top and bottom"
-                  (call, 00:58:25). It was shown at its native 2:3, and measured
-                  down the frame the subject only occupies 35%-70% of the
-                  height: above her is out-of-focus canopy, below her is nothing
-                  but blurred grass. A square crop takes 16.7% off each end,
-                  which puts her head at 27% and the mat at 80% - nothing of her
-                  is cut, and the frame stops being a tall box of empty lawn. */}
-              <img
-                src="/media/gallery/raji-28.webp"
-                width={1500}
-                height={2666}
-                loading="lazy"
-                decoding="async"
-                alt="A practitioner sits in padmasana with eyes closed on a woven mat, surrounded by dry autumn leaves and forest trees."
-                className="aspect-square w-full object-cover object-center"
-              />
-
+              <div className="relative w-full h-[60vh] lg:h-[700px]">
+                <img
+                  src="/media/mockup/DSC00168.jpg"
+                  alt="Yoga camel pose in forest"
+                  className="w-full h-full object-cover object-[20%_center] shadow-lg rounded-3xl brightness-[0.90] saturate-[0.65] hue-rotate-[5deg] contrast-[1.2]"
+                />
+              </div>
               {/* Her closing line. It used to end the copy column; the client
                   asked for it under the photograph, and it is better there -
                   set as display type it reads as a caption on the image rather
@@ -305,7 +288,8 @@ export default function Home() {
             arrives, put it back: absolute <img> at -z-10 under a bg-linen/75
             scrim, cards at bg-linen/92. 75% is a measured floor, not taste - at
             70% the standfirst fell to 4.40:1 and failed. */}
-        <section className="bg-linen">
+        <section className="relative bg-linen/75">
+          <img src="/media/mockup/pin-classes.png" alt="" className="absolute inset-0 -z-10 h-full w-full object-cover object-center brightness-125 saturate-150" />
           <div className="mx-auto max-w-[1280px] px-6 py-24 md:px-10 md:py-32 lg:px-20 xl:px-32">
             {/* "Offerings" is her word and it is the heading, not a kicker over
                 an invented headline. */}
@@ -353,7 +337,7 @@ export default function Home() {
                 <li key={o.n}>
                   <Link
                     href={o.href}
-                    className="group flex h-full flex-col bg-linen p-8 transition-colors duration-500 hover:bg-moss hover:text-linen md:p-10"
+                    className="group flex h-full flex-col bg-linen/[0.92] p-8 transition-colors duration-500 hover:bg-moss hover:text-linen md:p-10"
                   >
                     <span>
                       <span className="block font-display text-[1.75rem] leading-tight md:text-3xl">{o.title}</span>

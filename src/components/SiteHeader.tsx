@@ -25,10 +25,12 @@ function NavDropdown({
   item,
   current,
   scrolled,
+  light,
 }: {
   item: HeaderNavItem;
   current: boolean;
   scrolled: boolean;
+  light: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
@@ -84,9 +86,9 @@ function NavDropdown({
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => (open ? hoverClose() : hoverOpen())}
-        className={`label group relative flex items-center gap-2 py-2 text-ink transition-[font-size] duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        className={`label group relative flex items-center gap-2 py-2 transition-[font-size,color] duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
           scrolled ? "text-[0.72rem]" : "text-[0.85rem]"
-        }`}
+        } ${light ? "text-linen" : "text-moss"}`}
       >
         {item.label}
         {/* Drawn, not the &#9662; character. The glyph rendered at a tenth of a
@@ -102,7 +104,7 @@ function NavDropdown({
           strokeLinejoin="round"
           className={`transition-[transform,color,width] duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
             scrolled ? "w-[9px]" : "w-[11px]"
-          } ${open ? "rotate-180 text-gold" : "text-ink/60"}`}
+          } ${open ? "rotate-180 text-gold" : light ? "text-linen/60" : "text-ink/60"}`}
         >
           <path d="M1 1.75 6 6.25 11 1.75" />
         </svg>
@@ -203,8 +205,9 @@ export default function SiteHeader() {
     };
   }, [open]);
 
-  // The only dark ground on this header is the moss full-screen overlay.
-  const light = open;
+  // Both the logo and nav links sit on the dark hero background, so they must be light when at the top.
+  const light = open || !scrolled;
+  const logoLight = open || !scrolled;
 
   const desktopNav = headerNav.filter((item) => item.href !== "/");
   const showCta = pathname !== "/" || scrolled;
@@ -225,7 +228,7 @@ export default function SiteHeader() {
           scrolled ? "h-[68px]" : "h-24"
         }`}
       >
-        <Link href="/" className={`transition-colors ${light ? "text-linen" : "text-ink"}`}>
+        <Link href="/" className={`transition-colors ${logoLight ? "text-linen" : "text-ink"}`}>
           {/* The mark is painted from currentColor through an alpha mask, so it
               follows the same light/dark switch as the nav. The box keeps the
               supplied 1013x559 lockup at its true ratio. */}
@@ -272,7 +275,7 @@ export default function SiteHeader() {
 
               if (item.children)
                 return (
-                  <NavDropdown key={item.label} item={item} current={current} scrolled={scrolled} />
+                  <NavDropdown key={item.label} item={item} current={current} scrolled={scrolled} light={light} />
                 );
 
               return (
@@ -280,9 +283,9 @@ export default function SiteHeader() {
                   key={item.label}
                   href={item.href!}
                   aria-current={current ? "page" : undefined}
-                  className={`label group relative py-2 transition-[font-size] duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                  className={`label group relative py-2 transition-[font-size,color] duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
                     scrolled ? "text-[0.72rem]" : "text-[0.85rem]"
-                  } ${light ? "text-linen" : "text-ink"}`}
+                  } ${light ? "text-linen" : "text-moss"}`}
                 >
                   {item.label}
                   <span
