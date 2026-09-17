@@ -156,9 +156,26 @@ export default function ClassFinder({ items }: { items: Workshop[] }) {
               </div>
 
               <div className="md:col-span-3 md:text-right">
-                {/* No date is printed because no date exists. See the comment at
-                    the top of src/data/workshops.ts. */}
-                <p className="text-sm text-ink/70">Dates announced soon</p>
+                {/* The timetable column, and the reason this block is a
+                    timetable rather than a second copy of the services list.
+                    A recurring class genuinely has a day and a time, so when
+                    `day`/`time` are set they are the most useful thing in the
+                    row and they print first, largest.
+
+                    When they are not set nothing is invented: the row falls
+                    back to the line it has always carried. See the head of
+                    src/data/workshops.ts, and SAMPLE_SCHEDULE there for why
+                    the values are currently filled in. */}
+                {w.day ? (
+                  <>
+                    <p className="font-display text-[1.15rem] font-light leading-tight text-moss">
+                      {w.day}
+                    </p>
+                    {w.time ? <p className="mt-1 text-sm text-ink/70">{w.time}</p> : null}
+                  </>
+                ) : (
+                  <p className="text-sm text-ink/70">Dates announced soon</p>
+                )}
                 {/* min-h-11 is the 44px tap target; the rule stays on the inner
                     span so it hugs the text. The title is in the accessible
                     name because otherwise every row's link reads the same. */}

@@ -205,9 +205,20 @@ export default function SiteHeader() {
     };
   }, [open]);
 
-  // Both the logo and nav links sit on the dark hero background, so they must be light when at the top.
-  const light = open || !scrolled;
-  const logoLight = open || !scrolled;
+  /* Light type is for a DARK ground, and only two grounds on this site are
+     dark: the full-screen mobile overlay, and the home hero.
+
+     `open || !scrolled` was applied on every route, which put white links and
+     a white wordmark over the inner pages' linen masthead - invisible until
+     you scrolled. The inner masthead is light by design; CLAUDE.md says so in
+     bold, and says a dark-hero assumption found anywhere is a leftover.
+
+     So the unscrolled half of this is gated on the home page. Everything else
+     behaves as it did before the hero redesign: ink type, and light only while
+     the overlay is open. */
+  const overHomeHero = pathname === "/" && !scrolled;
+  const light = open || overHomeHero;
+  const logoLight = open || overHomeHero;
 
   const desktopNav = headerNav.filter((item) => item.href !== "/");
   const showCta = pathname !== "/" || scrolled;

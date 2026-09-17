@@ -3,6 +3,7 @@
 import { useState } from "react";
 import GalleryGrid from "@/components/GalleryGrid";
 import type { GalleryCategoryName, GalleryItem } from "@/data/gallery";
+import { scrollToId } from "@/lib/smooth-scroll";
 
 export default function GallerySection({
   items,
@@ -45,9 +46,16 @@ export default function GallerySection({
             <span className="w-6 h-px bg-moss/40"></span>
             <p className="eyebrow tracking-widest text-sm uppercase">Gallery</p>
           </div>
-          <h2 className="t-h2 text-6xl md:text-8xl font-light mb-8">
+          {/* h1, not h2. This page carried NO h1 at all - the masthead
+              heading was an h2 and the only other headings were an h3 below it
+              and the CtaBand's h2 - so it had no top-level heading for a
+              screen reader's outline or for search. Tag change only: nothing
+              in globals.css styles a bare h1/h2/h3, every size here comes from
+              the class list, and the rendered box was measured identical
+              before and after. */}
+          <h1 className="t-h2 text-6xl md:text-8xl font-light mb-8">
             Gallery
-          </h2>
+          </h1>
           <p className="t-body text-ink/80 max-w-md text-lg md:text-xl font-light leading-relaxed">
             Moments, people and experiences<br/>from our community.
           </p>
@@ -59,9 +67,12 @@ export default function GallerySection({
           <div className="flex flex-col md:flex-row md:justify-between items-start md:items-center gap-10">
             <div className="max-w-xl">
               <p className="eyebrow tracking-widest text-sm uppercase mb-4 text-moss">Explore by category</p>
-              <h3 className="t-h2 text-4xl md:text-6xl text-moss font-light leading-tight">
+              {/* h2 for the same reason: with the masthead now an h1, this
+                  section heading steps up one so the outline runs h1 then h2
+                  rather than h1 then h3. Tag change only. */}
+              <h2 className="t-h2 text-4xl md:text-6xl text-moss font-light leading-tight">
                 Every corner of<br/>the practice
-              </h3>
+              </h2>
             </div>
             <div className="max-w-md">
               <p className="t-body text-ink/70 leading-relaxed">
@@ -85,9 +96,10 @@ export default function GallerySection({
                   key={card.name}
                   onClick={() => {
                     setSelectedCategory(card.name);
-                    setTimeout(() => {
-                      document.getElementById('gallery-grid')?.scrollIntoView({ behavior: 'smooth' });
-                    }, 100);
+                    /* Through the shared helper, not scrollIntoView: Lenis
+                       owns the scroll position and a native smooth scroll
+                       animates the same thing at the same time. */
+                    setTimeout(() => scrollToId('gallery-grid'), 100);
                   }}
                   className={`flex flex-col flex-shrink-0 w-64 md:w-80 h-[24rem] md:h-[28rem] snap-start rounded-xl overflow-hidden transition-all duration-500 ease-out group border ${
                     isActive ? 'border-moss shadow-md' : 'border-moss/10 shadow-sm hover:shadow-md hover:border-moss/30 hover:-translate-y-1'
@@ -130,7 +142,8 @@ export default function GallerySection({
                       key={card.name}
                       onClick={() => {
                         setSelectedCategory(card.name);
-                        window.scrollTo({ top: document.getElementById('gallery-grid')?.offsetTop! - 68, behavior: 'smooth' });
+                        /* 68 is the shrunk header's height - see CLAUDE.md. */
+                        scrollToId('gallery-grid', 68);
                       }}
                       className={`shrink-0 w-48 md:w-56 p-4 text-left rounded-xl border transition-all duration-300 snap-start ${
                         isActive 

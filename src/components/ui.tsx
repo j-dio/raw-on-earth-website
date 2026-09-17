@@ -15,6 +15,21 @@ import type { ReactNode } from "react";
    SECTION - the one horizontal measure on the site. 1400px, matching Home.
    `wide` is for full-bleed media bands that only need the gutter.
    --------------------------------------------------------------------------- */
+/* The site's one measured container, exported because PageHero needs the same
+   one and a second copy of the string is how the two drifted apart in the first
+   place: the masthead ran `max-w-[1400px] px-6 md:px-10` while everything under
+   it ran this, so from `lg` up an H1 sat 148px left of every heading below it.
+
+   Gutter measured off ouranoyoga.com: 128px at a 1280 viewport, so the content
+   column is 1024 and a full fifth of the screen is air. Ours was 40px, which is
+   why the same page read as crowded next to theirs.
+
+   `CONTAINER_WIDE` is the looser frame, for a full-bleed strip that is meant to
+   run past the text rule rather than sit on it - the photo bands, and the
+   masthead figure. */
+export const CONTAINER = "mx-auto px-6 md:px-10 lg:px-20 xl:px-32 max-w-[1280px]";
+export const CONTAINER_WIDE = "mx-auto px-6 md:px-10 lg:px-20 xl:px-32 max-w-[1700px]";
+
 export function Section({
   children,
   className = "",
@@ -30,15 +45,7 @@ export function Section({
 }) {
   return (
     <Tag id={id} className={className}>
-      {/* Gutter measured off ouranoyoga.com: 128px at a 1280 viewport, so the
-          content column is 1024 and a full fifth of the screen is air. Ours was
-          40px, which is why the same page read as crowded next to theirs. The
-          `wide` variant keeps its own looser frame for full-bleed strips. */}
-      <div
-        className={`mx-auto px-6 md:px-10 lg:px-20 xl:px-32 ${
-          wide ? "max-w-[1700px]" : "max-w-[1280px]"
-        }`}
-      >
+      <div className={wide ? CONTAINER_WIDE : CONTAINER}>
         {children}
       </div>
     </Tag>
