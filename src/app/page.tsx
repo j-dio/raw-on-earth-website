@@ -91,12 +91,18 @@ export default function Home() {
               column of air reads as composition rather than overflow. */}
           {/* The hero grid holds only the copy - she is an absolute layer behind it -
               so the container's own padding IS the type's position. From lg up
-              the left and right padding are deliberately lopsided by 40px
-              (96/16 against the old 56/56, 120/40 against 80/80): the pair still
-              sums to the same total, so the column keeps its width and the
-              headline stays on one line, but everything sits 40px further right,
-              off the blurred edge of the photograph. Change them as a pair. */}
-          <div className="relative z-10 mx-auto flex h-full min-h-[100svh] max-w-[1500px] items-stretch px-6 pt-28 pb-16 md:px-10 lg:grid lg:grid-cols-12 lg:items-center lg:gap-8 lg:pl-24 lg:pr-4 lg:pt-20 lg:pb-20 2xl:pl-[7.5rem] 2xl:pr-10">
+              the left and right padding are deliberately lopsided: 96/16 at lg
+              and xl against the old 56/56, 160/0 at 2xl against 80/80. Each pair
+              sums to what it replaced, so the column keeps its width and the
+              headline stays on one line at 641-654px - it fills the column
+              almost exactly, so any pair that does not sum will wrap it. Change
+              them as a pair.
+
+              That is 40px right below 1536 and 80px from 1536 up, where the
+              container is capped at 1500 and centred, so a zero right padding
+              still leaves 200px of air beside the type on a 1912 screen. The
+              tablet range was judged right at 40px and is left alone. */}
+          <div className="relative z-10 mx-auto flex h-full min-h-[100svh] max-w-[1500px] items-stretch px-6 pt-28 pb-16 md:px-10 lg:grid lg:grid-cols-12 lg:items-center lg:gap-8 lg:pl-24 lg:pr-4 lg:pt-20 lg:pb-20 2xl:pl-[10rem] 2xl:pr-0">
             {/* Portrait is a full-height flex column so the link can be pushed
                 to the foot of the screen (see the link block below). Desktop
                 drops back to normal flow inside the grid cell. */}
