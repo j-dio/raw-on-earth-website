@@ -154,11 +154,39 @@ export default function MentorshipPage() {
           eyebrow="Mentorship"
           title="Ways to practise"
           standfirst="Individual teaching, workplace programmes, retreats, schools and online courses. The same practice, sized to whoever is in the room."
+          /* kids-32, her crouched among a yard of school children. It
+             replaced a row of students in crow pose: clean and bright, but
+             crow is an athletic shape and this page has to cover one-to-one
+             teaching, workplaces, retreats, schools and online courses. A
+             teacher at work among a group covers all five; a balance on the
+             hands covers one.
+
+             Chosen over kids-31 and kids-33 by rendering all three at this
+             ratio: 31 hides her behind a child in the foreground, 33 puts her
+             too far back with a blurred child filling the frame. In 32 she is
+             central, her face is in, and the children spread either side.
+
+             Crop 1500:844:0:80, and 16:9 rather than the 21:9 the rest of
+             this folder holds. PageHero runs a 16:9 box below `lg`, so a 21:9
+             master meets object-cover on a phone and trims the SIDES - which
+             on this picture is the children. A 16:9 master crops nothing
+             there and trims height on desktop instead. Same fix as
+             /workshops, measured there: phone and tablet 0px, 1440 trims
+             207px of height.
+
+             1500px wide against the other heroes' 2400. Ask her for the
+             full-resolution original.
+
+             GATE BEFORE LAUNCH: identifiable children's faces, and "whether
+             the 27 children's faces may be published" is still on the open
+             list in docs/CLIENT-BRIEF.md. Fine on a dev server, not on a live
+             domain until she answers. `/media/hero/gallery.webp` is a class
+             mid-session, has no children in it, and is unused. */
           figure={{
             src: "/media/hero/services.webp",
-            alt: "A row of students hold crow pose on coloured mats in a bright studio with floor-to-ceiling windows and potted palms, the instructor demonstrating at the front.",
-            width: 2400,
-            height: 1028,
+            alt: "The founder crouches among a yard full of school children, steadying one of them in a seated forward fold, a wire fence and trees behind.",
+            width: 1500,
+            height: 844,
           }}
         />
 
@@ -285,8 +313,17 @@ export default function MentorshipPage() {
           <Section wide>
             <div className="overflow-hidden" data-reveal>
               <img
-                src="/media/gallery/teaching-08.webp"
-                alt="A teacher spots a laughing student attempting crow pose on a black mat inside a thatched pavilion."
+                /* A quiet plate, deliberately. What stood here was a tight
+                   close-up of a student being spotted in crow pose - a good
+                   photograph, but the section it heads is "Away from the
+                   city" and the frame was the most physically intense thing
+                   on the page.
+
+                   An open book on a tiled floor is the opposite, and it is
+                   not decoration: the retreat copy below says "morning
+                   practice, afternoon study". This is the study. */
+                src="/media/gallery/meditation-01.webp"
+                alt="A well-thumbed book lies open on a tiled floor at a page describing the Ashtanga sequence, a bare foot resting at the edge of the frame."
                 width={1500}
                 height={2666}
                 loading="lazy"
