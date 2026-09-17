@@ -67,16 +67,10 @@ export default function ContactPage() {
       <SiteHeader />
 
       <main id="main">
-        <PageHero
-          eyebrow="Contact"
-          title="Start with a message"
-          standfirst="A question, a class you are curious about, or a programme for your team. Every enquiry is read by Rajalakshmi, and a reply usually takes a couple of days."
-        />
+        {/* No standfirst. The heading says start with a message and the form is
+            directly under it; a paragraph in between only delayed it. */}
+        <PageHero eyebrow="Contact" title="Start with a message" />
 
-        {/* FORM + DETAILS
-            Form first in the DOM, so on a phone the details fall below it
-            rather than standing between the heading and the first input. The
-            grid only splits them from lg up. */}
         {/* Short top padding on purpose. This is the page every CTA points at, so
             the form has to be visible without a scroll: the hero rule sits at
             about y=516 on a 1280x720 laptop, and the standard py-32 put "Send an
