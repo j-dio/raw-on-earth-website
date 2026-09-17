@@ -295,9 +295,10 @@ body {
 /* Under lg the wellness block is one column, and the order the two columns
    hold on a desktop is the wrong order on a phone: it puts 300 words of prose
    on the screen straight after the hero, with the photograph below all of it.
-   `display: contents` dissolves the media column so its children become items
-   of the same flex column as the copy and can be ordered against it. Picture,
-   heading, prose, button. From lg up the grid is untouched.
+   `display: contents` dissolves the media column so its two children - the
+   picture and her closing line - become items of the same flex column as the
+   copy, and can be ordered independently. Picture, heading, prose, button,
+   closing line. From lg up the grid is untouched.
 
    The media column carries `data-reveal`; a `display: contents` box cannot be
    transformed, so on a phone that one reveal simply does not play and the
@@ -316,8 +317,12 @@ body {
     display: contents;
   }
 
-  .wellness-grid > .wellness-media > * {
+  .wellness-grid > .wellness-media > img {
     order: 1;
+  }
+
+  .wellness-grid > .wellness-media > p {
+    order: 3;
   }
 }
 
