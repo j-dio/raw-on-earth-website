@@ -30,7 +30,8 @@ const audienceCards = [
     n: "01",
     title: "For yourself",
     subtitle: "Individual & Online",
-    body: "One-to-one teaching or a small group that keeps its own rhythm. Start where your body is today.",
+    body:
+      "One-to-one teaching, built around what your own practice needs. Taught online or in person, at a time arranged with you.",
     img: {
       src: "/media/gallery/raji-11.webp",
       alt: "The founder folds into a standing side stretch with her eyes closed, lit from behind in a park at dusk.",
@@ -42,7 +43,8 @@ const audienceCards = [
     n: "02",
     title: "For your team",
     subtitle: "Corporate",
-    body: "Programmes for people under load, run on site in your own rooms or online for a team working apart.",
+    body:
+      "Programmes for teams at work, run for organisations across technology, finance, retail and education. Held on site in your own rooms, or online for people working apart.",
     img: {
       src: "/media/gallery/teaching-07.webp",
       alt: "A teacher leads a standing group class with palms pressed together, students lined up on mats inside a long thatched hall.",
@@ -54,7 +56,8 @@ const audienceCards = [
     n: "03",
     title: "For a group you gather",
     subtitle: "Retreats & Schools",
-    body: "A school, a studio, a circle of friends. Time away, or a practice brought into a room you already have.",
+    body:
+      "A retreat arranged for a group that already exists: a team, a studio, a family, a circle of friends. Or sessions for children and the adults who teach them, taught in the space your school already has.",
     img: {
       src: "/media/gallery/kids-14.webp",
       alt: "Rows of schoolchildren in white shirts stand at attention on coloured mats arranged in a wide outdoor courtyard.",
@@ -182,7 +185,10 @@ export default function MentorshipPage() {
 
         <CtaBand
           title="Begin where you are"
-          body="Tell us which of these sounds like you, or describe the week you are having and let Raji suggest one."
+          /* There is no booking system on this site and none is specified,
+             so this says how it actually starts. Kept from main: it replaced
+             a four-step "How it works" section that invented the rest. */
+          body="There is no booking system here. Write, or send a message on WhatsApp, and she will answer you directly."
           primary={{ href: "/contact", label: "Start a conversation" }}
           secondary={{ href: "/workshops", label: "See Workshops" }}
         />
