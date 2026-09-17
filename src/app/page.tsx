@@ -1,5 +1,6 @@
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
+import EnsoMark from "@/components/EnsoMark";
 import SiteFooter from "@/components/SiteFooter";
 import { CtaBand } from "@/components/ui";
 import { offerings, pillars } from "@/data/home";
@@ -103,10 +104,7 @@ export default function Home() {
             className="hero-in-soft absolute inset-0 z-10 pointer-events-none"
             style={{ "--d": "400ms" } as React.CSSProperties}
           >
-            <div
-              aria-hidden
-              className="hero-ring brand-mark mark-enso-ring absolute left-1/2 top-[calc(100%_-_var(--med-gap)_-_var(--med)/2)] h-[var(--med)] w-[var(--med)] text-[#87a091] lg:left-[85%] lg:top-[50%] lg:-translate-y-1/2 lg:-translate-x-1/2 lg:h-[min(70vw,1000px)] lg:w-[min(70vw,1000px)] 2xl:h-[min(70vw,1400px)] 2xl:w-[min(70vw,1400px)] opacity-[0.25]"
-            />
+            <EnsoMark variant="hero" />
           </div>
 
           {/* The section owns the height (see above). The type column stops at

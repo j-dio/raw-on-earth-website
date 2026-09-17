@@ -17,6 +17,7 @@
      ever sits on it. */
 
 import { CONTAINER, CONTAINER_WIDE } from "@/components/ui";
+import EnsoMark from "@/components/EnsoMark";
 
 export default function PageHero({
   eyebrow,
@@ -31,6 +32,10 @@ export default function PageHero({
 }) {
   return (
     <section className="page-hero tex tex-paper relative overflow-hidden bg-linen pt-36 md:pt-44">
+      {/* Was `.page-hero::after` in globals.css. Moved into EnsoMark so the
+          home hero and every inner masthead draw the same mark from one
+          definition - see that file. */}
+      <EnsoMark variant="masthead" />
       {/* The padding-bottom is load-bearing: `.page-hero` sets a top padding
           only, and this block used to end on a LeafRule whose `mt-14 md:mt-20`
           was the gap. With the rule gone the standfirst sat flush against the
