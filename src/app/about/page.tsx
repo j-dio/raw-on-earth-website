@@ -6,7 +6,7 @@ import JsonLd from "@/components/JsonLd";
 import { Section, SectionHead, CtaBand, Prose } from "@/components/ui";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { site } from "@/data/site";
-import { story, belief, journey, corporateClients } from "@/data/about";
+import { story, belief, journey } from "@/data/about";
 
 /* About:
 
@@ -14,8 +14,10 @@ import { story, belief, journey, corporateClients } from "@/data/about";
      2. Belief     the brief indents this quote away from the running copy, so
                    it gets a panel rather than a paragraph.
      3. Journey    the brief's "Journey" list, seven items.
-     4. Corporate  the four companies she named on the call. Text, never logos.
-     5. Photo band three frames, no captions.
+     4. Photo band three frames, no captions.
+
+   The corporate client list used to sit between 3 and 4. It moved to
+   /workshops on 2026-09-17 - see the comment where it stood.
 
    Grounds: linen -> mist -> sand -> linen, closing on the CtaBand. One mild
    green, not a page that keeps falling into a dark panel (client, 00:46:22
@@ -29,7 +31,7 @@ import { story, belief, journey, corporateClients } from "@/data/about";
 export const metadata: Metadata = pageMeta({
   title: "About",
   description:
-    "Rajalakshmi V on the practice behind Raw On Earth: thirteen years of Hatha and Ashtanga Vinyasa, training in Rishikesh and Dharamshala, and workshops for teams at Volvo, JP Morgan, Amazon and Sayronics.",
+    "Rajalakshmi V on the practice behind Raw On Earth: thirteen years of Hatha and Ashtanga Vinyasa, training in Rishikesh and Dharamshala, and a practice taught to individuals, schools and organisations.",
   path: "/about",
 });
 
@@ -326,32 +328,17 @@ export default function AboutPage() {
             page while `testimonials` in src/data/home.ts is still placeholder
             text - see src/app/community/page.tsx. */}
 
-        {/* CORPORATE CREDENTIALS (B7). She asked for this herself: "these
-            companies have to be projected somewhere" (00:55:45).
+        {/* CORPORATE CREDENTIALS moved to /workshops on 2026-09-17.
 
-            Four names as plain type and nothing else. No logos - we have no
-            licence to reproduce anyone's mark - and no invented context, so
-            the section makes exactly the claim she made and no larger one.
-            The names and the open spelling question are in src/data/about.ts. */}
-        <Section className="bg-linen pt-24 md:pt-32">
-          <div className="mx-auto max-w-3xl text-center" data-reveal>
-            <p className="eyebrow">Corporate work</p>
-            <h2 className="t-h2 mt-5 text-moss">Taken into the workplace</h2>
-            <p className="mx-auto mt-6 max-w-[54ch] leading-relaxed text-ink/80">
-              Workshops have been run for teams at:
-            </p>
-          </div>
-          <ul
-            className="mx-auto mt-10 flex max-w-3xl flex-wrap items-baseline justify-center gap-x-10 gap-y-4 md:gap-x-14"
-            data-reveal-stagger
-          >
-            {corporateClients.map((name) => (
-              <li key={name} className="t-h3 text-moss">
-                {name}
-              </li>
-            ))}
-          </ul>
-        </Section>
+            She asked for the companies herself - "these companies have to be
+            projected somewhere. You think about it. I'll leave it to you"
+            (00:55:45) - and left the placement open. Her own 27 July brief
+            closes it: Tab 3 is "Events (regular, one to one) + Gallery ...
+            Photos - online session / offline / 1-2 corporate pics". The
+            credential belongs beside the corporate work, not in the middle of
+            her life story, and the list is thirteen names now, which needs the
+            room that page has. See the "For organisations and schools" section
+            in src/app/workshops/page.tsx. */}
 
         {/* A breath between the copy and the CtaBand. Three frames, three
             different ratios, staggered so the row reads as three moments rather

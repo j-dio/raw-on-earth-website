@@ -221,3 +221,45 @@ export const pastFormats: PastFormat[] = [
   // No fee stated: nobody has told us how community sessions are charged.
   { title: "Community and volunteer gatherings", note: "Open sessions, run with the community" },
 ];
+
+/* Corporate credentials. She asked for these herself, unprompted, on the call
+   of 6 September 2026 (00:55:45): "I want my work to talk somewhere... I do
+   workshops for Volvo, JP Morgan, Amazon, Sayronics. So these companies have
+   to be projected somewhere. You think about it. I'll leave it to you."
+
+   She left the placement to us and then answered it herself in the 27 July
+   brief, whose Tab 3 is "Events (regular, one to one) + Gallery ... Photos -
+   online session / offline / 1-2 corporate pics". Corporate belongs with the
+   workshops, not in the middle of her life story - which is where this list
+   sat until 2026-09-17.
+
+   SUPERSEDED, and this is the list that counts. On 2026-09-16 she supplied the
+   names herself, as a slide. The four she said aloud on the call are not the
+   authority any more: Volvo and Sayronics are NOT on her slide and must not go
+   back. Her thirteen, in her order and her spelling:
+
+   OPEN, to raise with her rather than fix here: "Zeroda" is almost certainly
+   Zerodha, and "Sony Corp" and "Kushals Corp" carry a suffix the other eleven
+   do not. Publishing a misspelling of a real company is the risk; changing a
+   client's own list without asking is the other one. Her spelling ships until
+   she says otherwise.
+
+   Text only, never their logos - we have no licence to reproduce anyone's
+   mark. No dates, no project descriptions, no testimonials: she named the
+   organisations and said nothing else about the work, and inventing the rest
+   is how a credential turns into a claim. */
+export const corporateClients = [
+  "Nykaa",
+  "Sonata",
+  "Zeroda",
+  "Amazon",
+  "Eurokids",
+  "Tektronix",
+  "MyGlamm",
+  "Sony Corp",
+  "JP Morgan",
+  "Kushals Corp",
+  "Rotaract JP Nagar",
+  "The Montessori School",
+  "IIM Bangalore (faculty)",
+];

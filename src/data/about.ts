@@ -86,19 +86,9 @@ export const journey: JourneyItem[] = [
   { lead: "35+", count: 35, suffix: "+", label: "Workshops" },
 ];
 
-/* Corporate credentials. She asked for these herself, unprompted, on the call
-   of 6 September 2026 (00:55:45): "I do workshops for Volvo, JP Morgan,
-   Amazon, Sayronics. So these companies have to be projected somewhere."
-
-   Four names, in her order, and nothing else. No logos - we have no licence to
-   use anyone's mark. No project descriptions, no dates, no testimonials: she
-   named the companies and said nothing else about the work, and inventing the
-   rest is how a credential turns into a claim.
-
-   Her business cards list eleven more organisations. She named four, so it is
-   four until she says otherwise.
-
-   OPEN QUESTION: the last name is spelled "Sayronics" in the call transcript
-   and "Saironics" in the meeting notes. Nobody has asked her which. Confirm
-   before this goes to a live domain. */
-export const corporateClients = ["Volvo", "JP Morgan", "Amazon", "Sayronics"];
+/* The corporate client list moved to src/data/workshops.ts on 2026-09-17.
+   She left the placement to us (00:55:45) and her own 27 July brief answers
+   it: Tab 3 is "Events (regular, one to one) ... 1-2 corporate pics". The
+   credential belongs with the workshops, not in the middle of her life story.
+   The four names that used to live here included two - Volvo and Sayronics -
+   that are not on the slide she sent on 2026-09-16; they are gone with it. */

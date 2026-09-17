@@ -8,7 +8,13 @@ import ClassFinder from "@/components/ClassFinder";
 import { Section, SectionHead, LeafRule, Button, CtaBand } from "@/components/ui";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { stats } from "@/data/home";
-import { workshops, pastFormats, kindLabels, modeLabels } from "@/data/workshops";
+import {
+  workshops,
+  pastFormats,
+  kindLabels,
+  modeLabels,
+  corporateClients,
+} from "@/data/workshops";
 import { site } from "@/data/site";
 
 /* Workshops.
@@ -265,6 +271,45 @@ export default function WorkshopsPage() {
             </div>
           </Section>
         </section>
+
+        {/* CORPORATE CREDENTIALS. Moved here from /about on 2026-09-17.
+
+            She asked for the companies herself and left us the placement -
+            "these companies have to be projected somewhere. You think about
+            it. I'll leave it to you" (00:55:45). Her own 27 July brief answers
+            it: Tab 3 is "Events (regular, one to one) + Gallery ... Photos -
+            online session / offline / 1-2 corporate pics". So the credential
+            sits directly under the organisations section it is evidence for,
+            rather than in the middle of her life story.
+
+            Thirteen names, from the slide she sent on 2026-09-16. They are set
+            as a hairline grid rather than as a centred run of text: thirteen
+            company names as running type is what made an earlier attempt at
+            this the busiest thing on the site. A grid gives each one its own
+            cell and the row stays quiet.
+
+            Text only, never their logos, and no context invented around them.
+            The list and the two open spellings are in src/data/workshops.ts. */}
+        <Section className="bg-linen pt-24 md:pt-32">
+          <SectionHead
+            eyebrow="Corporate work"
+            title="Taken into the workplace"
+            standfirst="Programmes and sessions have been run for teams at:"
+          />
+          <ul
+            className="mt-14 grid grid-cols-2 gap-px bg-ink/15 lg:grid-cols-3"
+            data-reveal-stagger
+          >
+            {corporateClients.map((name) => (
+              <li
+                key={name}
+                className="flex items-center bg-linen px-4 py-5 font-display text-[1.05rem] font-light leading-snug text-moss sm:px-6 sm:py-6 sm:text-[1.15rem] md:px-8 md:py-7 md:text-[1.35rem]"
+              >
+                {name}
+              </li>
+            ))}
+          </ul>
+        </Section>
 
         {/* PAST WORK - quiet, small, no photographs. Formats, not invented
             events: 35+ workshops have been run and not one title or date
