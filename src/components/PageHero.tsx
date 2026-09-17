@@ -16,6 +16,8 @@
      behind it. The picture still lands above the fold on a laptop and no text
      ever sits on it. */
 
+import { CONTAINER, CONTAINER_WIDE } from "@/components/ui";
+
 export default function PageHero({
   eyebrow,
   title,
@@ -33,7 +35,13 @@ export default function PageHero({
           only, and this block used to end on a LeafRule whose `mt-14 md:mt-20`
           was the gap. With the rule gone the standfirst sat flush against the
           section edge - measured 0px on /about and /contact. Same 56/80px. */}
-      <div className="mx-auto max-w-[1400px] px-6 pb-14 md:px-10 md:pb-20">
+      {/* CONTAINER, not a container of its own. This block ran
+          `max-w-[1400px] px-6 md:px-10` while every Section under it ran the
+          measured one, so from `lg` up the H1 sat 148px to the LEFT of every
+          heading below it - 60px against 208px at 1440. Measured on /workshops
+          once the masthead figure came off and the two headings became
+          adjacent; it was on all six inner pages. */}
+      <div className={`${CONTAINER} pb-14 md:pb-20`}>
         <div className="max-w-4xl">
           <p className="eyebrow page-hero-in" style={{ "--d": "80ms" } as React.CSSProperties}>
             {eyebrow}
@@ -65,7 +73,11 @@ export default function PageHero({
            slow push-in on scroll (Motion.tsx) - the one moving thing at the top
            of an inner page. */
         <div className="page-hero-in mt-12 overflow-hidden md:mt-16">
-          <div className="mx-auto max-w-[1700px] px-6 md:px-10">
+          {/* CONTAINER_WIDE, deliberately not the text rule. The figure is a
+              full-bleed plate rather than a column - the same device the photo
+              bands use through `Section wide` - so it runs past the type on
+              purpose. Only the TYPE had to move to fix the jog. */}
+          <div className={CONTAINER_WIDE}>
             <div className="relative overflow-hidden">
               <img
                 src={figure.src}
