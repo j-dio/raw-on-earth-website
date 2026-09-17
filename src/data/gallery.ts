@@ -55,7 +55,10 @@ export const gallery: GalleryItem[] = [
     w: 2400,
     h: 2400,
     alt: "A row of students hold crow pose on coloured mats in a bright studio with floor-to-ceiling windows and potted palms, the instructor demonstrating at the front.",
-    caption: "Crow pose, in good light",
+    caption: "The class takes on crow",
+    /* Flagged 2026-09-17: the catalogue missed these two. Both frames show
+       identifiable children, and consent is still an open question. */
+    childrenFaces: true,
   },
   {
     id: "kids-26",
@@ -65,7 +68,8 @@ export const gallery: GalleryItem[] = [
     w: 2400,
     h: 2400,
     alt: "A student holds crow pose on a mat while an instructor in a mauve t-shirt observes and corrects alignment nearby, large windows and potted plants behind.",
-    caption: "An eye on every alignment",
+    caption: "Crow pose, under her eye",
+    childrenFaces: true,
   },
   {
     id: "raji-11",
@@ -75,7 +79,7 @@ export const gallery: GalleryItem[] = [
     w: 1500,
     h: 2246,
     alt: "The founder folds into a standing side stretch with her eyes closed, lit from behind in a park at dusk.",
-    caption: "Side stretch at dusk",
+    caption: "A twist, and the light behind it",
   },
   {
     id: "raji-13",
@@ -85,7 +89,7 @@ export const gallery: GalleryItem[] = [
     w: 1500,
     h: 2246,
     alt: "The founder arches back in a kneeling lunge with one leg extended, head tilted skyward in a grassy park.",
-    caption: "Backbend in the evening light",
+    caption: "Low lunge, head tipped back",
   },
   {
     id: "raji-14",
@@ -105,7 +109,7 @@ export const gallery: GalleryItem[] = [
     w: 1500,
     h: 2666,
     alt: "A teacher spots a laughing student attempting crow pose on a black mat inside a thatched pavilion.",
-    caption: "Laughter mid-arm-balance",
+    caption: "Spotted, and laughing about it",
   },
   {
     id: "community-03",

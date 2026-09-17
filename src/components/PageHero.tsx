@@ -16,6 +16,8 @@
      behind it. The picture still lands above the fold on a laptop and no text
      ever sits on it. */
 
+import { CONTAINER, CONTAINER_WIDE } from "@/components/ui";
+
 export default function PageHero({
   eyebrow,
   title,
@@ -29,11 +31,42 @@ export default function PageHero({
 }) {
   return (
     <section className="page-hero tex tex-paper relative overflow-hidden bg-linen pt-36 md:pt-44">
+      {/* NO ENSO ON INNER MASTHEADS, and that is deliberate.
+
+          It was a `.page-hero::after` rule until 2026-09-17, then an EnsoMark
+          component, and is now nothing. A 620px circle cannot fit a 371px
+          block, and this section clips with `overflow: hidden`, so on the
+          shorter mastheads the arc was cut by a straight horizontal line -
+          measured at 1440px, the circle's bottom sat at 124% of the /about
+          masthead, 149% of /contact and 96% of /workshops.
+
+          Two ways of moving it were tried the same day and both looked worse
+          than the cut. Sizing it off the masthead's height broke the layout
+          outright: percentage heights need a parent with a known height and
+          this one is content-sized, so /about grew from 437px to 1877px.
+          Anchoring the circle's centre to the bottom edge put the cut at the
+          arc's widest point, which is geometrically right and still read
+          wrong.
+
+          Dropping it from the two shortest mastheads first left the mark on
+          some routes and not others, which is worse than not having it. So it
+          is off everywhere here. The home hero keeps its own - see
+          EnsoMark - because that block is a full screen tall and has room.
+
+          Bring it back when the mark has a crop that survives a 371px block,
+          or when these mastheads get taller. The hero variant in EnsoMark is
+          the reference for how it should look.
       {/* The padding-bottom is load-bearing: `.page-hero` sets a top padding
           only, and this block used to end on a LeafRule whose `mt-14 md:mt-20`
           was the gap. With the rule gone the standfirst sat flush against the
           section edge - measured 0px on /about and /contact. Same 56/80px. */}
-      <div className="mx-auto max-w-[1400px] px-6 pb-14 md:px-10 md:pb-20">
+      {/* CONTAINER, not a container of its own. This block ran
+          `max-w-[1400px] px-6 md:px-10` while every Section under it ran the
+          measured one, so from `lg` up the H1 sat 148px to the LEFT of every
+          heading below it - 60px against 208px at 1440. Measured on /workshops
+          once the masthead figure came off and the two headings became
+          adjacent; it was on all six inner pages. */}
+      <div className={`${CONTAINER} pb-14 md:pb-20`}>
         <div className="max-w-4xl">
           <p className="eyebrow page-hero-in" style={{ "--d": "80ms" } as React.CSSProperties}>
             {eyebrow}
@@ -65,7 +98,11 @@ export default function PageHero({
            slow push-in on scroll (Motion.tsx) - the one moving thing at the top
            of an inner page. */
         <div className="page-hero-in mt-12 overflow-hidden md:mt-16">
-          <div className="mx-auto max-w-[1700px] px-6 md:px-10">
+          {/* CONTAINER_WIDE, deliberately not the text rule. The figure is a
+              full-bleed plate rather than a column - the same device the photo
+              bands use through `Section wide` - so it runs past the type on
+              purpose. Only the TYPE had to move to fix the jog. */}
+          <div className={CONTAINER_WIDE}>
             <div className="relative overflow-hidden">
               <img
                 src={figure.src}

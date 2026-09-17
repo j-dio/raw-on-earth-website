@@ -48,7 +48,34 @@ export type Workshop = {
   /* Unset everywhere, deliberately. There is no booking system and the brief
      specifies none, so each card links to /contact?about=<slug> instead. */
   registrationUrl?: string;
+
+  /* TIMETABLE FIELDS, for the recurring classes only. A weekly class has a day
+     and a time; a one-off has a `date`. Nothing has both. */
+  day?: string;
+  time?: string;
+
+  /* The picture an upcoming card carries. Only the dated one-offs use it - the
+     timetable is a table and a table with photographs in it is a brochure. */
+  image?: { src: string; alt: string };
 };
+
+/* ---------------------------------------------------------------------------
+   SAMPLE SCHEDULE. Read this before showing the page to anyone outside the
+   team.
+
+   `true` fills the timetable and the upcoming cards with invented days, times
+   and dates so the page can be designed and reviewed as a finished thing. It
+   is the reason the page has a visible notice at the top of the schedule
+   saying so - a plausible-looking invented event is the worst kind of lie
+   because it is checkable, and a date somebody turns up for is the worst
+   version of that.
+
+   Set it to `false` and the page falls back to exactly what it printed before:
+   every class and every workshop says its dates are announced soon, and the
+   notice disappears. Set it to `false` before this reaches the client, and
+   delete the sample values below when her real calendar arrives.
+   --------------------------------------------------------------------------- */
+export const SAMPLE_SCHEDULE = false;
 
 export const kindLabels: Record<WorkshopKind, string> = {
   "regular-class": "Regular class",
@@ -69,9 +96,11 @@ export const modeLabels: Record<WorkshopMode, string> = {
    Formats she genuinely runs, per the brief and her business cards. No named
    event, no date, no fee. Every line of copy here needs her words before
    launch. */
-export const workshops: Workshop[] = [
+const withSampleSchedule: Workshop[] = [
   {
     slug: "weekly-hatha-class",
+    day: "Tuesday & Thursday",
+    time: "6.30 – 7.30am",
     title: "Weekly Hatha class",
     kind: "regular-class",
     mode: "both",
@@ -84,6 +113,8 @@ export const workshops: Workshop[] = [
   },
   {
     slug: "ashtanga-vinyasa-class",
+    day: "Wednesday & Saturday",
+    time: "7.00 – 8.15am",
     title: "Ashtanga Vinyasa class",
     kind: "regular-class",
     mode: "both",
@@ -96,6 +127,8 @@ export const workshops: Workshop[] = [
   },
   {
     slug: "one-to-one-yoga",
+    day: "By arrangement",
+    time: "Mornings and evenings",
     title: "One-to-one yoga",
     kind: "one-to-one",
     mode: "both",
@@ -108,6 +141,8 @@ export const workshops: Workshop[] = [
   },
   {
     slug: "one-to-one-breathwork",
+    day: "By arrangement",
+    time: "Mornings and evenings",
     title: "One-to-one breathwork and meditation",
     kind: "one-to-one",
     mode: "online",
@@ -120,7 +155,13 @@ export const workshops: Workshop[] = [
   },
   {
     slug: "day-workshop-breath-and-stillness",
-    title: "Day workshop: breath and stillness",
+    date: "2026-10-18",
+    price: "Rs 2,500 per person",
+    image: {
+      src: "/media/gallery/meditation-05.webp",
+      alt: "People sit cross-legged on coloured mats in a concrete-floored hall, hands resting on their knees and eyes closed, daylight coming through glass doors behind them.",
+    },
+    title: "Breath & Stillness",
     kind: "workshop",
     mode: "in-person",
     summary: "A full day given to breath, held posture and the quiet in between.",
@@ -128,23 +169,35 @@ export const workshops: Workshop[] = [
       "A day-long workshop that slows everything down: extended pranayama, held posture, silence, and time to talk about what came up. Practical arrangements are confirmed with everyone who registers.",
     duration: "One day",
     location: "Bangalore",
-    status: "announced",
+    status: "scheduled",
   },
   {
     slug: "immersion-weekend",
-    title: "Weekend immersion",
+    date: "2026-11-14",
+    price: "Rs 6,800 per person",
+    image: {
+      src: "/media/gallery/meditation-08.webp",
+      alt: "People lie on their backs on mats in a concrete hall, arms at their sides, resting at the close of a practice.",
+    },
+    title: "Weekend Immersion",
     kind: "workshop",
     mode: "in-person",
     summary: "Two days of practice, rest and conversation, away from a screen.",
     description:
-      "An immersion for people who want more than an hour a week: morning practice, afternoon study, evening stillness. The group is kept small on purpose.",
+      "An immersion for people who want more than an hour a week: morning practice, afternoon study, evening stillness.",
     duration: "Two days",
     location: "Bangalore and nearby",
-    status: "announced",
+    status: "scheduled",
   },
   {
     slug: "nature-retreat",
-    title: "Nature retreat",
+    date: "2026-12-05",
+    price: "Rs 14,500 per person, shared room",
+    image: {
+      src: "/media/gallery/community-03.webp",
+      alt: "A group kneels on mats on grass beneath a large spreading tree in a park, heads tilted back in a gentle backbend.",
+    },
+    title: "Nature Retreat",
     kind: "retreat",
     mode: "in-person",
     summary: "Practice outdoors, walking, and food that is not an afterthought.",
@@ -152,7 +205,7 @@ export const workshops: Workshop[] = [
       "A residential retreat away from the city. Practice morning and evening, walking and rest in between, and no attempt to fill every hour. The retreat calendar is set with each venue.",
     duration: "Two to four days",
     location: "Outside Bangalore",
-    status: "announced",
+    status: "scheduled",
   },
   {
     slug: "corporate-wellbeing-programme",
@@ -204,6 +257,30 @@ export const workshops: Workshop[] = [
   },
 ];
 
+/* The one choke point for SAMPLE_SCHEDULE, and it has to be here rather than
+   in the page: the flag used to gate only the NOTICE, so turning it off left
+   every invented day, time, date and price still printing under a page that
+   had stopped admitting they were invented. That is worse than either state.
+
+   With the flag off, the sample fields are stripped and anything that had been
+   given a date drops back to "announced" - which is what `status` means: real
+   and running, no date fixed. The page then prints "Dates announced soon"
+   everywhere, exactly as it did before any of this was added.
+
+   Delete this wrapper, not the flag, when her real calendar arrives. */
+export const workshops: Workshop[] = withSampleSchedule.map((w) =>
+  SAMPLE_SCHEDULE
+    ? w
+    : {
+        ...w,
+        day: undefined,
+        time: undefined,
+        date: undefined,
+        price: undefined,
+        status: w.status === "scheduled" ? "announced" : w.status,
+      },
+);
+
 /* PLACEHOLDER - awaiting client content.
    Past work, described as formats rather than as events. She has run 35+
    workshops; not one title, date or venue reached us, and a plausible-looking
@@ -220,4 +297,46 @@ export const pastFormats: PastFormat[] = [
   { title: "Nature retreats", note: "Residential, outside the city" },
   // No fee stated: nobody has told us how community sessions are charged.
   { title: "Community and volunteer gatherings", note: "Open sessions, run with the community" },
+];
+
+/* Corporate credentials. She asked for these herself, unprompted, on the call
+   of 6 September 2026 (00:55:45): "I want my work to talk somewhere... I do
+   workshops for Volvo, JP Morgan, Amazon, Sayronics. So these companies have
+   to be projected somewhere. You think about it. I'll leave it to you."
+
+   She left the placement to us and then answered it herself in the 27 July
+   brief, whose Tab 3 is "Events (regular, one to one) + Gallery ... Photos -
+   online session / offline / 1-2 corporate pics". Corporate belongs with the
+   workshops, not in the middle of her life story - which is where this list
+   sat until 2026-09-17.
+
+   SUPERSEDED, and this is the list that counts. On 2026-09-16 she supplied the
+   names herself, as a slide. The four she said aloud on the call are not the
+   authority any more: Volvo and Sayronics are NOT on her slide and must not go
+   back. Her thirteen, in her order and her spelling:
+
+   OPEN, to raise with her rather than fix here: "Zeroda" is almost certainly
+   Zerodha, and "Sony Corp" and "Kushals Corp" carry a suffix the other eleven
+   do not. Publishing a misspelling of a real company is the risk; changing a
+   client's own list without asking is the other one. Her spelling ships until
+   she says otherwise.
+
+   Text only, never their logos - we have no licence to reproduce anyone's
+   mark. No dates, no project descriptions, no testimonials: she named the
+   organisations and said nothing else about the work, and inventing the rest
+   is how a credential turns into a claim. */
+export const corporateClients = [
+  "Nykaa",
+  "Sonata",
+  "Zeroda",
+  "Amazon",
+  "Eurokids",
+  "Tektronix",
+  "MyGlamm",
+  "Sony Corp",
+  "JP Morgan",
+  "Kushals Corp",
+  "Rotaract JP Nagar",
+  "The Montessori School",
+  "IIM Bangalore (faculty)",
 ];

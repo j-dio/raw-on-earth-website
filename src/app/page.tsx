@@ -1,5 +1,6 @@
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
+import EnsoMark from "@/components/EnsoMark";
 import SiteFooter from "@/components/SiteFooter";
 import { CtaBand } from "@/components/ui";
 import { offerings, pillars } from "@/data/home";
@@ -63,14 +64,37 @@ export default function Home() {
 
       <main id="main">
         {/* HERO
+
+            2XL ONLY, added 2026-09-17. Everything below 1536px is untouched -
+            deliberately, because the design was approved on a narrower screen
+            and must not move there.
+
+            The problem: Windows display scaling changes the CSS viewport at
+            100% browser zoom. 150% on a 1920 panel reports about 1280; 100%
+            reports 1912. Every size in this block is fluid but capped low, so
+            it stops growing around 1250px and a 1912px screen gets the same
+            pixels in a frame half again as big. Measured: the heading is 4.5%
+            of the viewport at 1280 and 3.0% at 1912, and the ring falls from
+            70% of the width to 52%.
+
+            The vw terms were right; the ceilings were too low for a 1920
+            screen. Rather than raise them outright - which would have changed
+            the heading above 1252px, the standfirst above 1095px and the ring
+            above 1429px, all of which a 1280px screen can see - the higher
+            ceilings are attached to `2xl` (1536px). Below that, every value is
+            exactly what it was.
+
             One composed image: she is already placed on the gradient, in
             profile facing right, with the right of the frame left open. So the
             type sits in her eyeline and there is no separate cutout layer. */}
         <section className="relative min-h-[100svh] overflow-hidden flex items-center bg-linen">
           <div className="absolute inset-0 z-0">
+             {/* 1024x1024, 193KB. It was missing from the repo for a while -
+                 referenced here and below but never committed - and both call
+                 sites pointed at a stand-in until it arrived. */}
              <img
                src="/media/mockup/pin-classes.png"
-               alt="Yogi in lunge pose"
+               alt="A woman kneels in a low lunge backbend on a mat in a park, head tilted back, with the sun setting through the trees behind her."
                className="w-full h-full object-cover object-[left_center] brightness-[0.65] saturate-[0.65] hue-rotate-[5deg] contrast-[1.2]"
              />
              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/10 to-black/30 z-10 pointer-events-none" />
@@ -80,17 +104,14 @@ export default function Home() {
             className="hero-in-soft absolute inset-0 z-10 pointer-events-none"
             style={{ "--d": "400ms" } as React.CSSProperties}
           >
-            <div
-              aria-hidden
-              className="hero-ring brand-mark mark-enso-ring absolute left-1/2 top-[calc(100%_-_var(--med-gap)_-_var(--med)/2)] h-[var(--med)] w-[var(--med)] text-[#87a091] lg:left-[85%] lg:top-[50%] lg:-translate-y-1/2 lg:-translate-x-1/2 lg:h-[min(70vw,1000px)] lg:w-[min(70vw,1000px)] opacity-[0.25]"
-            />
+            <EnsoMark />
           </div>
 
           {/* The section owns the height (see above). The type column stops at
               col 11, not 12: running it to the container edge is what made the
               headline look jammed against the right of the frame. One spare
               column of air reads as composition rather than overflow. */}
-          <div className="relative z-10 mx-auto flex h-full min-h-[100svh] max-w-[1500px] items-stretch px-6 pt-28 pb-16 md:px-10 lg:grid lg:grid-cols-12 lg:items-center lg:gap-8 lg:px-14 lg:pt-20 lg:pb-20 2xl:px-20">
+          <div className="relative z-10 mx-auto flex h-full min-h-[100svh] max-w-[1500px] items-stretch 2xl:max-w-[1800px] px-6 pt-28 pb-16 md:px-10 lg:grid lg:grid-cols-12 lg:items-center lg:gap-8 lg:px-14 lg:pt-20 lg:pb-20 2xl:px-20">
             {/* Portrait is a full-height flex column so the link can be pushed
                 to the foot of the screen (see the link block below). Desktop
                 drops back to normal flow inside the grid cell. */}
@@ -118,7 +139,7 @@ export default function Home() {
                   Chrome on Windows will not open a window under 500px, so a
                   390px screenshot is a crop of a 500px page. Use scripts/shot.mjs. */}
               <h1
-                className="hero-in-title font-display text-[clamp(2.4rem,4.6vw,3.6rem)] font-normal uppercase leading-[1.1] tracking-[0.094em] text-linen"
+                className="hero-in-title font-display text-[clamp(2.4rem,4.6vw,3.6rem)] 2xl:text-[clamp(3.6rem,4.6vw,5.5rem)] font-normal uppercase leading-[1.1] tracking-[0.094em] text-linen"
                 style={{ "--d": "320ms" } as React.CSSProperties}
               >
                 Yoga <span className="font-light text-linen/40">|</span> Life
@@ -134,7 +155,7 @@ export default function Home() {
                   measure - bigger and TIGHTER than their 16px/32 body. Ours held
                   quotes or text content is more robust than pseudo-elements. */}
               <p
-                className="hero-in-desc text-[clamp(1rem,1.9vw,1.3rem)] font-light leading-[1.6] text-linen"
+                className="hero-in-desc text-[clamp(1rem,1.9vw,1.3rem)] 2xl:text-[clamp(1.3rem,1.9vw,2.3rem)] font-light leading-[1.6] text-linen"
                 style={{ "--d": "680ms" } as React.CSSProperties}
               >
                 Work on yourself<br />before you work for somebody else.
@@ -290,6 +311,7 @@ export default function Home() {
             scrim, cards at bg-linen/92. 75% is a measured floor, not taste - at
             70% the standfirst fell to 4.40:1 and failed. */}
         <section className="relative bg-linen/75">
+          {/* Decorative, so the alt stays empty. */}
           <img src="/media/mockup/pin-classes.png" alt="" className="absolute inset-0 -z-10 h-full w-full object-cover object-center brightness-125 saturate-150" />
           <div className="mx-auto max-w-[1280px] px-6 py-24 md:px-10 md:py-32 lg:px-20 xl:px-32">
             {/* "Offerings" is her word and it is the heading, not a kicker over
@@ -382,7 +404,6 @@ export default function Home() {
                   decoding="async"
                   className="aspect-[3/4] w-full object-cover rounded-xl shadow-sm"
                 />
-                <p className="mt-4 text-[0.85rem] leading-relaxed text-ink/75 px-1">{item.caption}</p>
               </li>
             ))}
           </ul>
