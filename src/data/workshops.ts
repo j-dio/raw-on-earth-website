@@ -75,7 +75,7 @@ export type Workshop = {
    notice disappears. Set it to `false` before this reaches the client, and
    delete the sample values below when her real calendar arrives.
    --------------------------------------------------------------------------- */
-export const SAMPLE_SCHEDULE = true;
+export const SAMPLE_SCHEDULE = false;
 
 export const kindLabels: Record<WorkshopKind, string> = {
   "regular-class": "Regular class",
@@ -96,7 +96,7 @@ export const modeLabels: Record<WorkshopMode, string> = {
    Formats she genuinely runs, per the brief and her business cards. No named
    event, no date, no fee. Every line of copy here needs her words before
    launch. */
-export const workshops: Workshop[] = [
+const withSampleSchedule: Workshop[] = [
   {
     slug: "weekly-hatha-class",
     day: "Tuesday & Thursday",
@@ -256,6 +256,30 @@ export const workshops: Workshop[] = [
     status: "announced",
   },
 ];
+
+/* The one choke point for SAMPLE_SCHEDULE, and it has to be here rather than
+   in the page: the flag used to gate only the NOTICE, so turning it off left
+   every invented day, time, date and price still printing under a page that
+   had stopped admitting they were invented. That is worse than either state.
+
+   With the flag off, the sample fields are stripped and anything that had been
+   given a date drops back to "announced" - which is what `status` means: real
+   and running, no date fixed. The page then prints "Dates announced soon"
+   everywhere, exactly as it did before any of this was added.
+
+   Delete this wrapper, not the flag, when her real calendar arrives. */
+export const workshops: Workshop[] = withSampleSchedule.map((w) =>
+  SAMPLE_SCHEDULE
+    ? w
+    : {
+        ...w,
+        day: undefined,
+        time: undefined,
+        date: undefined,
+        price: undefined,
+        status: w.status === "scheduled" ? "announced" : w.status,
+      },
+);
 
 /* PLACEHOLDER - awaiting client content.
    Past work, described as formats rather than as events. She has run 35+
