@@ -784,6 +784,41 @@ body {
   background-color: var(--color-mist-pale);
 }
 
+/* The five practice names. From sm up they are a wrapped row of small caps.
+
+   On a phone that row is the problem: the names run from 4 to 20 characters, so
+   wrapped they gave a ragged 2/2/1 block, stacked they were five rows deep, and
+   two columns broke two of them across lines. Below sm they are set as running
+   text instead - body face, sentence spacing, commas and a final "and" - so the
+   line breaks belong to the sentence rather than to the layout. Two lines.
+
+   It also stops the row reading as a tab bar, which it never was: these names
+   are labels, not links. */
+@media (max-width: 639.98px) {
+  .pillar-row {
+    line-height: 2;
+  }
+
+  /* The face has to be set on the li, not the ul: `.label` sets font-family in
+     the components layer and it beats an inherited value. */
+  .pillar-row > li {
+    display: inline;
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 1rem;
+    letter-spacing: normal;
+    text-transform: none;
+  }
+
+  .pillar-row > li + li::before {
+    content: ", ";
+  }
+
+  .pillar-row > li:last-child::before {
+    content: " and ";
+  }
+}
+
 .tex {
   position: relative;
   isolation: isolate;

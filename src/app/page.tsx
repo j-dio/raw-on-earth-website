@@ -373,11 +373,11 @@ export default function Home() {
                 so wrapping them at 390px gave a ragged 2/2/1 block that read as
                 a mistake. A single column scans in one pass. */}
             <ul
-              className="mt-10 grid gap-y-4 border-t border-ink/15 pt-8 sm:flex sm:flex-wrap sm:gap-x-8 sm:gap-y-3 md:gap-x-12"
+              className="pillar-row mt-10 border-t border-ink/15 pt-8 sm:flex sm:flex-wrap sm:gap-x-8 sm:gap-y-3 md:gap-x-12"
               data-reveal
             >
               {pillars.map((pillar) => (
-                <li key={pillar.slug} className="label label-sm text-moss">
+                <li key={pillar.slug} className="label label-sm inline text-moss sm:inline-block">
                   {pillar.name}
                 </li>
               ))}
