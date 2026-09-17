@@ -404,7 +404,6 @@ export default function Home() {
                   decoding="async"
                   className="aspect-[3/4] w-full object-cover rounded-xl shadow-sm"
                 />
-                <p className="mt-4 text-[0.85rem] leading-relaxed text-ink/75 px-1">{item.caption}</p>
               </li>
             ))}
           </ul>
