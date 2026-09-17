@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import PageHero from "@/components/PageHero";
 import JsonLd from "@/components/JsonLd";
-import { Section, SectionHead, LeafRule, Button, CtaBand } from "@/components/ui";
+import { Section, SectionHead, LeafRule, Button, CtaBand, CONTAINER } from "@/components/ui";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { site } from "@/data/site";
 import { serviceGroups, type Service } from "@/data/services";
@@ -68,28 +67,6 @@ function Meta({ service }: { service: Service }) {
 
 const [individual, corporate, retreats, schools, online] = serviceGroups;
 
-/* Three ways in. Each card owns the anchors it covers, so all five groups are
-   reachable from one screen. */
-const waysIn = [
-  {
-    n: "01",
-    title: "For yourself",
-    body: "One-to-one teaching, or a small group that keeps its own rhythm. Start where your body is today.",
-    links: [individual, online],
-  },
-  {
-    n: "02",
-    title: "For your team",
-    body: "Programmes for people under load, run on site in your own rooms or online for a team working apart.",
-    links: [corporate],
-  },
-  {
-    n: "03",
-    title: "For a group you gather",
-    body: "A school, a studio, a circle of friends. Time away, or a practice brought into a room you already have.",
-    links: [retreats, schools],
-  },
-];
 
 const howItWorks = [
   {
@@ -144,76 +121,149 @@ const catalogueLd = {
   })),
 };
 
+/* One frame per service group, for the card row. Chosen by looking at each
+   file, and kept away from the photographs the five sections below already
+   use so the page does not show the same picture twice.
+
+   `schools` is the only one with children in it, and that is unavoidable for a
+   schools card. The same permission note applies as to the masthead: "whether
+   the 27 children's faces may be published" is still open in
+   docs/CLIENT-BRIEF.md. */
+const groupImages: Record<string, { src: string; alt: string }> = {
+  individual: {
+    src: "/media/gallery/teaching-05.webp",
+    alt: "A teacher steadies a student folding forward over one leg on a mat in a red-floored hall.",
+  },
+  corporate: {
+    src: "/media/gallery/meditation-05.webp",
+    alt: "People sit cross-legged on coloured mats in a concrete-floored hall, hands resting on their knees and eyes closed.",
+  },
+  retreats: {
+    src: "/media/gallery/community-03.webp",
+    alt: "A group kneels on mats on grass beneath a large spreading tree in a park.",
+  },
+  schools: {
+    src: "/media/gallery/kids-33.webp",
+    alt: "School children sit cross-legged on mats in an outdoor yard while the founder moves among them.",
+  },
+  "online-programmes": {
+    src: "/media/gallery/meditation-06.webp",
+    alt: "A woman sits upright in meditation on a mat by a window, others seated further back in the room.",
+  },
+};
+
 export default function MentorshipPage() {
   return (
     <>
       <SiteHeader />
 
       <main id="main">
-        <PageHero
-          eyebrow="Mentorship"
-          title="Ways to practise"
-          standfirst="Individual teaching, workplace programmes, retreats, schools and online courses. The same practice, sized to whoever is in the room."
-          /* kids-32, her crouched among a yard of school children. It
-             replaced a row of students in crow pose: clean and bright, but
-             crow is an athletic shape and this page has to cover one-to-one
-             teaching, workplaces, retreats, schools and online courses. A
-             teacher at work among a group covers all five; a balance on the
-             hands covers one.
+        {/* MASTHEAD, in the shape /gallery uses rather than the shared
+            PageHero: the photograph is the ground, washed back under a linen
+            gradient, with the type on it. Client preference, 2026-09-17.
 
-             Chosen over kids-31 and kids-33 by rendering all three at this
-             ratio: 31 hides her behind a child in the foreground, 33 puts her
-             too far back with a blurred child filling the frame. In 32 she is
-             central, her face is in, and the children spread either side.
+            Two things deliberately NOT copied from /gallery. Its masthead
+            heading is an `h2` and that page has NO h1 at all - a real
+            accessibility and search fault there, not a pattern to spread. And
+            the type block uses CONTAINER, so it lands on the same left rule as
+            every section below it.
 
-             Crop 1500:844:0:80, and 16:9 rather than the 21:9 the rest of
-             this folder holds. PageHero runs a 16:9 box below `lg`, so a 21:9
-             master meets object-cover on a phone and trims the SIDES - which
-             on this picture is the children. A 16:9 master crops nothing
-             there and trims height on desktop instead. Same fix as
-             /workshops, measured there: phone and tablet 0px, 1440 trims
-             207px of height.
+            No `.page-hero` class either: that carries the faint enso
+            watermark, which is paper behind type on linen and clutter over a
+            photograph. The entry animations are kept by their own classes. */}
+        <section className="relative overflow-hidden bg-linen">
+          <div className="absolute inset-0 z-0">
+            <img
+              src="/media/hero/services.webp"
+              alt=""
+              aria-hidden="true"
+              width={1500}
+              height={844}
+              className="h-full w-full object-cover"
+            />
+            {/* Scrim measured on the rendered page, sampling background only,
+                beside the type rather than through it: darkest pixel 219 under
+                the H1 and 228 beside the standfirst, giving moss 7.66:1 and
+                ink/75 5.91:1. Both are large text and need 3.0. */}
+            <div className="absolute inset-0 bg-gradient-to-b from-linen/78 via-linen/90 to-linen" />
+          </div>
 
-             1500px wide against the other heroes' 2400. Ask her for the
-             full-resolution original.
+          <div className={`${CONTAINER} relative z-10 pt-36 pb-20 md:pt-44 md:pb-28`}>
+            <div
+              className="page-hero-in flex items-center gap-4"
+              style={{ "--d": "80ms" } as React.CSSProperties}
+            >
+              <span className="h-px w-6 bg-moss/40" />
+              <p className="eyebrow">Mentorship</p>
+            </div>
+            <h1
+              className="page-hero-title t-h1 mt-6 text-moss"
+              style={{ "--d": "160ms" } as React.CSSProperties}
+            >
+              Ways to practise
+            </h1>
+            <p
+              className="page-hero-in t-lead mt-8 max-w-[46ch] text-ink/75"
+              style={{ "--d": "320ms" } as React.CSSProperties}
+            >
+              Individual teaching, workplace programmes, retreats, schools and online courses. The
+              same practice, sized to whoever is in the room.
+            </p>
+          </div>
+        </section>
 
-             GATE BEFORE LAUNCH: identifiable children's faces, and "whether
-             the 27 children's faces may be published" is still on the open
-             list in docs/CLIENT-BRIEF.md. Fine on a dev server, not on a live
-             domain until she answers. `/media/hero/gallery.webp` is a class
-             mid-session, has no children in it, and is unused. */
-          figure={{
-            src: "/media/hero/services.webp",
-            alt: "The founder crouches among a yard full of school children, steadying one of them in a seated forward fold, a wire fence and trees behind.",
-            width: 1500,
-            height: 844,
-          }}
-        />
+        {/* THE PAGE INDEX, as cards. Client preference 2026-09-17: the shape
+            is /gallery's category row - a bordered card, the picture on top,
+            the name on a pale bar beneath it.
 
-        {/* THREE WAYS IN - a quieter interstitial, and the page's index. */}
-        <Section className="bg-linen py-16 md:py-20">
-          <ul className="grid gap-px bg-ink/15 md:grid-cols-3" data-reveal-stagger>
-            {waysIn.map((way) => (
-              <li key={way.n} className="bg-linen p-8 md:p-10">
-                <p className="label text-[0.62rem] text-moss/85">{way.n}</p>
-                <h2 className="mt-5 font-display text-[1.6rem] font-light leading-tight text-moss md:text-[2rem]">
-                  {way.title}
-                </h2>
-                <p className="mt-4 leading-relaxed text-ink/80">{way.body}</p>
-                {/* The page index, so these are real targets: inline-flex with
-                    a 44px minimum height rather than a 10px line of caps with
-                    a hit area you have to aim at. */}
-                <p className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
-                  {way.links.map((group) => (
-                    <a
-                      key={group.slug}
-                      href={`#${group.slug}`}
-                      className="link label inline-flex min-h-11 items-center text-[0.68rem]"
-                    >
+            It replaced three hairline cells that grouped the five sections
+            into "three ways in" and then listed the groups as small text
+            links inside them. Two levels of grouping over five items, and the
+            links were 10px caps. One card per group is flatter and every card
+            is a target.
+
+            Anchors, not routes: each of the five sections is on this page and
+            already carries its own id. */}
+        <Section className="bg-sand/40 py-16 md:py-24">
+          <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-xl">
+              <p className="eyebrow">Choose a way in</p>
+              <h2 className="t-h2 mt-5 text-moss">Five ways to practise</h2>
+            </div>
+            <p className="max-w-md leading-relaxed text-ink/75">
+              Some of this is taught to one person, some to a room of forty, and some over video to
+              whoever can get to a screen. Pick the one that sounds like you.
+            </p>
+          </div>
+
+          <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-reveal-stagger>
+            {serviceGroups.map((group) => (
+              <li key={group.slug}>
+                {/* The whole card is the link, so the target is the card and
+                    not a line of small caps inside it. */}
+                <a
+                  href={`#${group.slug}`}
+                  className="group flex h-full flex-col overflow-hidden rounded-xl border border-moss/10 bg-linen shadow-sm transition-all duration-500 ease-out hover:-translate-y-1 hover:border-moss/30 hover:shadow-md"
+                >
+                  <div className="aspect-[4/3] w-full overflow-hidden">
+                    <img
+                      src={groupImages[group.slug].src}
+                      alt={groupImages[group.slug].alt}
+                      width={1500}
+                      height={1125}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="flex flex-1 flex-col border-t border-moss/10 p-6 md:p-7">
+                    <p className="label text-[0.6rem] text-moss/70">{group.eyebrow}</p>
+                    <h3 className="mt-3 font-display text-[1.5rem] font-light leading-tight text-moss">
                       {group.title}
-                    </a>
-                  ))}
-                </p>
+                    </h3>
+                    <p className="mt-3 text-[0.95rem] leading-relaxed text-ink/75">{group.intro}</p>
+                  </div>
+                </a>
               </li>
             ))}
           </ul>

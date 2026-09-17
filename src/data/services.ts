@@ -2,6 +2,22 @@
    hand-built block. The design brief says so in as many words: "More will be
    added over time, so this must be data-driven, not hand-built pages."
 
+   TONE - read this too. The five group intros and every `summary` were
+   rewritten on 2026-09-17 toward the reference's own register.
+   ouranoyoga.com states what happens and stops: "Students will be guided
+   through traditional yoga postures with different options and variations
+   given as necessary according to your level of practice. There is lots of
+   focus on developing the breath and uniting it with movement in the body."
+   Plain, declarative, second person, no wit at the end of the sentence.
+
+   What was here instead was nineteen entries in one identical shape - a
+   clever fragment followed by a wry qualifier - which is exactly what reads
+   as machine-written however good any single line is.
+
+   Also cut on the way through: "Numbers are kept small, so nobody is lost in
+   the room." Nobody has told us her group sizes. Same claim, and the same
+   fault, as the four cut from the Workshops intro.
+
    PROVENANCE - read this before editing:
 
    - The five Individual names (Private Yoga, Mindfulness Coaching, Breathwork,
@@ -50,7 +66,7 @@ export const serviceGroups: ServiceGroup[] = [
     title: "Individual",
     eyebrow: "For yourself",
     intro:
-      "Work that starts with one body and one set of habits. Taught online or in person, at whatever hour fits the life you actually have.",
+      "One-to-one teaching, built around what your own practice needs. Taught online or in person, at a time arranged with you.",
     services: [
       {
         // CLIENT'S NAMED LIST - design brief
@@ -105,7 +121,7 @@ export const serviceGroups: ServiceGroup[] = [
     title: "Corporate",
     eyebrow: "For your team",
     intro:
-      "Programmes for teams under load, run for organisations across technology, finance, retail and education. Held on site in your own rooms, or online for people working apart.",
+      "Programmes for teams at work, run for organisations across technology, finance, retail and education. Held on site in your own rooms, or online for people working apart.",
     services: [
       {
         // CLIENT'S NAMED LIST - design brief
@@ -160,7 +176,7 @@ export const serviceGroups: ServiceGroup[] = [
     title: "Retreats",
     eyebrow: "Away from the city",
     intro:
-      "Time away, with practice at either end of the day and quiet in between. Numbers are kept small, so nobody is lost in the room.",
+      "Time away from the city, with practice at either end of the day and quiet in between.",
     services: [
       {
         // OURS - awaiting client confirmation. The brief names the section but
@@ -199,7 +215,7 @@ export const serviceGroups: ServiceGroup[] = [
     title: "Schools",
     eyebrow: "For students and staff",
     intro:
-      "Sessions taught in the space a school already has, in a form a teacher can carry on with once we have gone.",
+      "Sessions for children and for the adults who teach them, taught in the space your school already has.",
     services: [
       {
         // OURS - awaiting client confirmation. "Chanting for Kids" is her own
@@ -238,7 +254,7 @@ export const serviceGroups: ServiceGroup[] = [
       // "Half of this practice has run online for years" was cut: the 27 July
       // notes say classes are taught online and offline and nothing more, so
       // the proportion was ours to invent and it read as a claim.
-      "The same teaching, over video. This is taught as its own thing, not as a lesser version of the room.",
+      "The same teaching, over video, wherever you are. Classes are live, not recordings.",
     services: [
       {
         // OURS - awaiting client confirmation. The brief names "Online
