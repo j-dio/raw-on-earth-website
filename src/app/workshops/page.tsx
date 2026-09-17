@@ -147,85 +147,22 @@ export default function WorkshopsPage() {
           }}
         />
 
-        {/* INTRO. Cut back 2026-09-17 to what a source actually supports.
+        {/* The "What you will practise" section stood here and is removed.
 
-            What stood here made four claims about how she runs a room, none of
-            which she has ever told us: "Numbers are kept low", "your alignment
-            is watched and corrected", "every session ends with rest", and
-            "Bring a mat if you have one, wear something you can breathe in,
-            and eat lightly beforehand". Plausible for a yoga teacher, invented
-            for THIS one - and a visitor who turns up matless because the site
-            said so has been misled by us, not by her. The heading "Small
-            groups, watched closely" was the same claim in larger type.
+            It had already been cut back once, from a version that promised
+            small groups, watched alignment and a mat to bring - none of which
+            she has ever told us. What was left was true but it was three
+            blocks of prose between the masthead and the timetable, which is
+            the thing a visitor came for.
 
-            What is left is sourced. Classical Hatha, Ashtanga Vinyasa,
-            pranayama, meditation and mindfulness are her own credentials
-            (docs/yoga-site-handover.md). Online and in person is the 27 July
-            note. JP Nagar, Bangalore is off her business card. That everything
-            else is settled by writing in is a fact about this build: there is
-            no booking system and every CTA goes to the contact form.
+            One sentence out of it was worth keeping and is now the standfirst
+            below: Classical Hatha and Ashtanga Vinyasa with pranayama and
+            meditation, which is the only place this page names what she
+            actually teaches, and is sourced from her own credentials.
 
-            The three counters that sat under this - 13+, 5,000+, 35+ - are
-            gone. They are her real figures, but they are the same three the
-            About page already sets out in its Journey list, two clicks away,
-            and repeating a credential does not strengthen it.
-
-            The register follows ouranoyoga.com's own class descriptions,
-            which state what happens and stop: "Students will be guided through
-            traditional yoga postures... There is lots of focus on developing
-            the breath and uniting it with movement in the body." No promises
-            about the room. */}
-        <Section className="bg-linen py-24 md:py-32">
-          <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
-            <div className="lg:col-span-7">
-              <SectionHead
-                eyebrow="What to expect"
-                title="What you will practise"
-                standfirst="Classical Hatha and Ashtanga Vinyasa, with pranayama and meditation carrying the same weight as the movement."
-              />
-              <div className="mt-10 max-w-[58ch] space-y-6 leading-[1.75] text-ink/80">
-                <p>
-                  Every format on this page draws on the same practice. What changes is how much
-                  time you have, and whether you join in person in JP Nagar, Bangalore, or online.
-                </p>
-                <p>
-                  There is nothing to book and nothing to pay for here. Write in, say which one you
-                  are interested in, and the rest is arranged with you directly.
-                </p>
-              </div>
-            </div>
-
-            <div className="lg:col-span-5">
-              {/* `teaching-02` stood here - one teacher adjusting ONE student
-                  under a tree - beneath a heading that then read "Small
-                  groups, watched closely". Accurate alt text, wrong picture:
-                  the heading's whole claim was a group, and the photograph
-                  showed one person.
-
-                  That heading is gone now (nobody told us the groups are
-                  small), but the frame stays changed. `teaching-01` is a class
-                  being taught: five people, the teacher on her own mat at the
-                  front, everyone in view.
-
-                  `aspect-[3/4]` rather than the old `h-full`. Stretched to the
-                  height of the copy beside it the column runs about 0.35:1
-                  against a 0.56:1 source, so `object-cover` trims 550px of
-                  WIDTH - and the width is where the group is. A 3/4 box crops
-                  height instead, keeps every student, and 25% holds it high
-                  enough to drop the empty floor at the bottom of the frame. */}
-              <img
-                src="/media/gallery/teaching-01.webp"
-                alt="A teacher sits cross-legged on her mat at the front of a bright studio, leading four students who sit in meditation on mats behind her."
-                width={1500}
-                height={2666}
-                loading="lazy"
-                decoding="async"
-                data-parallax="40"
-                className="aspect-[3/4] w-full object-cover object-[50%_25%]"
-              />
-            </div>
-          </div>
-        </Section>
+            The full copy is in git and in the project memory note
+            `raw-on-earth-workshops-intro-copy`, because it is the best version
+            that section has had and she may want it back. */}
 
         {/* THE WORKING PART OF THE PAGE - the online / offline dropdown the
             client asked for, plus a type filter. Given room and its own ground. */}
@@ -233,7 +170,7 @@ export default function WorkshopsPage() {
           <SectionHead
             eyebrow="Regular classes and one-to-one"
             title="Find a class"
-            standfirst="Weekly group classes and private sessions, online and in JP Nagar. Choose how you want to attend, and write in for a place."
+            standfirst="Classical Hatha and Ashtanga Vinyasa, with pranayama and meditation carrying the same weight as the movement. Taught online and in JP Nagar, Bangalore — choose how you want to attend and write in for a place."
           />
           <div className="mt-14" data-reveal>
             <ClassFinder items={classes} />

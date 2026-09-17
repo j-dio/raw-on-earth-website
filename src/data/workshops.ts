@@ -184,7 +184,7 @@ export const workshops: Workshop[] = [
     mode: "in-person",
     summary: "Two days of practice, rest and conversation, away from a screen.",
     description:
-      "An immersion for people who want more than an hour a week: morning practice, afternoon study, evening stillness. The group is kept small on purpose.",
+      "An immersion for people who want more than an hour a week: morning practice, afternoon study, evening stillness.",
     duration: "Two days",
     location: "Bangalore and nearby",
     status: "scheduled",
